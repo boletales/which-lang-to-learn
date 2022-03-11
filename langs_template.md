@@ -63,6 +63,7 @@ Cythonで重い部分をCに変換しても速くなる
   - 自分のこと現代的だと思ってる古参言語
   - 静的型、型推論ややあり
   - Cにない型がいっぱいある
+
 コンパイル時に最適化フラグを渡さないと10倍以上遅い(一敗)
 {sample:cpp}
   
@@ -80,7 +81,14 @@ Cythonで重い部分をCに変換しても速くなる
   - The Rust Programming Language 読んどけ
 {sample:rs}
 
-## コンパイル言語でクラスベースオブジェクト指向のやつ
+## JIT(ジャストインタイムコンパイル)を使うやつ
+### Julia
+  - はやい
+  - やるといいらしい
+  - pythonのライブラリが使える
+  - 比較的簡単らしい
+{sample:jl}
+
 ### Java
   - 五十歩百歩組
   - 業務で使われがち
@@ -108,12 +116,13 @@ Cythonで重い部分をCに変換しても速くなる
 {sample:ocaml}
 ### Haskell
   - 五十歩百歩組4
-  - __†純粋†__ 関数型言語
+  - †純粋†関数型言語
   - 中二病患者におすすめ
   - メタ記述能力の鬼
   - こみいった副作用に対する制御とか複雑なルールの組み合わせとかに滅法強い
   - ビルドが遅い（特に初回）
   - 静的型、型推論強い
+
 最適化すると十分速いが、知識と試行錯誤が必要
 {sample:hs}
 ### Lisp
@@ -146,13 +155,14 @@ Cythonで重い部分をCに変換しても速くなる
 {sample:purs}
 ### scala.js
   - scalaがjsにコンパイルされる
-{sample:scalajs}
+{result:scjs}
 ### GHCjs
   - Haskellがjsにコンパイルされる
-{sample:ghcjs}
+{sample:hsjs}
 ### js_of_ocaml
   - OCamlがjsにコンパイルされる
-{sample:jsocaml}
+{sample:ocjs}
+
 ##統計とかシミュレーションに使うやつ
 ###R
   - 統計にめっちゃ強い
@@ -171,9 +181,15 @@ Cythonで重い部分をCに変換しても速くなる
   - すごく速いらしい
   - スパコンでよく使われている
   - 文法が独特
+ 
 ## 速度ランキング
 {ranking}
 
 ## 貢献者一覧
-- 筆者 C, C++, Rust, Python, Haskell
-- あなばす Julia, Lisp
+- 筆者 
+  - 説明: 全部
+  - サンプル: C, C++, Rust, Python, Haskell
+  - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
+- あなばす
+  - 説明: Julia, Lisp
+  - 一言:
