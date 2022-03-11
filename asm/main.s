@@ -7,7 +7,6 @@
 
 	.globl	main
 main:
-.LFB31:
 	# puts("start");
 	leaq	.STR_START(%rip), %rdi
 	call	puts@PLT
