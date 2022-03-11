@@ -10,3 +10,4 @@ js   , js , JS     , main.js    , :                                  , node main
 f95  , f95, Fortran, main.f95   , gfortran -Ofast main.f95           , ./a.out
 r    , r  , R      , main.r     , :                                  , Rscript main.r
 py   , py , Python , main.py    , :                                  , python main.py
+asm  , asm, Assembly , main.s   , gcc main.s                         , ./a.out
