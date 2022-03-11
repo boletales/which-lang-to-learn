@@ -60,9 +60,9 @@ start
 99999989
 end
 
-real	0m27.172s
-user	0m26.515s
-sys	0m0.509s
+real	0m26.216s
+user	0m25.710s
+sys	0m0.429s
 ```
 
 同じコードでもPyPyで実行するとだいぶマシになる
@@ -75,9 +75,9 @@ start
 99999989
 end
 
-real	0m3.982s
-user	0m3.308s
-sys	0m0.637s
+real	0m4.569s
+user	0m4.032s
+sys	0m0.502s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -129,9 +129,9 @@ start
 99999989
 end
 
-real	0m3.788s
-user	0m3.706s
-sys	0m1.112s
+real	0m3.580s
+user	0m3.692s
+sys	0m0.981s
 ```
 
 ### PHP
@@ -151,30 +151,33 @@ code:
 ```c
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
+#include <string.h>
 
 const int MAX = 100000000;
 
-int main(){
-    static bool sieve[MAX+1];
-    static int primes[MAX+1];
+int main() {
+    int SQRT_MAX = (int)sqrt((double)MAX);
+    static bool sieve[MAX + 1];
+    static int primes[MAX + 1];
     puts("start");
-    for(int i=0; i<=MAX; i++) sieve[i]=true;
+    memset(sieve, 1, (MAX + 1) * sizeof(sieve[0]));
     sieve[0] = false;
     sieve[1] = false;
-    for(int i=0; i<=MAX; i++){
-        if(sieve[i]){
-            for(int j = i*i; j<=MAX; j+=i) sieve[j] = false;
+    for (int i = 0; i <= SQRT_MAX; i++) {
+        if (sieve[i]) {
+            for (int j = i * i; j <= MAX; j += i) sieve[j] = false;
         }
     }
-    int pcount=0;
-    for(int i=0; i<=MAX; i++){
-        if(sieve[i]){
-            primes[pcount]=i;
+    int pcount = 0;
+    for (int i = 0; i <= MAX; i++) {
+        if (sieve[i]) {
+            primes[pcount] = i;
             pcount++;
         }
     }
 
-    printf("%d\n", primes[pcount-1]);
+    printf("%d\n", primes[pcount - 1]);
     puts("end");
     return 0;
 }
@@ -188,9 +191,9 @@ start
 99999989
 end
 
-real	0m0.854s
-user	0m0.807s
-sys	0m0.029s
+real	0m0.723s
+user	0m0.686s
+sys	0m0.030s
 ```
 
 
@@ -208,6 +211,7 @@ code:
 ```cpp
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -215,10 +219,11 @@ const int MAX = 100000000;
 
 int main(){
     cout << "start" << endl;
+    int SQRT_MAX = (int)sqrt((double)MAX);
     vector<bool> sieve(MAX+1, true);
     sieve[0] = false;
     sieve[1] = false;
-    for(auto i=0; i<=MAX; i++){
+    for(auto i=0; i<=SQRT_MAX; i++){
         if(sieve[i]){
             for(auto j = i*i; j<=MAX; j+=i) sieve[j] = false;
         }
@@ -247,9 +252,9 @@ start
 99999989
 start
 
-real	0m0.774s
-user	0m0.662s
-sys	0m0.109s
+real	0m0.644s
+user	0m0.537s
+sys	0m0.103s
 ```
 
   
@@ -304,9 +309,242 @@ start
 99999989
 end
 
-real	0m0.901s
-user	0m0.837s
-sys	0m0.046s
+real	0m0.874s
+user	0m0.825s
+sys	0m0.033s
+```
+
+
+### Assembly
+  - 最速組（書く人間にオプティマイザが搭載されていれば）
+  - 生で書くのは苦行
+  - CPU の気持ちになれる
+  - デバッグはアホほど大変
+  - `gcc -S main.c` をすればアセンブリが見れるので、そこから修正するのがおすすめ。
+  - [Compiler Explorer](https://gcc.godbolt.org/)を使うのも良い。
+  - (C/C++などの) コンパイラはたまにいい感じのコードを吐いてくれないので、コンパイルされたものを見て、適宜手動でアセンブリ最適化するのが良い。
+  - 生で書くのは苦行
+
+code:
+```asm
+.STR_START:
+	.string	"start"
+.STR_END:
+	.string	"%d\nend\n"
+.STR_COUNT:
+	.string	"count %d\n\n"
+
+	.globl	main
+main:
+	# puts("start");
+	leaq	.STR_START(%rip), %rdi
+	call	puts@PLT
+
+	# sieve[0] = 0b11;
+	movb	$3, sieve(%rip)
+
+	# uint i = 1;
+	mov 	$1, %esi
+
+	# rdi = sieve;
+	leaq	sieve(%rip), %rdi
+
+	# r9d = 1;
+	mov 	$1, %r9d
+
+
+	jmp	.L2
+.L3:
+	add 	$1, %esi
+.L2:
+	cmp 	$100000001, %esi
+	je	.L19
+
+	# edx = sieve[esi >> 3];
+	movl	%esi, %eax
+	shrl	$3, %eax
+	movzbl	(%rdi, %rax), %edx
+
+	# if(edx & (1 << (si & 7))) continue;
+	mov 	%si, %ax
+	and 	$7, %al
+	bt	 	%ax, %dx
+	jc	.L3
+	
+	# rax = esi * esi // rsi = esi
+	mov 	%esi, %eax
+	imulq	%rsi, %rax
+
+	# if (rax > 99999999) continue;
+	cmp 	$99999999, %eax
+	ja	.L3
+.L4:
+	# edx = eax >> 3;
+	movl	%eax, %edx
+	shrl	$3, %edx
+
+	# cl = ax & 7;
+	mov 	%ax, %cx
+	and 	$7, %cl
+	
+	# eax += esi;
+	addl	%esi, %eax
+
+	# r10b = 1 << cl;
+	mov 	$1, %r10b
+	sal 	%cl, %r10b
+	
+	# sieve[rdx] |= r10b;
+	orb	%r10b, (%rdi,%rdx)
+
+	cmp 	$100000000, %eax
+	jbe	.L4
+	jmp	.L3
+
+
+
+.L19:
+	# rcx = primes;
+	leaq	primes(%rip), %rcx
+
+	# edx = 0; ebx = -1;
+	xorl	%edx, %edx
+	movl	$-1, %ebx
+.L14:
+	# al = eax = *rdi;
+	movzbl	(%rdi), %eax
+
+	# if (al & 1) goto L6;
+	testb	$1, %al
+	jne	.L6
+
+	# ebx = r10d = ebx + 1;
+	# primes[r10 = r10d] = edx;
+	lea 	1(%ebx), %r10d
+	mov 	%r10d, %ebx
+	movl	%edx, (%rcx,%r10,4)
+.L6:
+	# if (al & 2) goto L7;
+	testb	$2, %al
+	jne	.L7
+
+	# ebx = r10d = ebx + 1;
+	# primes[r10 = r10d] = r8d = edx + 1;
+	lea 	1(%ebx), %r10d
+	lea 	1(%edx), %r8d
+	mov 	%r10d, %ebx
+	movl	%r8d, (%rcx,%r10,4)
+.L7:
+	testb	$4, %al
+	jne	.L8
+	
+	# ebx = r10d = ebx + 1;
+	# primes[r10 = r10d] = r8d = edx + 2;
+	lea 	1(%ebx), %r10d
+	lea 	2(%edx), %r8d
+	mov 	%r10d, %ebx
+	movl	%r8d, (%rcx,%r10,4)
+.L8:
+	testb	$8, %al
+	jne	.L9
+	
+	# ebx = r10d = ebx + 1;
+	# primes[r10 = r10d] = r8d = edx + 3;
+	lea 	1(%ebx), %r10d
+	lea 	3(%edx), %r8d
+	mov 	%r10d, %ebx
+	movl	%r8d, (%rcx,%r10,4)
+.L9:
+	testb	$16, %al
+	jne	.L10
+	
+	# ebx = r10d = ebx + 1;
+	# primes[r10 = r10d] = r8d = edx + 4;
+	lea 	1(%ebx), %r10d
+	lea 	4(%edx), %r8d
+	mov 	%r10d, %ebx
+	movl	%r8d, (%rcx,%r10,4)
+.L10:
+	testb	$32, %al
+	jne	.L11
+	
+	# ebx = r10d = ebx + 1;
+	# primes[r10 = r10d] = r8d = edx + 5;
+	lea 	1(%ebx), %r10d
+	lea 	5(%edx), %r8d
+	mov 	%r10d, %ebx
+	movl	%r8d, (%rcx,%r10,4)
+.L11:
+	testb	$64, %al
+	jne	.L12
+	
+	# ebx = r10d = ebx + 1;
+	# primes[r10 = r10d] = r8d = edx + 6;
+	lea 	1(%ebx), %r10d
+	lea 	6(%edx), %r8d
+	mov 	%r10d, %ebx
+	movl	%r8d, (%rcx,%r10,4)
+.L12:
+	testb	%al, %al
+	js	.L13
+	
+	# ebx = r10d = ebx + 1;
+	# primes[r10 = r10d] = r8d = edx + 7;
+	lea 	1(%ebx), %r10d
+	lea 	7(%edx), %r8d
+	mov 	%r10d, %ebx
+	movl	%r8d, (%rcx,%r10,4)
+.L13:
+	# ++rdi; // ++sieve;
+	addq	$1, %rdi
+
+	# edx += 8;
+	addl	$8, %edx
+	cmpl	$100000000, %edx
+	jne	.L14
+
+
+	# eax = ebx;
+	movl	%ebx, %eax
+
+	# edx = primes[rax = eax];
+	movl	(%rcx,%rax,4), %edx
+	# rsi = STR_END;
+	leaq	.STR_END(%rip), %rsi
+	# printf
+	xorl	%eax, %eax
+	call	__printf_chk@PLT
+
+	# printf(STR_COUNT)
+	leaq	.STR_COUNT(%rip), %rsi
+	movl	%ebx, %edx
+	xorl	%eax, %eax
+	call	__printf_chk@PLT
+
+	# return 0;
+	xorl	%eax, %eax
+	ret
+
+	.bss
+primes:
+	.zero	400000004
+sieve:
+	.zero	100000001
+```
+
+result:
+```
+$ gcc main.s
+$ time ./a.out
+start
+99999989
+end
+count 5717621
+
+
+real	0m0.615s
+user	0m0.603s
+sys	0m0.010s
 ```
 
 
@@ -371,9 +609,9 @@ start
 99999989
 end
 
-real	0m1.266s
-user	0m0.965s
-sys	0m0.296s
+real	0m1.135s
+user	0m0.888s
+sys	0m0.231s
 ```
 
 
@@ -477,9 +715,9 @@ start
 99999989
 end
 
-real	0m1.036s
-user	0m0.747s
-sys	0m0.268s
+real	0m0.973s
+user	0m0.715s
+sys	0m0.238s
 ```
 
 ### Lisp
@@ -538,9 +776,9 @@ start
 99999989
 end
 
-real	0m0.915s
-user	0m0.866s
-sys	0m0.050s
+real	0m0.868s
+user	0m0.826s
+sys	0m0.040s
 ```
 
 ### Typescript
@@ -620,9 +858,9 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m15.485s
-user	0m14.151s
-sys	0m1.244s
+real	0m14.836s
+user	0m13.750s
+sys	0m1.044s
 ```
 
 ### MATLAB
@@ -683,9 +921,9 @@ $ time ./a.out
     99999989
  end
 
-real	0m1.280s
-user	0m1.158s
-sys	0m0.116s
+real	0m1.136s
+user	0m1.029s
+sys	0m0.103s
 ```
 
  
@@ -693,32 +931,34 @@ sys	0m0.116s
 実行時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.774 sec. |
-| 2 | C | 0.854 sec. |
-| 3 | Rust | 0.901 sec. |
-| 4 | JS | 0.915 sec. |
-| 5 | Haskell | 1.036 sec. |
-| 6 | Julia | 1.266 sec. |
-| 7 | Fortran | 1.28 sec. |
-| 8 | Cython | 3.788 sec. |
-| 9 | PyPy | 3.982 sec. |
-| 10 | R | 15.485 sec. |
-| 11 | Python | 27.172 sec. |
+| 1 | Assembly | 0.615 sec. |
+| 2 | C++ | 0.644 sec. |
+| 3 | C | 0.723 sec. |
+| 4 | JS | 0.868 sec. |
+| 5 | Rust | 0.874 sec. |
+| 6 | Haskell | 0.973 sec. |
+| 7 | Julia | 1.135 sec. |
+| 8 | Fortran | 1.136 sec. |
+| 9 | Cython | 3.58 sec. |
+| 10 | PyPy | 4.569 sec. |
+| 11 | R | 14.836 sec. |
+| 12 | Python | 26.216 sec. |
 
 CPU時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.662 sec. |
-| 2 | Haskell | 0.747 sec. |
-| 3 | C | 0.807 sec. |
-| 4 | Rust | 0.837 sec. |
-| 5 | JS | 0.866 sec. |
-| 6 | Julia | 0.965 sec. |
-| 7 | Fortran | 1.158 sec. |
-| 8 | PyPy | 3.308 sec. |
-| 9 | Cython | 3.706 sec. |
-| 10 | R | 14.151 sec. |
-| 11 | Python | 26.515 sec. |
+| 1 | C++ | 0.537 sec. |
+| 2 | Assembly | 0.603 sec. |
+| 3 | C | 0.686 sec. |
+| 4 | Haskell | 0.715 sec. |
+| 5 | Rust | 0.825 sec. |
+| 6 | JS | 0.826 sec. |
+| 7 | Julia | 0.888 sec. |
+| 8 | Fortran | 1.029 sec. |
+| 9 | Cython | 3.692 sec. |
+| 10 | PyPy | 4.032 sec. |
+| 11 | R | 13.75 sec. |
+| 12 | Python | 25.71 sec. |
 
 
 ## 貢献者一覧
@@ -732,3 +972,7 @@ CPU時間：
 - 綿谷 雫
   - サンプル: Fortran
   - 一言: 古典を学ぶことは物事の根幹に触れることであり，そこから派生してできたものの理解が深まります．古典語をやりましょう．
+- TumoiYorozu
+  - サンプル: Assembly
+  - 一言: 生のアセンブリ、もう書かない
+  
