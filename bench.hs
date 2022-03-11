@@ -1,4 +1,4 @@
--- #!~/.ghcup/bin/runghc
+#!/usr/bin/env runghc
 
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
