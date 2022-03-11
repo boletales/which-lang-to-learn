@@ -7,6 +7,12 @@
 - JS
 - Haskell
 
+## 実行環境について
+サンプルコードの実行時間は以下の環境で計測しました
+- CPU: Ryzen 7 PRO 4750G
+- メモリ: 32GB
+- OS: Manjaro Linux
+
 ## スクリプトみの強いやつ
 ### Python
   - とてもおそい(最速組比20倍以上)
@@ -134,3 +140,6 @@ Cythonで重い部分をCに変換しても速くなる
 
 ## 速度ランキング
 {ranking}
+
+## 貢献者一覧
+- 筆者 C, C++, Rust, Python, Haskell

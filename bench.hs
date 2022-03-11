@@ -3,7 +3,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE DuplicateRecordFields #-}
-{-# HLINT ignore "Redundant flip" #-}
 
 import Data.Maybe
 import Data.Either

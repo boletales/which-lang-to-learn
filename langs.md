@@ -7,6 +7,12 @@
 - JS
 - Haskell
 
+## 実行環境について
+サンプルコードの実行時間は以下の環境で計測しました
+- CPU: Ryzen 7 PRO 4750G
+- メモリ: 32GB
+- OS: Manjaro Linux
+
 ## スクリプトみの強いやつ
 ### Python
   - とてもおそい(最速組比20倍以上)
@@ -54,11 +60,12 @@ start
 99999989
 end
 
-real	0m28.604s
-user	0m27.971s
-sys	0m0.414s
+real	0m26.678s
+user	0m26.132s
+sys	0m0.496s
 ```
 
+同じコードでもPyPyで実行するとだいぶマシになる
 result:
 ```
 $ :
@@ -67,11 +74,12 @@ start
 99999989
 end
 
-real	0m4.767s
-user	0m4.201s
-sys	0m0.505s
+real	0m4.633s
+user	0m4.004s
+sys	0m0.599s
 ```
 
+Cythonで重い部分をCに変換しても速くなる
 
 code:
 ```py
@@ -120,9 +128,9 @@ start
 99999989
 end
 
-real	0m3.800s
-user	0m3.869s
-sys	0m0.817s
+real	0m3.597s
+user	0m3.744s
+sys	0m0.916s
 ```
 
 ### Julia
@@ -130,7 +138,6 @@ sys	0m0.817s
   - やるといいらしい
   - pythonのライブラリが使える
   - 比較的簡単らしい
-  - あなばすが残りを書いてくれる
 {sample:jl}
 ### PHP
   - おそい
@@ -186,9 +193,9 @@ start
 99999989
 end
 
-real	0m0.838s
-user	0m0.797s
-sys	0m0.036s
+real	0m0.818s
+user	0m0.783s
+sys	0m0.033s
 ```
 
 
@@ -198,6 +205,7 @@ sys	0m0.036s
   - 自分のこと現代的だと思ってる古参言語
   - 静的型、型推論ややあり
   - Cにない型がいっぱいある
+コンパイル時に最適化フラグを渡さないと10倍以上遅い(一敗)
 
 code:
 ```cpp
@@ -242,9 +250,9 @@ start
 99999989
 start
 
-real	0m0.771s
-user	0m0.655s
-sys	0m0.113s
+real	0m0.744s
+user	0m0.626s
+sys	0m0.110s
 ```
 
   
@@ -299,9 +307,9 @@ start
 99999989
 end
 
-real	0m0.909s
-user	0m0.869s
-sys	0m0.030s
+real	0m0.851s
+user	0m0.806s
+sys	0m0.043s
 ```
 
 
@@ -339,6 +347,7 @@ sys	0m0.030s
   - こみいった副作用に対する制御とか複雑なルールの組み合わせとかに滅法強い
   - ビルドが遅い（特に初回）
   - 静的型、型推論強い
+最適化すると十分速いが、知識と試行錯誤が必要
 
 code:
 ```hs
@@ -404,9 +413,9 @@ start
 99999989
 end
 
-real	0m0.949s
-user	0m0.682s
-sys	0m0.258s
+real	0m0.982s
+user	0m0.725s
+sys	0m0.251s
 ```
 
 
@@ -445,21 +454,25 @@ sys	0m0.258s
 実行時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.771 sec. |
-| 2 | C | 0.838 sec. |
-| 3 | Rust | 0.909 sec. |
-| 4 | Haskell | 0.949 sec. |
-| 5 | Cython | 3.8 sec. |
-| 6 | PyPy | 4.767 sec. |
-| 7 | Python | 28.604 sec. |
+| 1 | C++ | 0.744 sec. |
+| 2 | C | 0.818 sec. |
+| 3 | Rust | 0.851 sec. |
+| 4 | Haskell | 0.982 sec. |
+| 5 | Cython | 3.597 sec. |
+| 6 | PyPy | 4.633 sec. |
+| 7 | Python | 26.678 sec. |
 
 CPU時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.655 sec. |
-| 2 | Haskell | 0.682 sec. |
-| 3 | C | 0.797 sec. |
-| 4 | Rust | 0.869 sec. |
-| 5 | Cython | 3.869 sec. |
-| 6 | PyPy | 4.201 sec. |
-| 7 | Python | 27.971 sec. |
+| 1 | C++ | 0.626 sec. |
+| 2 | Haskell | 0.725 sec. |
+| 3 | C | 0.783 sec. |
+| 4 | Rust | 0.806 sec. |
+| 5 | Cython | 3.744 sec. |
+| 6 | PyPy | 4.004 sec. |
+| 7 | Python | 26.132 sec. |
+
+
+## 貢献者一覧
+- 筆者 C, C++, Rust, Python, Haskell
