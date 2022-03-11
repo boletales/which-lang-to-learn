@@ -102,12 +102,12 @@ embedResult results =
       let langid = (settings >>> settingsid) result
           lang   = (settings >>> directory) result
           code   = "\ncode:\n```" <> lang <> "\n" <> sourcestr result <> "```\n"
-          run    = "result:\n```\n" <>
+          run    = "\nresult:\n```\n" <>
                     "$ " <> buildcmd (result :: BenchResult) <> "\n" <>
                     "$ " <> benchcmd result <> "\n" <> benchresult result <> "```\n"
       in (replace ("{code:"   <> langid <> "}") code >>>
           replace ("{result:" <> langid <> "}") run >>>
-          replace ("{sample:" <> langid <> "}") (code <> "\n" <> run)
+          replace ("{sample:" <> langid <> "}") (code <> run)
           ) t
     )) results >>>
     replace "{ranking}" (
