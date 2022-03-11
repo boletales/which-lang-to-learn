@@ -161,10 +161,7 @@ Cythonで重い部分をCに変換しても速くなる
 {sample:hsjs}
 ### js_of_ocaml
   - OCamlがjsにコンパイルされる
-<<<<<<< HEAD
-<<<<<<< HEAD
 {sample:jsocaml}
-=======
 {sample:ocjs}
 
 ##統計とかシミュレーションに使うやつ
