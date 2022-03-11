@@ -5,7 +5,8 @@ fn main() {
     let mut sieve = vec![true; MAX+1];
     sieve[0] = false;
     sieve[1] = false;
-    for i in 2..=(f32::sqrt(MAX as f32) as usize) {
+    let sqrtmax = f32::sqrt(MAX as f32) as usize;
+    for i in 2..=sqrtmax {
         if sieve[i]{
             for j in (i*i..=MAX).step_by(i) {
                 sieve[j] = false;
