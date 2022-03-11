@@ -60,9 +60,9 @@ start
 99999989
 end
 
-real	0m31.852s
-user	0m31.093s
-sys	0m0.620s
+real	0m29.883s
+user	0m29.042s
+sys	0m0.651s
 ```
 
 同じコードでもPyPyで実行するとだいぶマシになる
@@ -75,9 +75,9 @@ start
 99999989
 end
 
-real	0m6.010s
-user	0m5.227s
-sys	0m0.698s
+real	0m6.165s
+user	0m5.278s
+sys	0m0.832s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -129,9 +129,9 @@ start
 99999989
 end
 
-real	0m4.407s
-user	0m4.433s
-sys	0m0.890s
+real	0m4.426s
+user	0m4.311s
+sys	0m0.916s
 ```
 
 ### PHP
@@ -188,9 +188,9 @@ start
 99999989
 end
 
-real	0m1.146s
-user	0m1.106s
-sys	0m0.033s
+real	0m1.076s
+user	0m1.022s
+sys	0m0.036s
 ```
 
 
@@ -246,9 +246,9 @@ start
 99999989
 start
 
-real	0m1.002s
-user	0m0.822s
-sys	0m0.157s
+real	0m0.935s
+user	0m0.786s
+sys	0m0.144s
 ```
 
   
@@ -303,9 +303,9 @@ start
 99999989
 end
 
-real	0m1.133s
-user	0m1.044s
-sys	0m0.067s
+real	0m1.135s
+user	0m1.076s
+sys	0m0.053s
 ```
 
 
@@ -370,9 +370,9 @@ start
 99999989
 end
 
-real	0m1.547s
-user	0m1.157s
-sys	0m0.350s
+real	0m1.640s
+user	0m1.250s
+sys	0m0.370s
 ```
 
 
@@ -476,9 +476,9 @@ start
 99999989
 end
 
-real	0m1.308s
-user	0m0.947s
-sys	0m0.342s
+real	0m1.456s
+user	0m1.081s
+sys	0m0.362s
 ```
 
 ### Lisp
@@ -537,9 +537,9 @@ start
 99999989
 end
 
-real	0m1.138s
-user	0m1.062s
-sys	0m0.056s
+real	0m1.173s
+user	0m1.104s
+sys	0m0.050s
 ```
 
 ### Typescript
@@ -575,6 +575,55 @@ sys	0m0.056s
   - 機械学習のライブラリが多い
   - 複雑なことをすると遅い
   - 検索がしにくい
+
+code:
+```r
+main <- function(){
+    print("start")
+    
+    max <- 100000000
+    
+    sieve <- rep(TRUE, max)
+    
+    sieve[1] = FALSE
+    
+    for(i in 1:floor(sqrt(max))){
+        if(sieve[i]){
+            for(j in seq(i*i,max,by=i)) sieve[j] = FALSE
+        }
+    }
+    
+    primes <- rep(0, max)
+    pcount <- 0;
+    
+    for(i in 1:max){
+        if(sieve[i]){
+            primes[pcount] = i
+            pcount = pcount + 1
+        }
+    }
+    
+    print(primes[pcount-1])
+    
+    print("end")
+}
+
+main()
+```
+
+result:
+```
+$ :
+$ time Rscript main.r
+[1] "start"
+[1] 99999989
+[1] "end"
+
+real	0m17.727s
+user	0m15.944s
+sys	0m1.687s
+```
+
 ### MATLAB
   - 数式とかシミュレーションが強い
   - グラフィクスが強い
@@ -629,9 +678,9 @@ $ time ./a.out
     99999989
  end
 
-real	0m1.654s
-user	0m1.426s
-sys	0m0.192s
+real	0m1.809s
+user	0m1.560s
+sys	0m0.239s
 ```
 
  
@@ -639,37 +688,39 @@ sys	0m0.192s
 実行時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 1.002 sec. |
-| 2 | Rust | 1.133 sec. |
-| 3 | JS | 1.138 sec. |
-| 4 | C | 1.146 sec. |
-| 5 | Haskell | 1.308 sec. |
-| 6 | Julia | 1.547 sec. |
-| 7 | Fortran | 1.654 sec. |
-| 8 | Cython | 4.407 sec. |
-| 9 | PyPy | 6.01 sec. |
-| 10 | Python | 31.852 sec. |
+| 1 | C++ | 0.935 sec. |
+| 2 | C | 1.076 sec. |
+| 3 | Rust | 1.135 sec. |
+| 4 | JS | 1.173 sec. |
+| 5 | Haskell | 1.456 sec. |
+| 6 | Julia | 1.64 sec. |
+| 7 | Fortran | 1.809 sec. |
+| 8 | Cython | 4.426 sec. |
+| 9 | PyPy | 6.165 sec. |
+| 10 | R | 17.727 sec. |
+| 11 | Python | 29.883 sec. |
 
 CPU時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.822 sec. |
-| 2 | Haskell | 0.947 sec. |
-| 3 | Rust | 1.044 sec. |
-| 4 | JS | 1.062 sec. |
-| 5 | C | 1.106 sec. |
-| 6 | Julia | 1.157 sec. |
-| 7 | Fortran | 1.426 sec. |
-| 8 | Cython | 4.433 sec. |
-| 9 | PyPy | 5.227 sec. |
-| 10 | Python | 31.093 sec. |
+| 1 | C++ | 0.786 sec. |
+| 2 | C | 1.022 sec. |
+| 3 | Rust | 1.076 sec. |
+| 4 | Haskell | 1.081 sec. |
+| 5 | JS | 1.104 sec. |
+| 6 | Julia | 1.25 sec. |
+| 7 | Fortran | 1.56 sec. |
+| 8 | Cython | 4.311 sec. |
+| 9 | PyPy | 5.278 sec. |
+| 10 | R | 15.944 sec. |
+| 11 | Python | 29.042 sec. |
 
 
 ## 貢献者一覧
 - 筆者 
-  - 説明: 全部
-  - サンプル: C, C++, Rust, Python, Haskell
+  - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP
+  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R
   - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
 - あなばす
   - 説明: Julia, Lisp, R, MATLAB, Fortran
-  - 一言:Julia最高！Juliaしか勝たん！
+  - 一言: Julia最高！Juliaしか勝たん！

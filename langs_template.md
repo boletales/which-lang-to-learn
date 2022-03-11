@@ -171,6 +171,7 @@ TypedArray使ったら最速組と張り合える速さが出た
   - 機械学習のライブラリが多い
   - 複雑なことをすると遅い
   - 検索がしにくい
+{sample:r}
 ### MATLAB
   - 数式とかシミュレーションが強い
   - グラフィクスが強い
@@ -189,9 +190,9 @@ TypedArray使ったら最速組と張り合える速さが出た
 
 ## 貢献者一覧
 - 筆者 
-  - 説明: 全部
-  - サンプル: C, C++, Rust, Python, Haskell
+  - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP
+  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R
   - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
 - あなばす
   - 説明: Julia, Lisp, R, MATLAB, Fortran
-  - 一言:Julia最高！Juliaしか勝たん！
+  - 一言: Julia最高！Juliaしか勝たん！
