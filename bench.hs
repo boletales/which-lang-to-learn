@@ -2,17 +2,19 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TupleSections #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 
 import Data.Maybe
 import Data.Either
 import Data.Bifunctor
 import System.Process
+import System.Environment
 import System.Directory
 import Control.Exception
 import Control.Monad
 import Data.Char
-import Data.Text as T (Text, pack, unpack, replace, splitOn, strip, intercalate, breakOn, tail)
+import Data.Text as T (Text, pack, unpack, replace, splitOn, strip, intercalate, breakOn, tail, breakOnEnd)
 import qualified Data.Text.IO as TIO
 import Text.Read
 import Data.Map
@@ -23,8 +25,9 @@ import Data.Time (parseTime)
 
 main :: IO ()
 main = do
-  results <- readFile "settings.csv" >>= (pack >>> readSettings >>> traverse runBench)
-  TIO.readFile "langs_template.md" >>= (embedResult (rights results) >>> TIO.writeFile "langs.md")
+  files   <- readFile "files.csv"    >>= (pack >>> readFileSettings  >>> traverse getSource >>> fmap rights) 
+  results <- readFile "settings.csv" >>= (pack >>> readSettings      >>> traverse runBench  >>> fmap rights)
+  TIO.readFile "langs_template.md" >>= (embedResult files results >>> TIO.writeFile "langs.md")
 
 
 data Settings = Settings {
@@ -46,6 +49,12 @@ data BenchResult = BenchResult {
     timeresult  :: (Double, Double, Double)
   } deriving Show
 
+data SourceFile = SourceFile {
+    fileid   :: Text,
+    filelang :: Text,
+    filepath :: Text
+  } deriving Show
+
 tshow :: Show a => a -> Text
 tshow = show >>> pack
 
@@ -56,6 +65,20 @@ readSettings str = catMaybes $ lineToSettings <$> Prelude.tail (splitOn "\n" str
       case strip <$> splitOn "," line of
         sid:dir:nam:src:bld:exe:_ -> Just $ Settings sid dir nam src bld exe
         _                     -> Nothing
+
+readFileSettings :: Text -> [SourceFile] 
+readFileSettings str = catMaybes $ lineToSettings <$> Prelude.tail (splitOn "\n" str)
+  where
+    lineToSettings line =
+      case strip <$> splitOn "," line of
+        sid:lang:path:_ -> Just $ SourceFile sid lang path
+        _                     -> Nothing
+
+getSource :: SourceFile -> IO (Either Text (SourceFile, Text))
+getSource sf = 
+  handle (\(e :: SomeException) -> (tshow >>> Left >>> pure) e) (do
+      (pack >>> (sf,) >>> Right) <$> readCreateProcess (proc "cat" [unpack $ filepath sf]) ""
+    )
 
 runBench :: Settings -> IO (Either Text BenchResult)
 runBench settings = do
@@ -96,8 +119,14 @@ parseTimeResult str =
 mapWithIndex :: (Int -> a -> b) -> [a] -> [b]
 mapWithIndex f = zipWith f [0..]
 
-embedResult :: [BenchResult] -> Text -> Text
-embedResult results =
+embedResult :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text
+embedResult files results =
+    flip (L.foldl' (\t file ->
+      let fid  = (fst >>> fileid  ) file
+          lang = (fst >>> filelang) file
+          code = "\ncode:\n```" <> lang <> "\n" <> snd file <> "```\n"
+      in replace ("{file:"   <> fid <> "}") code t
+    )) files >>>
     flip (L.foldl' (\t result ->
       let langid = (settings >>> settingsid) result
           lang   = (settings >>> directory) result

@@ -17,12 +17,15 @@
 - 本文はlangs.mdです
 - langs.mdは からbench.hsを通して生成します。
 - bench.hsは以下のような順にlangs.mdを生成します
-  - settings.csvを読み取る(以下各列の名前は斜体で表します)
+  - settings.csv, files.csvを読み取る(以下各列の名前は斜体で表します)
   - settings.csvの各行について、
     - _dir_ のディレクトリに移動する
     - _build_ のコマンドを実行する
     - timeコマンドで _exec_ のコマンドの実行時間を計測し、記録する
   - テンプレート中の以下の文字列を置換してlangs.mdとして保存する
-    - {code: _id_ } → _source_ の中身を含むコードブロック
-    - {result: _id_ } → 実行結果を含むコードブロック
-    - {sample: _id_ } → 上2つをつなげたもの
+    - settings.csv由来のもの
+      - {code: _id_ } → _source_ の中身を含むコードブロック
+      - {result: _id_ } → 実行結果を含むコードブロック
+      - {sample: _id_ } → 上2つをつなげたもの
+    - files.csv由来のもの
+      - {file: _id_ } → _path_ の中身を含むコードブロック

@@ -26,6 +26,7 @@
 同じコードでもPyPyで実行するとだいぶマシになる
 {result:pypy}
 Cythonで重い部分をCに変換しても速くなる
+{file:cymain}
 {sample:cy}
 ### PHP
   - おそい

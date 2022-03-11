@@ -60,9 +60,9 @@ start
 99999989
 end
 
-real	0m26.216s
-user	0m25.710s
-sys	0m0.429s
+real	0m30.847s
+user	0m30.358s
+sys	0m0.378s
 ```
 
 同じコードでもPyPyで実行するとだいぶマシになる
@@ -75,12 +75,23 @@ start
 99999989
 end
 
-real	0m4.569s
-user	0m4.032s
-sys	0m0.502s
+real	0m4.674s
+user	0m4.060s
+sys	0m0.560s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
+
+code:
+```py
+import cylib
+
+print("start")
+(primes,pcount) = cylib.main()
+print(primes[pcount-1])
+print("end")
+```
+
 
 code:
 ```py
@@ -129,9 +140,9 @@ start
 99999989
 end
 
-real	0m3.580s
-user	0m3.692s
-sys	0m0.981s
+real	0m3.867s
+user	0m3.933s
+sys	0m0.955s
 ```
 
 ### PHP
@@ -191,9 +202,9 @@ start
 99999989
 end
 
-real	0m0.723s
-user	0m0.686s
-sys	0m0.030s
+real	0m0.746s
+user	0m0.703s
+sys	0m0.040s
 ```
 
 
@@ -252,9 +263,9 @@ start
 99999989
 start
 
-real	0m0.644s
-user	0m0.537s
-sys	0m0.103s
+real	0m0.622s
+user	0m0.511s
+sys	0m0.109s
 ```
 
   
@@ -309,9 +320,9 @@ start
 99999989
 end
 
-real	0m0.874s
-user	0m0.825s
-sys	0m0.033s
+real	0m0.867s
+user	0m0.817s
+sys	0m0.043s
 ```
 
 
@@ -542,9 +553,9 @@ end
 count 5717621
 
 
-real	0m0.615s
-user	0m0.603s
-sys	0m0.010s
+real	0m0.646s
+user	0m0.641s
+sys	0m0.003s
 ```
 
 
@@ -609,9 +620,9 @@ start
 99999989
 end
 
-real	0m1.135s
-user	0m0.888s
-sys	0m0.231s
+real	0m1.222s
+user	0m0.963s
+sys	0m0.248s
 ```
 
 
@@ -715,9 +726,9 @@ start
 99999989
 end
 
-real	0m0.973s
-user	0m0.715s
-sys	0m0.238s
+real	0m0.991s
+user	0m0.768s
+sys	0m0.201s
 ```
 
 ### Lisp
@@ -776,9 +787,9 @@ start
 99999989
 end
 
-real	0m0.868s
-user	0m0.826s
-sys	0m0.040s
+real	0m0.897s
+user	0m0.844s
+sys	0m0.050s
 ```
 
 ### Typescript
@@ -858,9 +869,9 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m14.836s
-user	0m13.750s
-sys	0m1.044s
+real	0m15.376s
+user	0m14.307s
+sys	0m1.024s
 ```
 
 ### MATLAB
@@ -921,9 +932,9 @@ $ time ./a.out
     99999989
  end
 
-real	0m1.136s
-user	0m1.029s
-sys	0m0.103s
+real	0m1.260s
+user	0m1.161s
+sys	0m0.093s
 ```
 
  
@@ -931,34 +942,34 @@ sys	0m0.103s
 実行時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | Assembly | 0.615 sec. |
-| 2 | C++ | 0.644 sec. |
-| 3 | C | 0.723 sec. |
-| 4 | JS | 0.868 sec. |
-| 5 | Rust | 0.874 sec. |
-| 6 | Haskell | 0.973 sec. |
-| 7 | Julia | 1.135 sec. |
-| 8 | Fortran | 1.136 sec. |
-| 9 | Cython | 3.58 sec. |
-| 10 | PyPy | 4.569 sec. |
-| 11 | R | 14.836 sec. |
-| 12 | Python | 26.216 sec. |
+| 1 | C++ | 0.622 sec. |
+| 2 | Assembly | 0.646 sec. |
+| 3 | C | 0.746 sec. |
+| 4 | Rust | 0.867 sec. |
+| 5 | JS | 0.897 sec. |
+| 6 | Haskell | 0.991 sec. |
+| 7 | Julia | 1.222 sec. |
+| 8 | Fortran | 1.26 sec. |
+| 9 | Cython | 3.867 sec. |
+| 10 | PyPy | 4.674 sec. |
+| 11 | R | 15.376 sec. |
+| 12 | Python | 30.847 sec. |
 
 CPU時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.537 sec. |
-| 2 | Assembly | 0.603 sec. |
-| 3 | C | 0.686 sec. |
-| 4 | Haskell | 0.715 sec. |
-| 5 | Rust | 0.825 sec. |
-| 6 | JS | 0.826 sec. |
-| 7 | Julia | 0.888 sec. |
-| 8 | Fortran | 1.029 sec. |
-| 9 | Cython | 3.692 sec. |
-| 10 | PyPy | 4.032 sec. |
-| 11 | R | 13.75 sec. |
-| 12 | Python | 25.71 sec. |
+| 1 | C++ | 0.511 sec. |
+| 2 | Assembly | 0.641 sec. |
+| 3 | C | 0.703 sec. |
+| 4 | Haskell | 0.768 sec. |
+| 5 | Rust | 0.817 sec. |
+| 6 | JS | 0.844 sec. |
+| 7 | Julia | 0.963 sec. |
+| 8 | Fortran | 1.161 sec. |
+| 9 | Cython | 3.933 sec. |
+| 10 | PyPy | 4.06 sec. |
+| 11 | R | 14.307 sec. |
+| 12 | Python | 30.358 sec. |
 
 
 ## 貢献者一覧
