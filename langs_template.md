@@ -153,3 +153,4 @@ Cythonで重い部分をCに変換しても速くなる
 
 ## 貢献者一覧
 - 筆者 C, C++, Rust, Python, Haskell
+- あなばす Julia
