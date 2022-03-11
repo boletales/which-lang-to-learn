@@ -3,6 +3,9 @@ c    , c  , C      , main.c     , clang   main.c   -O3               , ./a.out
 cpp  , cpp, C++    , main.cpp   , clang++ main.cpp -O3               , ./a.out
 rs   , rs , Rust   , src/main.rs, cargo build --release              , ./target/release/rs
 hs   , hs , Haskell, app/Main.hs, stack install --local-bin-path ./  , ./hs-exe
-py   , py , Python , main.py    , :                                  , python main.py
 pypy , py , PyPy   , main.py    , :                                  , pypy main.py
 cy   , py , Cython , cylib.pyx  , python setup.py build_ext --inplace, python cymain.py
+jl   , jl , Julia  , main.jl    , julia main.jl                      , julia main.jl
+js   , js , JS     , main.js    , :                                  , node main.js
+f95  , f95, Fortran, main.f95   , gfortran -Ofast main.f95           , ./a.out
+py   , py , Python , main.py    , :                                  , python main.py

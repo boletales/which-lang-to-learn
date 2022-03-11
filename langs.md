@@ -60,12 +60,13 @@ start
 99999989
 end
 
-real	0m26.678s
-user	0m26.132s
-sys	0m0.496s
+real	0m31.852s
+user	0m31.093s
+sys	0m0.620s
 ```
 
 同じコードでもPyPyで実行するとだいぶマシになる
+
 result:
 ```
 $ :
@@ -74,9 +75,9 @@ start
 99999989
 end
 
-real	0m4.633s
-user	0m4.004s
-sys	0m0.599s
+real	0m6.010s
+user	0m5.227s
+sys	0m0.698s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -128,17 +129,11 @@ start
 99999989
 end
 
-real	0m3.597s
-user	0m3.744s
-sys	0m0.916s
+real	0m4.407s
+user	0m4.433s
+sys	0m0.890s
 ```
 
-### Julia
-  - はやい
-  - やるといいらしい
-  - pythonのライブラリが使える
-  - 比較的簡単らしい
-{sample:jl}
 ### PHP
   - おそい
   - やれとは全く言わないけどたのしいよ
@@ -193,8 +188,8 @@ start
 99999989
 end
 
-real	0m0.818s
-user	0m0.783s
+real	0m1.146s
+user	0m1.106s
 sys	0m0.033s
 ```
 
@@ -205,6 +200,7 @@ sys	0m0.033s
   - 自分のこと現代的だと思ってる古参言語
   - 静的型、型推論ややあり
   - Cにない型がいっぱいある
+
 コンパイル時に最適化フラグを渡さないと10倍以上遅い(一敗)
 
 code:
@@ -250,9 +246,9 @@ start
 99999989
 start
 
-real	0m0.744s
-user	0m0.626s
-sys	0m0.110s
+real	0m1.002s
+user	0m0.822s
+sys	0m0.157s
 ```
 
   
@@ -307,13 +303,79 @@ start
 99999989
 end
 
-real	0m0.851s
-user	0m0.806s
-sys	0m0.043s
+real	0m1.133s
+user	0m1.044s
+sys	0m0.067s
 ```
 
 
-## コンパイル言語でクラスベースオブジェクト指向のやつ
+## JIT(ジャストインタイムコンパイル)を使うやつ
+### Julia
+  - 事前にコンパイルする必要がない
+  - が、JITのおかげで比較的速い（最速組には勝てない）
+  - PyCallでpythonのライブラリが使える
+  - 文法はシンプル
+  - 数式・行列が扱いやすい
+  - numpyやmatplotlibがpythonよりだいぶ使いやすい
+  - 1-indexed、縦行列基本など癖がある（数式をそのまま使えるから数学屋とかシミュレーション屋には便利）
+  - Jupyter notebookで使える
+  - ちゃんと考えてコーディングしないといまいち速度が出ない
+  - クラスはない（Pythonのサンプルコードを脳死で移植はできない）（構造体で似たようなものは作れる）
+  - PythonとCとMATLABの良いところどり的存在 by あなばす
+  - いまのところ入門向けの良書はあまりない
+  - 公式wikiはわかりやすい。
+
+コード全体を関数で包まないと死ぬほど遅くなるので注意（一敗）
+
+code:
+```jl
+function main()
+    MAX = 100000000
+    
+    println("start")
+    
+    sieve = fill(true,MAX)
+    
+    sieve[1] = false
+    for i :: Int64 in 2:Int64(floor(sqrt(MAX)))
+        if sieve[i]
+            for j in (i*i):i:MAX
+                sieve[j] = false
+            end
+        end
+    end
+    
+    
+    primes = fill(0,MAX)
+    pcount = 1
+    for i in 2:MAX
+        if sieve[i]
+            primes[pcount] = i
+            pcount += 1
+        end
+    end
+    
+    println(primes[pcount-1])
+    
+    println("end")
+end
+main()
+```
+
+result:
+```
+$ julia main.jl
+$ time julia main.jl
+start
+99999989
+end
+
+real	0m1.547s
+user	0m1.157s
+sys	0m0.350s
+```
+
+
 ### Java
   - 五十歩百歩組
   - 業務で使われがち
@@ -341,12 +403,13 @@ sys	0m0.043s
 {sample:ocaml}
 ### Haskell
   - 五十歩百歩組4
-  - __†純粋†__ 関数型言語
+  - †純粋†関数型言語
   - 中二病患者におすすめ
   - メタ記述能力の鬼
   - こみいった副作用に対する制御とか複雑なルールの組み合わせとかに滅法強い
   - ビルドが遅い（特に初回）
   - 静的型、型推論強い
+
 最適化すると十分速いが、知識と試行錯誤が必要
 
 code:
@@ -413,11 +476,17 @@ start
 99999989
 end
 
-real	0m0.982s
-user	0m0.725s
-sys	0m0.251s
+real	0m1.308s
+user	0m0.947s
+sys	0m0.342s
 ```
 
+### Lisp
+  - 古代の関数型言語
+  - アーティファクト
+  - 方言が多い
+  - きもいモンスター
+  - かっこかっこかっこかっこ
 
 ## ブラウザでつかえるやつ
 ### javascript
@@ -426,7 +495,53 @@ sys	0m0.251s
   - サーバーサイドもスタンドアロンも書ける
   - 動的型、型アノテーションすらない
   - 愛すべきカス
-{sample:js}
+
+TypedArray使ったら最速組と張り合える速さが出た
+普通の配列を使ったらメモリ確保ができなくなって落ちた
+
+code:
+```js
+console.log("start");
+
+const max = 100000000;
+
+let sieve = new Int8Array(max+1);
+for(let i=2; i<=max; i++) sieve[i] = 1;
+
+for(let i=2; i<=(Math.floor(Math.sqrt(max)) | 0); i++){
+    if(sieve[i]){
+        for(let j=i*i; j<=max; j+=i) sieve[j] = false;
+    }
+}
+
+let primes = new Int32Array(max+1);
+let pcount = 0;
+
+for(let i=2; i<=max; i++){
+    if(sieve[i]){
+        primes[pcount] = i;
+        pcount++;
+    }
+}
+
+console.log(primes[pcount-1]);
+
+console.log("end")
+```
+
+result:
+```
+$ :
+$ time node main.js
+start
+99999989
+end
+
+real	0m1.138s
+user	0m1.062s
+sys	0m0.056s
+```
+
 ### Typescript
   - AltJSのデファクトスタンダード、型のあるJS
   - 型がある！！！しかも強い！！！！！！！（とても重要）
@@ -442,37 +557,119 @@ sys	0m0.251s
 {sample:purs}
 ### scala.js
   - scalaがjsにコンパイルされる
-{sample:scalajs}
+{result:scjs}
 ### GHCjs
   - Haskellがjsにコンパイルされる
-{sample:ghcjs}
+{sample:hsjs}
 ### js_of_ocaml
   - OCamlがjsにコンパイルされる
 {sample:jsocaml}
+{sample:ocjs}
 
+## 統計とかシミュレーションに使うやつ
+### R
+  - 統計にめっちゃ強い
+  - 検定がコマンド一発でできる
+  - 図が綺麗で細かく指定できる
+  - データフレームが使いやすい
+  - 機械学習のライブラリが多い
+  - 複雑なことをすると遅い
+  - 検索がしにくい
+### MATLAB
+  - 数式とかシミュレーションが強い
+  - グラフィクスが強い
+  - 有料だけど東大生は使える
+  - そんなに速くはない
+### Fortran
+  - すごく速いらしい
+  - スパコンでよく使われている
+  - 文法が独特
+
+なにを間違えたのか大して速くならなかった
+
+code:
+```f95
+program eratosthenes
+    implicit none
+    integer,parameter :: pmax = 100000000
+    integer :: i
+    integer :: j
+
+    logical :: sieve(pmax) = .true.
+    integer :: primes(pmax) = 0
+    integer :: pcount = 1
+    
+    print *, "start"
+    do i=2 , int(sqrt(real(pmax)))
+        if(sieve(i))then
+            do j = i*i , pmax , i
+                sieve(j) = .false.
+            end do
+        end if
+    end do
+
+    do i=2 , pmax
+        if(sieve(i))then
+            primes(pcount) = i
+            pcount = pcount + 1
+        end if
+    end do
+
+    print *, primes(pcount-1)
+
+    print *, "end"
+end program eratosthenes
+```
+
+result:
+```
+$ gfortran -Ofast main.f95
+$ time ./a.out
+ start
+    99999989
+ end
+
+real	0m1.654s
+user	0m1.426s
+sys	0m0.192s
+```
+
+ 
 ## 速度ランキング
 実行時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.744 sec. |
-| 2 | C | 0.818 sec. |
-| 3 | Rust | 0.851 sec. |
-| 4 | Haskell | 0.982 sec. |
-| 5 | Cython | 3.597 sec. |
-| 6 | PyPy | 4.633 sec. |
-| 7 | Python | 26.678 sec. |
+| 1 | C++ | 1.002 sec. |
+| 2 | Rust | 1.133 sec. |
+| 3 | JS | 1.138 sec. |
+| 4 | C | 1.146 sec. |
+| 5 | Haskell | 1.308 sec. |
+| 6 | Julia | 1.547 sec. |
+| 7 | Fortran | 1.654 sec. |
+| 8 | Cython | 4.407 sec. |
+| 9 | PyPy | 6.01 sec. |
+| 10 | Python | 31.852 sec. |
 
 CPU時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.626 sec. |
-| 2 | Haskell | 0.725 sec. |
-| 3 | C | 0.783 sec. |
-| 4 | Rust | 0.806 sec. |
-| 5 | Cython | 3.744 sec. |
-| 6 | PyPy | 4.004 sec. |
-| 7 | Python | 26.132 sec. |
+| 1 | C++ | 0.822 sec. |
+| 2 | Haskell | 0.947 sec. |
+| 3 | Rust | 1.044 sec. |
+| 4 | JS | 1.062 sec. |
+| 5 | C | 1.106 sec. |
+| 6 | Julia | 1.157 sec. |
+| 7 | Fortran | 1.426 sec. |
+| 8 | Cython | 4.433 sec. |
+| 9 | PyPy | 5.227 sec. |
+| 10 | Python | 31.093 sec. |
 
 
 ## 貢献者一覧
-- 筆者 C, C++, Rust, Python, Haskell
+- 筆者 
+  - 説明: 全部
+  - サンプル: C, C++, Rust, Python, Haskell
+  - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
+- あなばす
+  - 説明: Julia, Lisp, R, MATLAB, Fortran
+  - 一言:Julia最高！Juliaしか勝たん！
