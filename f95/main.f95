@@ -1,13 +1,17 @@
 program eratosthenes
     implicit none
+    
     integer,parameter :: pmax = 100000000
     integer :: i
     integer :: j
-
-    logical :: sieve(pmax) = .true.
-    integer :: primes(pmax) = 0
     integer :: pcount = 1
-    
+    logical,allocatable,dimension(:) :: sieve
+    integer,allocatable,dimension(:) :: primes
+    allocate(sieve(pmax))
+    sieve=.true.
+    allocate(primes(pmax))
+    primes=0
+   
     print *, "start"
     do i=2 , int(sqrt(real(pmax)))
         if(sieve(i))then

@@ -60,9 +60,9 @@ start
 99999989
 end
 
-real	0m29.883s
-user	0m29.042s
-sys	0m0.651s
+real	0m27.172s
+user	0m26.515s
+sys	0m0.509s
 ```
 
 同じコードでもPyPyで実行するとだいぶマシになる
@@ -75,9 +75,9 @@ start
 99999989
 end
 
-real	0m6.165s
-user	0m5.278s
-sys	0m0.832s
+real	0m3.982s
+user	0m3.308s
+sys	0m0.637s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -129,9 +129,9 @@ start
 99999989
 end
 
-real	0m4.426s
-user	0m4.311s
-sys	0m0.916s
+real	0m3.788s
+user	0m3.706s
+sys	0m1.112s
 ```
 
 ### PHP
@@ -188,9 +188,9 @@ start
 99999989
 end
 
-real	0m1.076s
-user	0m1.022s
-sys	0m0.036s
+real	0m0.854s
+user	0m0.807s
+sys	0m0.029s
 ```
 
 
@@ -198,6 +198,7 @@ sys	0m0.036s
   - 最速組
   - 競プロerはやっとけ
   - 自分のこと現代的だと思ってる古参言語
+  - 書き味はいたって素直。自分の足を撃ち抜く権利はあなたの手に託されています
   - 静的型、型推論ややあり
   - Cにない型がいっぱいある
 
@@ -246,9 +247,9 @@ start
 99999989
 start
 
-real	0m0.935s
-user	0m0.786s
-sys	0m0.144s
+real	0m0.774s
+user	0m0.662s
+sys	0m0.109s
 ```
 
   
@@ -303,9 +304,9 @@ start
 99999989
 end
 
-real	0m1.135s
-user	0m1.076s
-sys	0m0.053s
+real	0m0.901s
+user	0m0.837s
+sys	0m0.046s
 ```
 
 
@@ -370,9 +371,9 @@ start
 99999989
 end
 
-real	0m1.640s
-user	0m1.250s
-sys	0m0.370s
+real	0m1.266s
+user	0m0.965s
+sys	0m0.296s
 ```
 
 
@@ -405,7 +406,7 @@ sys	0m0.370s
   - 五十歩百歩組4
   - †純粋†関数型言語
   - 中二病患者におすすめ
-  - メタ記述能力の鬼
+  - 副作用の詳細な制御、
   - こみいった副作用に対する制御とか複雑なルールの組み合わせとかに滅法強い
   - ビルドが遅い（特に初回）
   - 静的型、型推論強い
@@ -476,9 +477,9 @@ start
 99999989
 end
 
-real	0m1.456s
-user	0m1.081s
-sys	0m0.362s
+real	0m1.036s
+user	0m0.747s
+sys	0m0.268s
 ```
 
 ### Lisp
@@ -537,8 +538,8 @@ start
 99999989
 end
 
-real	0m1.173s
-user	0m1.104s
+real	0m0.915s
+user	0m0.866s
 sys	0m0.050s
 ```
 
@@ -619,9 +620,9 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m17.727s
-user	0m15.944s
-sys	0m1.687s
+real	0m15.485s
+user	0m14.151s
+sys	0m1.244s
 ```
 
 ### MATLAB
@@ -640,14 +641,18 @@ code:
 ```f95
 program eratosthenes
     implicit none
+    
     integer,parameter :: pmax = 100000000
     integer :: i
     integer :: j
-
-    logical :: sieve(pmax) = .true.
-    integer :: primes(pmax) = 0
     integer :: pcount = 1
-    
+    logical,allocatable,dimension(:) :: sieve
+    integer,allocatable,dimension(:) :: primes
+    allocate(sieve(pmax))
+    sieve=.true.
+    allocate(primes(pmax))
+    primes=0
+   
     print *, "start"
     do i=2 , int(sqrt(real(pmax)))
         if(sieve(i))then
@@ -678,9 +683,9 @@ $ time ./a.out
     99999989
  end
 
-real	0m1.809s
-user	0m1.560s
-sys	0m0.239s
+real	0m1.280s
+user	0m1.158s
+sys	0m0.116s
 ```
 
  
@@ -688,32 +693,32 @@ sys	0m0.239s
 実行時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.935 sec. |
-| 2 | C | 1.076 sec. |
-| 3 | Rust | 1.135 sec. |
-| 4 | JS | 1.173 sec. |
-| 5 | Haskell | 1.456 sec. |
-| 6 | Julia | 1.64 sec. |
-| 7 | Fortran | 1.809 sec. |
-| 8 | Cython | 4.426 sec. |
-| 9 | PyPy | 6.165 sec. |
-| 10 | R | 17.727 sec. |
-| 11 | Python | 29.883 sec. |
+| 1 | C++ | 0.774 sec. |
+| 2 | C | 0.854 sec. |
+| 3 | Rust | 0.901 sec. |
+| 4 | JS | 0.915 sec. |
+| 5 | Haskell | 1.036 sec. |
+| 6 | Julia | 1.266 sec. |
+| 7 | Fortran | 1.28 sec. |
+| 8 | Cython | 3.788 sec. |
+| 9 | PyPy | 3.982 sec. |
+| 10 | R | 15.485 sec. |
+| 11 | Python | 27.172 sec. |
 
 CPU時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.786 sec. |
-| 2 | C | 1.022 sec. |
-| 3 | Rust | 1.076 sec. |
-| 4 | Haskell | 1.081 sec. |
-| 5 | JS | 1.104 sec. |
-| 6 | Julia | 1.25 sec. |
-| 7 | Fortran | 1.56 sec. |
-| 8 | Cython | 4.311 sec. |
-| 9 | PyPy | 5.278 sec. |
-| 10 | R | 15.944 sec. |
-| 11 | Python | 29.042 sec. |
+| 1 | C++ | 0.662 sec. |
+| 2 | Haskell | 0.747 sec. |
+| 3 | C | 0.807 sec. |
+| 4 | Rust | 0.837 sec. |
+| 5 | JS | 0.866 sec. |
+| 6 | Julia | 0.965 sec. |
+| 7 | Fortran | 1.158 sec. |
+| 8 | PyPy | 3.308 sec. |
+| 9 | Cython | 3.706 sec. |
+| 10 | R | 14.151 sec. |
+| 11 | Python | 26.515 sec. |
 
 
 ## 貢献者一覧
@@ -724,3 +729,6 @@ CPU時間：
 - あなばす
   - 説明: Julia, Lisp, R, MATLAB, Fortran
   - 一言: Julia最高！Juliaしか勝たん！
+- 綿谷 雫
+  - サンプル: Fortran
+  - 一言: 古典を学ぶことは物事の根幹に触れることであり，そこから派生してできたものの理解が深まります．古典語をやりましょう．
