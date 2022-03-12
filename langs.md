@@ -60,9 +60,9 @@ start
 99999989
 end
 
-real	0m30.847s
-user	0m30.358s
-sys	0m0.378s
+real	0m28.579s
+user	0m27.984s
+sys	0m0.455s
 ```
 
 同じコードでもPyPyで実行するとだいぶマシになる
@@ -75,9 +75,9 @@ start
 99999989
 end
 
-real	0m4.674s
-user	0m4.060s
-sys	0m0.560s
+real	0m4.745s
+user	0m4.197s
+sys	0m0.476s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -140,9 +140,9 @@ start
 99999989
 end
 
-real	0m3.867s
-user	0m3.933s
-sys	0m0.955s
+real	0m4.664s
+user	0m4.780s
+sys	0m0.878s
 ```
 
 ### PHP
@@ -202,9 +202,9 @@ start
 99999989
 end
 
-real	0m0.746s
-user	0m0.703s
-sys	0m0.040s
+real	0m0.736s
+user	0m0.697s
+sys	0m0.037s
 ```
 
 
@@ -263,9 +263,9 @@ start
 99999989
 start
 
-real	0m0.622s
-user	0m0.511s
-sys	0m0.109s
+real	0m0.695s
+user	0m0.572s
+sys	0m0.120s
 ```
 
   
@@ -291,7 +291,8 @@ fn main() {
     let mut sieve = vec![true; MAX+1];
     sieve[0] = false;
     sieve[1] = false;
-    for i in 2..=(f32::sqrt(MAX as f32) as usize) {
+    let sqrtmax = f32::sqrt(MAX as f32) as usize;
+    for i in 2..=sqrtmax {
         if sieve[i]{
             for j in (i*i..=MAX).step_by(i) {
                 sieve[j] = false;
@@ -320,8 +321,8 @@ start
 99999989
 end
 
-real	0m0.867s
-user	0m0.817s
+real	0m1.002s
+user	0m0.933s
 sys	0m0.043s
 ```
 
@@ -553,9 +554,9 @@ end
 count 5717621
 
 
-real	0m0.646s
-user	0m0.641s
-sys	0m0.003s
+real	0m0.681s
+user	0m0.660s
+sys	0m0.017s
 ```
 
 
@@ -620,9 +621,9 @@ start
 99999989
 end
 
-real	0m1.222s
-user	0m0.963s
-sys	0m0.248s
+real	0m1.156s
+user	0m0.923s
+sys	0m0.229s
 ```
 
 
@@ -631,18 +632,148 @@ sys	0m0.248s
   - 業務で使われがち
   - ザ・クラスベースオブジェクト指向
   - 静的型
-{sample:java}
+
+code:
+```java
+import java.util.Arrays;
+class Primes {
+    public static void main(String[] args){
+        System.out.println("start");
+        final int max = 100000000;
+        boolean[] sieve = new boolean[max+1];
+        Arrays.fill(sieve, true);
+        var sqrtmax = (int)Math.sqrt(max);
+        for(var i = 2; i <= sqrtmax; i++){
+            if(sieve[i]){
+              for(var j = i*i; j <= max; j+=i){
+                    sieve[j] = false;
+              }
+            }
+        }
+        var primes = new int[max + 1];
+        var pcount = 0;
+        for(var i = 2; i <= max; i++){
+            if(sieve[i]){
+                primes[pcount] = i;
+                pcount += 1;
+            }
+        }
+        System.out.println(primes[pcount-1]);
+        
+        System.out.println("end");
+    }
+}
+```
+
+result:
+```
+$ javac main.java
+$ time java Primes
+start
+99999989
+end
+
+real	0m1.094s
+user	0m0.951s
+sys	0m0.139s
+```
+
 ### C#
   - 五十歩百歩組2
   - MS製のJava
   - Win向けのGUIアプリを書くのが簡単（後述のVB.netとF#も）
   - Unityでつかうらしい
   - 静的型、型推論ややあり
-{sample:cs}
+
+code:
+```cs
+﻿// See https://aka.ms/new-console-template for more information
+Console.WriteLine("start");
+const int max = 100000000;
+bool[] sieve = Enumerable.Repeat(true, max + 1).ToArray();
+var sqrtmax = (int)Math.Sqrt(max);
+for(var i = 2; i <= sqrtmax; i++){
+    if(sieve[i]){
+      for(var j = i*i; j <= max; j+=i){
+            sieve[j] = false;
+      }
+    }
+}
+var primes = new int[max + 1];
+var pcount = 0;
+for(var i = 2; i <= max; i++){
+    if(sieve[i]){
+        primes[pcount] = i;
+        pcount += 1;
+    }
+}
+
+Console.WriteLine(primes[pcount - 1]);
+Console.WriteLine("end");```
+
+result:
+```
+$ dotnet publish -c release -r linux-x64
+$ time ./bin/release/net6.0/linux-x64/cs
+start
+99999989
+end
+
+real	0m0.926s
+user	0m0.837s
+sys	0m0.043s
+```
+
 ### VB.net
   - C#。
   - C#(Basic風味)。
-{sample:vb}
+
+code:
+```vb
+Imports System
+
+Module Program
+    Sub Main(args As String())
+        Console.WriteLine("start")
+        Const max  As Integer = 100000000
+        Dim sieve() As Boolean = Enumerable.Repeat(True, max + 1).ToArray()
+        Dim sqrtmax As Integer = CType(Math.Sqrt(max), Integer)
+        For i As Integer = 2 To sqrtmax
+            If sieve(i) Then
+                For j As Integer= i * i To max Step i
+                    sieve(j) = False
+                Next
+            End If
+        Next
+        Dim primes(max + 1) As Integer
+        Dim pcount As Integer = 0
+        For i As Integer = 2 To max
+            If sieve(i) Then
+                primes(pcount) = i
+                pcount += 1
+            End If
+        Next
+ 
+        Console.WriteLine(primes(pcount - 1))
+ 
+        Console.WriteLine("end")
+    End Sub
+End Module
+```
+
+result:
+```
+$ dotnet publish -c release -r linux-x64
+$ time ./bin/release/net6.0/linux-x64/vb
+start
+99999989
+end
+
+real	0m0.873s
+user	0m0.789s
+sys	0m0.053s
+```
+
 
 ## 関数型プログラミングに対するサポートが強いやつ
 ### OCaml
@@ -726,9 +857,9 @@ start
 99999989
 end
 
-real	0m0.991s
-user	0m0.768s
-sys	0m0.201s
+real	0m1.013s
+user	0m0.759s
+sys	0m0.246s
 ```
 
 ### Lisp
@@ -787,9 +918,9 @@ start
 99999989
 end
 
-real	0m0.897s
-user	0m0.844s
-sys	0m0.050s
+real	0m0.918s
+user	0m0.888s
+sys	0m0.030s
 ```
 
 ### Typescript
@@ -869,9 +1000,9 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m15.376s
-user	0m14.307s
-sys	0m1.024s
+real	0m15.448s
+user	0m14.416s
+sys	0m0.962s
 ```
 
 ### MATLAB
@@ -932,9 +1063,9 @@ $ time ./a.out
     99999989
  end
 
-real	0m1.260s
-user	0m1.161s
-sys	0m0.093s
+real	0m1.261s
+user	0m1.112s
+sys	0m0.125s
 ```
 
  
@@ -942,34 +1073,40 @@ sys	0m0.093s
 実行時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.622 sec. |
-| 2 | Assembly | 0.646 sec. |
-| 3 | C | 0.746 sec. |
-| 4 | Rust | 0.867 sec. |
-| 5 | JS | 0.897 sec. |
-| 6 | Haskell | 0.991 sec. |
-| 7 | Julia | 1.222 sec. |
-| 8 | Fortran | 1.26 sec. |
-| 9 | Cython | 3.867 sec. |
-| 10 | PyPy | 4.674 sec. |
-| 11 | R | 15.376 sec. |
-| 12 | Python | 30.847 sec. |
+| 1 | Assembly | 0.681 sec. |
+| 2 | C++ | 0.695 sec. |
+| 3 | C | 0.736 sec. |
+| 4 | VB.net | 0.873 sec. |
+| 5 | JS | 0.918 sec. |
+| 6 | C# | 0.926 sec. |
+| 7 | Rust | 1.002 sec. |
+| 8 | Haskell | 1.013 sec. |
+| 9 | Java | 1.094 sec. |
+| 10 | Julia | 1.156 sec. |
+| 11 | Fortran | 1.261 sec. |
+| 12 | Cython | 4.664 sec. |
+| 13 | PyPy | 4.745 sec. |
+| 14 | R | 15.448 sec. |
+| 15 | Python | 28.579 sec. |
 
 CPU時間：
 | rank | lang | time |
 | - | - | - |
-| 1 | C++ | 0.511 sec. |
-| 2 | Assembly | 0.641 sec. |
-| 3 | C | 0.703 sec. |
-| 4 | Haskell | 0.768 sec. |
-| 5 | Rust | 0.817 sec. |
-| 6 | JS | 0.844 sec. |
-| 7 | Julia | 0.963 sec. |
-| 8 | Fortran | 1.161 sec. |
-| 9 | Cython | 3.933 sec. |
-| 10 | PyPy | 4.06 sec. |
-| 11 | R | 14.307 sec. |
-| 12 | Python | 30.358 sec. |
+| 1 | C++ | 0.572 sec. |
+| 2 | Assembly | 0.66 sec. |
+| 3 | C | 0.697 sec. |
+| 4 | Haskell | 0.759 sec. |
+| 5 | VB.net | 0.789 sec. |
+| 6 | C# | 0.837 sec. |
+| 7 | JS | 0.888 sec. |
+| 8 | Julia | 0.923 sec. |
+| 9 | Rust | 0.933 sec. |
+| 10 | Java | 0.951 sec. |
+| 11 | Fortran | 1.112 sec. |
+| 12 | PyPy | 4.197 sec. |
+| 13 | Cython | 4.78 sec. |
+| 14 | R | 14.416 sec. |
+| 15 | Python | 27.984 sec. |
 
 
 ## 貢献者一覧

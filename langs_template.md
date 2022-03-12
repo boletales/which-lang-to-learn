@@ -203,8 +203,8 @@ TypedArray使ったら最速組と張り合える速さが出た
 
 ## 貢献者一覧
 - 筆者 
-  - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP
-  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R
+  - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java
+  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, Java
   - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
 - あなばす
   - 説明: Julia, Lisp, R, MATLAB, Fortran
