@@ -132,31 +132,37 @@ withTailLf t =
 embedResult :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text
 embedResult files results =
     ( \text ->
-      let anchortag t  = "<a href='" <> t <> "'></a>"
+      let anchortag t  = "<a href='#" <> t <> "'></a>"
           anchoridl2 i   = "anchor" <> tshow i
           anchoridl3 i j = "anchor" <> tshow i <> "-" <> tshow j
           (sections, anchored)
-            = ( T.breakOnAll "\n## " >>>
+            = ( let anchor0 = fst $ T.breakOn "\n## " text
+                in 
+                T.breakOnAll "\n## " >>>
                 L.foldl' (\(i,xs,t) (before, after) ->
                     let (inner,outer)        = T.breakOn "\n## " (T.drop 4 after)
                         title                = fst $ T.breakOn "\n" inner
+                        self                 = fst $ T.breakOn "\n### " inner
                         (sections, anchored) =
-                            (T.breakOnAll "\n### " >>>
+                            (let anchor0 = fst $ T.breakOn "\n### " t
+                              in 
+                            T.breakOnAll "\n### " >>>
                             L.foldl' (\(j,xs,t) (before, after) ->
                               let title    = fst $ T.breakOn "\n" $ T.drop 5 after
-                              in (j+1, (title,[]):xs, t <> before <> anchortag (anchoridl3 i j) <> after)
-                            ) (0,[],"") >>>
+                                  anchored = fst $ T.breakOn "\n### " (T.drop 5 after)
+                              in (j+1, (title,[]):xs, t <> anchortag (anchoridl3 i j) <> "\n### " <> anchored)
+                            ) (0,[],anchor0) >>>
                             (\(j,xs,t) -> (reverse xs, t))
                             ) inner
-                    in (i+1, (title, sections):xs, t <> before <> anchortag (anchoridl2 i) <> "\n## " <> anchored <> outer)
-                  ) (0,[],"") >>>
+                    in (i+1, (title, sections):xs, t <> anchortag (anchoridl2 i) <> "\n## " <> self <> anchored)
+                  ) (0,[],anchor0) >>>
                 (\(j,xs,t) -> (reverse xs, t))
               ) text
           indexmd = T.intercalate "\n" $ mapWithIndex (\i s ->
                         "- <a href='#"<> anchoridl2 i <>"'>" <> fst s <> "</a>\n" <> T.intercalate "\n" (mapWithIndex (\j s ->
                         "  - <a href='#"<> anchoridl3 i j <>"'>" <> fst s <> "</a>"
                       ) (snd s))) sections
-      in replace "{index}" indexmd text
+      in replace "{index}" indexmd anchored
     ) >>>
     flip (L.foldl' (\t file ->
       let fid  = (fst >>> fileid  ) file
