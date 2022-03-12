@@ -132,29 +132,24 @@ withTailLf t =
 embedResult :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text
 embedResult files results =
     ( \text ->
-      let anchortag t  = "<div id='anchor" <> t <> "'>"
-          anchoridl2 i   = tshow i
-          anchoridl3 i j = tshow i <> "-" <> tshow j
-          (sections, anchored)
+      let sections
             = ( T.breakOnAll "\n## " >>>
-                L.foldl' (\(i,xs,t) (before, after) ->
-                    let (inner,outer)        = T.breakOn "\n## " (T.drop 4 after)
-                        title                = fst $ T.breakOn "\n" inner
-                        (sections, anchored) =
+                L.foldl' (\xs(before, after) ->
+                    let (inner,outer) = T.breakOn "\n## " (T.drop 4 after)
+                        title         = fst $ T.breakOn "\n" inner
+                        sections      =
                             (T.breakOnAll "\n### " >>>
-                            L.foldl' (\(j,xs,t) (before, after) ->
+                            L.foldl' (\xs (before, after) ->
                               let title    = fst $ T.breakOn "\n" $ T.drop 5 after
-                              in (j+1, (title,[]):xs, t <> before <> anchortag (anchoridl3 i j) <> after)
-                            ) (0,[],"") >>>
-                            (\(j,xs,t) -> (reverse xs, t))
+                              in (title,[]):xs ) []
+                            >>> reverse
                             ) inner
-                    in (i+1, (title, sections):xs, t <> before <> anchortag (anchoridl2 i) <> "\n## " <> anchored <> outer)
-                  ) (0,[],"") >>>
-                (\(j,xs,t) -> (reverse xs, t))
+                    in (title, sections):xs
+                  ) [] >>> reverse
               ) text
           indexmd = T.intercalate "\n" $ mapWithIndex (\i s ->
-                        "- <a href='#"<> anchoridl2 i <>"'>" <> fst s <> "</a>\n" <> T.intercalate "\n" (mapWithIndex (\j s ->
-                        "  - <a href='#"<> anchoridl3 i j <>"'>" <> fst s <> "</a>"
+                        "- <a href='#"<> fst s <>"'>" <> fst s <> "</a>\n" <> T.intercalate "\n" (mapWithIndex (\j s ->
+                        "  - <a href='#"<> fst s <>"'>" <> fst s <> "</a>"
                       ) (snd s))) sections
       in replace "{index}" indexmd text
     ) >>>
