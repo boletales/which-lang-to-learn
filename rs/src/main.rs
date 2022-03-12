@@ -8,16 +8,16 @@ fn main() {
     let sqrtmax = f32::sqrt(MAX as f32) as usize;
     for i in 2..=sqrtmax {
         if sieve[i]{
-            for j in (i*i..=MAX).step_by(i) {
-                sieve[j] = false;
+            for j in i*i..=MAX/i {
+                sieve[j*i] = false;
             }
         }
     }
 
     let mut primes = vec![0; MAX+1];
     let mut pcount = 0;
-    for (i,s) in sieve.iter().enumerate() {
-        if *s {
+    for i in 2..=sqrtmax {
+        if sieve[i] {
             primes[pcount] = i;
             pcount += 1;
         }

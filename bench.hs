@@ -14,7 +14,7 @@ import System.Directory
 import Control.Exception
 import Control.Monad
 import Data.Char
-import Data.Text as T (Text, pack, unpack, replace, splitOn, strip, intercalate, breakOn, tail, breakOnEnd)
+import Data.Text as T (Text, pack, unpack, replace, splitOn, strip, intercalate, breakOn, tail, breakOnEnd, unsnoc)
 import qualified Data.Text.IO as TIO
 import Text.Read
 import Text.Printf
@@ -123,21 +123,27 @@ mapWithIndex f = zipWith f [0..]
 numToText2 :: Double -> Text 
 numToText2 = printf "%.2f" >>> pack
 
+withTailLf :: Text -> Text
+withTailLf t =
+  case T.unsnoc t of
+    Just (_,'\n') -> t
+    _             -> t <> "\n"
+
 embedResult :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text
 embedResult files results =
     flip (L.foldl' (\t file ->
       let fid  = (fst >>> fileid  ) file
           lang = (fst >>> filelang) file
-          code = "\ncode:\n```" <> lang <> "\n" <> snd file <> "```\n"
+          code = "\ncode:\n```" <> lang <> "\n" <> withTailLf (snd file) <> "```\n"
       in replace ("{file:"   <> fid <> "}") code t
     )) files >>>
     flip (L.foldl' (\t result ->
       let langid = (settings >>> settingsid) result
           lang   = (settings >>> directory) result
-          code   = "\ncode:\n```" <> lang <> "\n" <> sourcestr result <> "\n```\n"
+          code   = "\ncode:\n```" <> lang <> "\n" <> withTailLf (sourcestr result) <> "``\n"
           run    = "\nresult:\n```\n" <>
                     "$ " <> buildcmd (result :: BenchResult) <> "\n" <>
-                    "$ " <> benchcmd result <> "\n" <> benchresult result <> "\n```\n"
+                    "$ " <> benchcmd result <> withTailLf (benchresult result) <> "```\n"
       in (replace ("{code:"   <> langid <> "}") code >>>
           replace ("{result:" <> langid <> "}") run >>>
           replace ("{sample:" <> langid <> "}") (code <> run)
