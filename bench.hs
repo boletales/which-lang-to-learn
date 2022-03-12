@@ -134,10 +134,10 @@ embedResult files results =
     flip (L.foldl' (\t result ->
       let langid = (settings >>> settingsid) result
           lang   = (settings >>> directory) result
-          code   = "\ncode:\n```" <> lang <> "\n" <> sourcestr result <> "```\n"
+          code   = "\ncode:\n```" <> lang <> "\n" <> sourcestr result <> "\n```\n"
           run    = "\nresult:\n```\n" <>
                     "$ " <> buildcmd (result :: BenchResult) <> "\n" <>
-                    "$ " <> benchcmd result <> "\n" <> benchresult result <> "```\n"
+                    "$ " <> benchcmd result <> "\n" <> benchresult result <> "\n```\n"
       in (replace ("{code:"   <> langid <> "}") code >>>
           replace ("{result:" <> langid <> "}") run >>>
           replace ("{sample:" <> langid <> "}") (code <> run)
