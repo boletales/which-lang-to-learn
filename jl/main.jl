@@ -3,7 +3,7 @@ function main()
     
     println("start")
     
-    sieve = trues(MAX)
+    sieve = trues(MAX) :: BitVector
     
     sieve[1] = false
     @inbounds for i :: Int64 in 2:Int64(floor(sqrt(MAX)))
@@ -13,19 +13,10 @@ function main()
             end
         end
     end
+
+    primes = [i for i in 1:MAX if sieve[i]] :: Vector{Int64}
     
-    
-    primes = zeros(Int64,MAX)
-    pcount = 1
-    @inbounds for i in 2:MAX
-        if sieve[i]
-            primes[pcount] = i
-            pcount += 1
-        end
-    end
-    
-    println(primes[pcount-1])
-    
+    println(primes[length(primes)])
     println("end")
 end
 main()
