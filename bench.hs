@@ -152,7 +152,7 @@ embedResult files results =
                             ) (0,[],self) >>>
                             (\(j,xs,t) -> (reverse xs, t))
                             ) inner
-                    in (i+1, (title, sections):xs, t <> "\n## " <> anchortag (anchoridl2 i) <> self <> anchored)
+                    in (i+1, (title, sections):xs, t <> "\n## " <> anchortag (anchoridl2 i) <> anchored)
                   ) (0,[],self) >>>
                 (\(j,xs,t) -> (reverse xs, t))
               ) text
