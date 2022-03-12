@@ -132,7 +132,7 @@ withTailLf t =
 embedResult :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text
 embedResult files results =
     ( \text ->
-      let anchortag t  = "<a href='#" <> t <> "'></a>"
+      let anchortag t    = "<a name='" <> t <> "'></a>"
           anchoridl2 i   = "anchor" <> tshow i
           anchoridl3 i j = "anchor" <> tshow i <> "-" <> tshow j
           (sections, anchored)
