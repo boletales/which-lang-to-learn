@@ -136,7 +136,7 @@ embedResult files results =
           anchoridl2 i   = "anchor" <> tshow i
           anchoridl3 i j = "anchor" <> tshow i <> "-" <> tshow j
           (sections, anchored)
-            = ( let anchor0 = fst $ T.breakOn "\n## " text
+            = ( let self = fst $ T.breakOn "\n## " text
                 in 
                 T.breakOnAll "\n## " >>>
                 L.foldl' (\(i,xs,t) (before, after) ->
@@ -144,18 +144,16 @@ embedResult files results =
                         title                = fst $ T.breakOn "\n" inner
                         self                 = fst $ T.breakOn "\n### " inner
                         (sections, anchored) =
-                            (let anchor0 = fst $ T.breakOn "\n### " t
-                              in 
-                            T.breakOnAll "\n### " >>>
+                            (T.breakOnAll "\n### " >>>
                             L.foldl' (\(j,xs,t) (before, after) ->
                               let title    = fst $ T.breakOn "\n" $ T.drop 5 after
                                   anchored = fst $ T.breakOn "\n### " (T.drop 5 after)
-                              in (j+1, (title,[]):xs, t <> anchortag (anchoridl3 i j) <> "\n### " <> anchored)
-                            ) (0,[],anchor0) >>>
+                              in (j+1, (title,[]):xs, t <> "\n### " <> anchortag (anchoridl3 i j) <> anchored)
+                            ) (0,[],self) >>>
                             (\(j,xs,t) -> (reverse xs, t))
                             ) inner
-                    in (i+1, (title, sections):xs, t <> anchortag (anchoridl2 i) <> "\n## " <> self <> anchored)
-                  ) (0,[],anchor0) >>>
+                    in (i+1, (title, sections):xs, t <> "\n## " <> anchortag (anchoridl2 i) <> self <> anchored)
+                  ) (0,[],self) >>>
                 (\(j,xs,t) -> (reverse xs, t))
               ) text
           indexmd = T.intercalate "\n" $ mapWithIndex (\i s ->

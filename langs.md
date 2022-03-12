@@ -40,51 +40,9 @@
 
 - <a href='#anchor8'>貢献者一覧</a>
 
-<a href='#anchor0'></a>
-## スクリプトみの強いやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
 
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0-0'></a>
-### Python
+## <a href='#anchor0'></a>スクリプトみの強いやつスクリプトみの強いやつ
+### <a href='#anchor0-0'></a>Python
 - 理系大学生のリンガフランカ
 - いいところ
   - ライブラリが豊富（機械学習とかスクレイピングとか）
@@ -116,8 +74,8 @@ print("end")
 ```
 
 {sample:cy}
-<a href='#anchor0-1'></a>
-### Ruby
+
+### <a href='#anchor0-1'></a>Ruby
 - 松江在住のプログラマが作った言語
 - C言語的なfor文が存在しないので、文字列や配列や連想配列などの操作はmapやselectなどの各種メソッドで行う文化
   - `gets.split.map(&:to_i).sort.first(3).reduce(&:+)`みたいにメソッドをつなげて書いていくの、慣れると爽快
@@ -135,8 +93,8 @@ print("end")
   - 型アノテーションや静的な型チェックは存在するが、いろいろ未成熟
 - どうしても速度が欲しい人、あるいは静的型付けの安心感が欲しいRuby書きはCrystalを検討してみよう
 {sample:rb}
-<a href='#anchor0-2'></a>
-### Julia
+
+### <a href='#anchor0-2'></a>Julia
 - FortranとmatlabとPythonの後釜をいっぺんに狙おうとしている言語
 - いいところ
   - 文法がシンプル
@@ -158,94 +116,9 @@ print("end")
 
 コード全体を関数で包まないと死ぬほど遅くなるので注意（一敗）
 {sample:jl}
-<a href='#anchor1'></a>
-## コンパイルして使うやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
 
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0'></a>
-## スクリプトみの強いやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
-
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0-0'></a><a href='#anchor1-0'></a>
-### C
+## <a href='#anchor1'></a>コンパイルして使うやつコンパイルして使うやつ
+### <a href='#anchor1-0'></a>C
 - 組み込みやさんの必携、恐怖の自己責任系プログラミング言語
 - いいところ
   - 最速組。とにかく速い
@@ -257,8 +130,8 @@ print("end")
   - 初学者には難しい
   - 何もかも自己責任
 {sample:c}
-<a href='#anchor1-1'></a>
-### C++
+
+### <a href='#anchor1-1'></a>C++
 - 自分のことを最新鋭だと思っている古参言語
 - いいところ
   - 最速組。とにかく速い2
@@ -271,8 +144,8 @@ print("end")
 
 コンパイル時に最適化フラグを渡さないと10倍以上遅い(一敗)
 {sample:cpp}
-  <a href='#anchor1-2'></a>
-### Rust
+  
+### <a href='#anchor1-2'></a>Rust
 - マルチパラダイム言語界の新星 新時代の勝者……！？
 - いいところ
   - 最速組。とにかく速い3
@@ -290,8 +163,8 @@ print("end")
 - 有用なリソース
   - The Rust Programming Language (和訳): https://doc.rust-jp.rs/book-ja/
 {sample:rs}
-<a href='#anchor1-3'></a>
-### Crystal
+
+### <a href='#anchor1-3'></a>Crystal
 - いいところ
   - 最速組。とにかく速い4
   - Rubyの書きやすさとCの速度が合わさり完璧に見える
@@ -302,8 +175,8 @@ print("end")
   - ライブラリがまだまだ少ない
 - Ruby風の言語ではあるが、文法は多少違うし、標準ライブラリにもそれなりに差異があるので注意
 {sample:cr}
-<a href='#anchor1-4'></a>
-### Assembly
+
+### <a href='#anchor1-4'></a>Assembly
 - これどうやって書くんですか
 - いいところ
   - 最速組（書く人間にオプティマイザが搭載されていれば）
@@ -317,95 +190,11 @@ print("end")
   - [Compiler Explorer](https://gcc.godbolt.org/)を使うのも良い。
   - (C/C++などの) コンパイラはたまにいい感じのコードを吐いてくれないので、コンパイルされたものを見て、適宜手動でアセンブリ最適化するのが良い。
 {sample:asm}
-<a href='#anchor2'></a>
-## クラスベースオブジェクト指向一味
-# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
 
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
+## <a href='#anchor2'></a>クラスベースオブジェクト指向一味
+クラスベースオブジェクト指向一味
 
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0'></a>
-## スクリプトみの強いやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
-
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0-0'></a><a href='#anchor2-0'></a>
-### Java
+### <a href='#anchor2-0'></a>Java
 - いいところ
   - コードの規模が大きくなることに大して耐性が強い
 - わるいところ
@@ -413,8 +202,8 @@ print("end")
 - 特徴
   - 業務で使われがち
   - ザ・クラスベースオブジェクト指向
-{sample:java}<a href='#anchor2-1'></a>
-### C#
+{sample:java}
+### <a href='#anchor2-1'></a>C#
 - MS製のJavaのようななにか
 - いいところ
   - コードの規模が大きくなることに大して耐性が強い2
@@ -422,8 +211,8 @@ print("end")
   - Unityで使うらしい
 - わるいところ
   - コードが冗長2(Javaよりややマシかも)
-{sample:cs}<a href='#anchor2-2'></a>
-### VB.net
+{sample:cs}
+### <a href='#anchor2-2'></a>VB.net
 - C#(VisualBasic風味)
 - いいところ
   - 文法が初学者にもわかりやすい(Basicの血を引いているだけある)
@@ -437,100 +226,15 @@ print("end")
   - 不遇
   - C#
 {sample:vb}
-<a href='#anchor3'></a>
-## 関数型プログラミングに対するサポートが強いやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
 
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0'></a>
-## スクリプトみの強いやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
-
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0-0'></a><a href='#anchor3-0'></a>
-### OCaml
+## <a href='#anchor3'></a>関数型プログラミングに対するサポートが強いやつ関数型プログラミングに対するサポートが強いやつ
+### <a href='#anchor3-0'></a>OCaml
 - 五十歩百歩組3
 - ML族
 - 非純粋
 - 静的型、型推論強い
-{sample:ocaml}<a href='#anchor3-1'></a>
-### Haskell
+{sample:ocaml}
+### <a href='#anchor3-1'></a>Haskell
 - 中二病患者向けへそ曲がり実用†純粋†関数型言語
 - いいところ
   - 副作用が常に明示され、細かい制御ができる
@@ -555,101 +259,16 @@ print("end")
   - 日本Haskellユーザーグループ: https://haskell.jp/ と、そこのslack（初心者にやさしい）
 
 最適化すると十分速いが、知識と試行錯誤が必要
-{sample:hs}<a href='#anchor3-2'></a>
-### Lisp
+{sample:hs}
+### <a href='#anchor3-2'></a>Lisp
   - 古代の関数型言語
   - アーティファクト
   - 方言が多い
   - きもいモンスター
   - かっこかっこかっこかっこ
-<a href='#anchor4'></a>
-## Web屋さん向け# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
 
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0'></a>
-## スクリプトみの強いやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
-
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0-0'></a><a href='#anchor4-0'></a>
-### javascript
+## <a href='#anchor4'></a>Web屋さん向けWeb屋さん向け
+### <a href='#anchor4-0'></a>javascript
 - もうぜんぶこれでいいや
 - いいところ
   - GUI作りたくなったらHTML+CSS+JSでやるのが一番かんたんかもしれない
@@ -668,8 +287,8 @@ print("end")
 TypedArray使ったら最速組と張り合える速さが出た
 普通の配列を使ったらメモリ確保ができなくなって落ちた
 {sample:js}
-<a href='#anchor4-1'></a>
-### PHP
+
+### <a href='#anchor4-1'></a>PHP
 - Web屋さん専用のかんたんサーバーサイド言語
 - いいところ
   - 動的サイトを作りたいなら一番かんたん
@@ -678,120 +297,35 @@ TypedArray使ったら最速組と張り合える速さが出た
 - わるいところ
   - カオス
 {sample:php}
-<a href='#anchor4-2'></a>
-### WebAssembly
+
+### <a href='#anchor4-2'></a>WebAssembly
   - 直接は書かない
   - 他の言語(RustとかC++とか)からWASMにコンパイルしてブラウザで使える
-<a href='#anchor4-3'></a>
-### 以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部<a href='#anchor4-4'></a>
-### Typescript
+
+### <a href='#anchor4-3'></a>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部
+### <a href='#anchor4-4'></a>Typescript
   - AltJSのデファクトスタンダード、型のあるJS
   - 型がある！！！しかも強い！！！！！！！（とても重要）
-{sample:ts}<a href='#anchor4-5'></a>
-### coffeescript
+{sample:ts}
+### <a href='#anchor4-5'></a>coffeescript
   - Rubyのようななにか
-{sample:coffee}<a href='#anchor4-6'></a>
-### purescript
+{sample:coffee}
+### <a href='#anchor4-6'></a>purescript
   - AltJSの異端児、Haskellの生き写し
-{sample:purs}<a href='#anchor4-7'></a>
-### scala.js
+{sample:purs}
+### <a href='#anchor4-7'></a>scala.js
   - scalaがjsにコンパイルされる
-{result:scjs}<a href='#anchor4-8'></a>
-### GHCjs
+{result:scjs}
+### <a href='#anchor4-8'></a>GHCjs
   - Haskellがjsにコンパイルされる
-{sample:hsjs}<a href='#anchor4-9'></a>
-### js_of_ocaml
+{sample:hsjs}
+### <a href='#anchor4-9'></a>js_of_ocaml
   - OCamlがjsにコンパイルされる
 {sample:jsocaml}
 {sample:ocjs}
-<a href='#anchor5'></a>
-## 統計とかシミュレーションに使うやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
 
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0'></a>
-## スクリプトみの強いやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
-
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0-0'></a><a href='#anchor5-0'></a>
-### R
+## <a href='#anchor5'></a>統計とかシミュレーションに使うやつ統計とかシミュレーションに使うやつ
+### <a href='#anchor5-0'></a>R
 - いいところ
   - 統計にめっちゃ強い。デファクトスタンダード。どうせやらされる（文系含む）
   - 検定がコマンド一発でできる
@@ -802,15 +336,15 @@ TypedArray使ったら最速組と張り合える速さが出た
 - わるいところ
   - 複雑なことをすると遅い
   - カオス
-{sample:r}<a href='#anchor5-1'></a>
-### MATLAB
+{sample:r}
+### <a href='#anchor5-1'></a>MATLAB
 - いいところ
   - 数式とかシミュレーションが強い
   - グラフィクスが強い
 - わるいところ
   - 有料(東大生は大学がアカウントくれるので使える)
-  - そんなに速くはない<a href='#anchor5-2'></a>
-### Fortran
+  - そんなに速くはない
+### <a href='#anchor5-2'></a>Fortran
 - いいところ
   - 数値計算に強い。めっちゃ強い。
   - 速い
@@ -821,99 +355,19 @@ TypedArray使ったら最速組と張り合える速さが出た
 
 なにを間違えたのか大して速くならなかった
 {sample:f95}
-<a href='#anchor6'></a>
-## 実行環境について
+
+## <a href='#anchor6'></a>実行環境について
 サンプルコードの実行時間は以下の環境で計測しました
 - CPU: Ryzen 7 PRO 4750G
 - メモリ: 32GB
 - OS: Manjaro Linux
-# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
+実行環境について
+サンプルコードの実行時間は以下の環境で計測しました
+- CPU: Ryzen 7 PRO 4750G
+- メモリ: 32GB
+- OS: Manjaro Linux
 
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0'></a>
-## スクリプトみの強いやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
-
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0-0'></a><a href='#anchor7'></a>
-## 速度ランキング（あんまり参考にならない）
+## <a href='#anchor7'></a>速度ランキング（あんまり参考にならない）
 おことわり：今回題材とした「素数の計算」は比較的単純なコードなので、一部言語を除いて実際以上に似たりよったりな結果になっています。どちらかといえば「どの言語が速いか」より「どのサンプルがうまく書けているか」のほうがだいぶ影響が大きそうです。
 
 実行時間：
@@ -924,93 +378,19 @@ CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
 
-# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
+速度ランキング（あんまり参考にならない）
+おことわり：今回題材とした「素数の計算」は比較的単純なコードなので、一部言語を除いて実際以上に似たりよったりな結果になっています。どちらかといえば「どの言語が速いか」より「どのサンプルがうまく書けているか」のほうがだいぶ影響が大きそうです。
 
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
+実行時間：
+| rank | lang | time | ratio | 
+| - | - | - | - |
 
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
+CPU時間：
+| rank | lang | time | ratio | 
+| - | - | - | - |
 
-- <a href='#anchor8'>貢献者一覧</a>
 
-<a href='#anchor0'></a>
-## スクリプトみの強いやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
-
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0-0'></a><a href='#anchor8'></a>
-## 貢献者一覧
+## <a href='#anchor8'></a>貢献者一覧
 - メタリックはんぺん 
   - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java
   - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, Java
@@ -1028,89 +408,22 @@ CPU時間：
   - 説明: Ruby, Crystal
   - サンプル: Ruby, Crystal
   - 一言: なんだかんだRubyはいい言語だと思う。コードゴルフにも向いてるし。
-  # 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
-
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0'></a>
-## スクリプトみの強いやつ# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
-
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
-- <a href='#anchor6'>実行環境について</a>
-
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
-
-- <a href='#anchor8'>貢献者一覧</a>
-
-<a href='#anchor0-0'></a>
+  貢献者一覧
+- メタリックはんぺん 
+  - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java
+  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, Java
+  - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
+- あなばす
+  - 説明: Julia, Lisp, R, MATLAB, Fortran
+  - 一言: Julia最高！Juliaしか勝たん！
+- 綿谷 雫
+  - サンプル: Fortran
+  - 一言: 古典を学ぶことは物事の根幹に触れることであり，そこから派生してできたものの理解が深まります．古典語をやりましょう．
+- TumoiYorozu
+  - サンプル: Assembly
+  - 一言: 生のアセンブリ、もう書かない
+- ふぁぼん
+  - 説明: Ruby, Crystal
+  - サンプル: Ruby, Crystal
+  - 一言: なんだかんだRubyはいい言語だと思う。コードゴルフにも向いてるし。
+  
