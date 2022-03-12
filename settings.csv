@@ -12,6 +12,7 @@ f95  , f95 , Fortran     , main.f95   , gfortran -Ofast main.f95              , 
 r    , r   , R           , main.r     , :                                     , Rscript main.r
 vb   , vb  , VB.net      , Program.vb , dotnet publish -c release -r linux-x64, ./bin/release/net6.0/linux-x64/vb
 cs   , cs  , C#          , Program.cs , dotnet publish -c release -r linux-x64, ./bin/release/net6.0/linux-x64/cs
+fs   , fs  , F#          , Program.fs , dotnet publish -c release -r linux-x64, ./bin/release/net6.0/linux-x64/fs
 asm  , asm , Assembly    , main.s     , gcc main.s                            , ./a.out
 java , java, Java        , main.java  , javac main.java                       , java Primes
     
