@@ -159,16 +159,13 @@ embedIndex text =
             (\(j,xs,t) -> (reverse xs, t))
           ) text
       indexmd = T.intercalate "\n" $ mapWithIndex (\i s ->
-                    "- <a href='#"<> anchoridl2 i <>"'>" <> fst s <> "</a>\n" <> T.intercalate "\n" (mapWithIndex (\j s ->
-                    "  - <a href='#"<> anchoridl3 i j <>"'>" <> fst s <> "</a>"
+                    "- <a href='#"<> anchoridl2 i <>"'>" <> fst s <> "</a>\n" <> T.intercalate "" (mapWithIndex (\j s ->
+                    "  - <a href='#"<> anchoridl3 i j <>"'>" <> fst s <> "</a>\n"
                   ) (snd s))) sections
   in replace "{index}" indexmd anchored
 
 embedResult :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text
 embedResult files results =
-    ( \text ->
-      
-    ) >>>
     flip (L.foldl' (\t file ->
       let fid  = (fst >>> fileid  ) file
           lang = (fst >>> filelang) file

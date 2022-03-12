@@ -5,20 +5,24 @@
   - <a href='#anchor0-0'>Python</a>
   - <a href='#anchor0-1'>Ruby</a>
   - <a href='#anchor0-2'>Julia</a>
+
 - <a href='#anchor1'>コンパイルして使うやつ</a>
   - <a href='#anchor1-0'>C</a>
   - <a href='#anchor1-1'>C++</a>
   - <a href='#anchor1-2'>Rust</a>
   - <a href='#anchor1-3'>Crystal</a>
   - <a href='#anchor1-4'>Assembly</a>
+
 - <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
   - <a href='#anchor2-0'>Java</a>
   - <a href='#anchor2-1'>C#</a>
   - <a href='#anchor2-2'>VB.net</a>
+
 - <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
   - <a href='#anchor3-0'>OCaml</a>
   - <a href='#anchor3-1'>Haskell</a>
   - <a href='#anchor3-2'>Lisp</a>
+
 - <a href='#anchor4'>Web屋さん向け</a>
   - <a href='#anchor4-0'>javascript</a>
   - <a href='#anchor4-1'>PHP</a>
@@ -30,10 +34,12 @@
   - <a href='#anchor4-7'>scala.js</a>
   - <a href='#anchor4-8'>GHCjs</a>
   - <a href='#anchor4-9'>js_of_ocaml</a>
+
 - <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
   - <a href='#anchor5-0'>R</a>
   - <a href='#anchor5-1'>MATLAB</a>
   - <a href='#anchor5-2'>Fortran</a>
+
 - <a href='#anchor6'>実行環境について</a>
 
 - <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
@@ -57,7 +63,7 @@
 - 有用なリソース
   - 京大の資料(https://repository.kulib.kyoto-u.ac.jp/dspace/bitstream/2433/265459/1/Version2021_10_08_01.pdf)
 
-高速なライブラリ(numpyとか)を使えば十分な速度を出せる
+高速なライブラリ(numpyとか)を使えばPythonらしからぬ速度を出せる
 
 code:
 ```py
@@ -89,9 +95,9 @@ $ time python main_nd.pystart
 99999989
 end
 
-real	0m1.628s
-user	0m1.547s
-sys	0m1.188s
+real	0m1.725s
+user	0m1.716s
+sys	0m1.070s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -103,9 +109,9 @@ $ time pypy main.pystart
 99999989
 end
 
-real	0m4.724s
-user	0m4.143s
-sys	0m0.545s
+real	0m4.679s
+user	0m4.047s
+sys	0m0.577s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -167,9 +173,9 @@ $ time python cymain.pystart
 5761455
 end
 
-real	0m3.610s
-user	0m3.789s
-sys	0m0.914s
+real	0m3.698s
+user	0m3.885s
+sys	0m0.888s
 ```
 
 
@@ -214,9 +220,9 @@ $ time ruby main.rbstart
 99999989
 end
 
-real	0m19.863s
-user	0m19.604s
-sys	0m0.226s
+real	0m20.635s
+user	0m20.335s
+sys	0m0.222s
 ```
 
 
@@ -275,9 +281,9 @@ $ time julia main.jlstart
 99999989
 end
 
-real	0m0.799s
-user	0m0.699s
-sys	0m0.096s
+real	0m0.878s
+user	0m0.765s
+sys	0m0.100s
 ```
 
 
@@ -337,9 +343,9 @@ $ time ./a.outstart
 99999989
 end
 
-real	0m0.729s
-user	0m0.688s
-sys	0m0.036s
+real	0m0.760s
+user	0m0.717s
+sys	0m0.040s
 ```
 
 
@@ -400,9 +406,9 @@ $ time ./a.outstart
 99999989
 start
 
-real	0m0.619s
-user	0m0.506s
-sys	0m0.110s
+real	0m0.648s
+user	0m0.545s
+sys	0m0.100s
 ```
 
   
@@ -462,9 +468,9 @@ $ time ./target/release/rsstart
 9991
 end
 
-real	0m0.601s
-user	0m0.565s
-sys	0m0.033s
+real	0m0.609s
+user	0m0.575s
+sys	0m0.030s
 ```
 
 
@@ -502,9 +508,9 @@ $ time ./mainstart
 99999989
 end
 
-real	0m0.867s
-user	0m0.834s
-sys	0m0.033s
+real	0m0.966s
+user	0m0.898s
+sys	0m0.056s
 ```
 
 
@@ -738,9 +744,9 @@ end
 count 5717621
 
 
-real	0m0.609s
-user	0m0.594s
-sys	0m0.013s
+real	0m0.676s
+user	0m0.647s
+sys	0m0.014s
 ```
 
 
@@ -794,9 +800,9 @@ $ time java Primesstart
 99999989
 end
 
-real	0m0.992s
-user	0m0.792s
-sys	0m0.213s
+real	0m1.034s
+user	0m0.908s
+sys	0m0.135s
 ```
 
 ### <a name='anchor2-1'></a>C#
@@ -842,8 +848,8 @@ $ time ./bin/release/net6.0/linux-x64/csstart
 99999989
 end
 
-real	0m0.857s
-user	0m0.772s
+real	0m0.945s
+user	0m0.839s
 sys	0m0.043s
 ```
 
@@ -901,18 +907,20 @@ $ time ./bin/release/net6.0/linux-x64/vbstart
 99999989
 end
 
-real	0m0.835s
-user	0m0.773s
-sys	0m0.037s
+real	0m0.952s
+user	0m0.867s
+sys	0m0.050s
 ```
 
 
 ## <a name='anchor3'></a>関数型プログラミングに対するサポートが強いやつ
 ### <a name='anchor3-0'></a>OCaml
-- 五十歩百歩組3
-- ML族
-- 非純粋
-- 静的型、型推論強い
+- 実用非純粋関数型言語
+- いいところ
+  - 速い
+  - 変数の再代入が禁止されている（同名変数の再宣言で見た目再代入っぽいことはできる）
+
+速いはずの言語でもコードがよろしくないと速度もよろしくなくなるのはよくある話である
 
 code:
 ```ocaml
@@ -957,9 +965,9 @@ $ time ./a.outstart
 99999989
 end
 
-real	0m2.094s
-user	0m1.711s
-sys	0m0.376s
+real	0m2.262s
+user	0m1.873s
+sys	0m0.362s
 ```
 
 ### <a name='anchor3-1'></a>Haskell
@@ -1051,9 +1059,9 @@ $ time ./hs-exestart
 99999989
 end
 
-real	0m0.800s
-user	0m0.738s
-sys	0m0.053s
+real	0m0.809s
+user	0m0.759s
+sys	0m0.033s
 ```
 
 ### <a name='anchor3-2'></a>Lisp
@@ -1120,9 +1128,9 @@ $ time node main.jsstart
 99999989
 end
 
-real	0m0.893s
-user	0m0.846s
-sys	0m0.036s
+real	0m0.969s
+user	0m0.897s
+sys	0m0.066s
 ```
 
 
@@ -1211,9 +1219,9 @@ $ time Rscript main.r[1] "start"
 [1] 99999989
 [1] "end"
 
-real	0m3.345s
-user	0m2.509s
-sys	0m0.829s
+real	0m3.633s
+user	0m2.790s
+sys	0m0.821s
 ```
 
 ### <a name='anchor5-1'></a>MATLAB
@@ -1279,9 +1287,9 @@ $ time ./a.out start
     99999989
  end
 
-real	0m1.209s
-user	0m1.097s
-sys	0m0.106s
+real	0m1.336s
+user	0m1.203s
+sys	0m0.110s
 ```
 
 
@@ -1297,48 +1305,48 @@ sys	0m0.106s
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust | 0.60 sec. |1.00x |
-| 2 | Assembly | 0.61 sec. |1.01x |
-| 3 | C++ | 0.62 sec. |1.03x |
-| 4 | C | 0.73 sec. |1.21x |
-| 5 | Julia | 0.80 sec. |1.33x |
-| 6 | Haskell | 0.80 sec. |1.33x |
-| 7 | VB.net | 0.84 sec. |1.39x |
-| 8 | C# | 0.86 sec. |1.43x |
-| 9 | Crystal | 0.87 sec. |1.44x |
-| 10 | JS | 0.89 sec. |1.49x |
-| 11 | Java | 0.99 sec. |1.65x |
-| 12 | Fortran | 1.21 sec. |2.01x |
-| 13 | Python | 1.63 sec. |2.71x |
-| 14 | OCaml | 2.09 sec. |3.48x |
-| 15 | F# | 2.32 sec. |3.86x |
-| 16 | R | 3.34 sec. |5.57x |
-| 17 | Cython | 3.61 sec. |6.01x |
-| 18 | PyPy | 4.72 sec. |7.86x |
-| 19 | Ruby | 19.86 sec. |33.05x |
+| 1 | Rust | 0.61 sec. |1.00x |
+| 2 | C++ | 0.65 sec. |1.06x |
+| 3 | Assembly | 0.68 sec. |1.11x |
+| 4 | C | 0.76 sec. |1.25x |
+| 5 | Haskell | 0.81 sec. |1.33x |
+| 6 | Julia | 0.88 sec. |1.44x |
+| 7 | C# | 0.94 sec. |1.55x |
+| 8 | VB.net | 0.95 sec. |1.56x |
+| 9 | Crystal | 0.97 sec. |1.59x |
+| 10 | JS | 0.97 sec. |1.59x |
+| 11 | Java | 1.03 sec. |1.70x |
+| 12 | Fortran | 1.34 sec. |2.19x |
+| 13 | Python | 1.72 sec. |2.83x |
+| 14 | OCaml | 2.26 sec. |3.71x |
+| 15 | F# | 2.56 sec. |4.21x |
+| 16 | R | 3.63 sec. |5.97x |
+| 17 | Cython | 3.70 sec. |6.07x |
+| 18 | PyPy | 4.68 sec. |7.68x |
+| 19 | Ruby | 20.64 sec. |33.88x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | C++ | 0.51 sec. |1.00x |
-| 2 | Rust | 0.56 sec. |1.12x |
-| 3 | Assembly | 0.59 sec. |1.17x |
-| 4 | C | 0.69 sec. |1.36x |
-| 5 | Julia | 0.70 sec. |1.38x |
-| 6 | Haskell | 0.74 sec. |1.46x |
-| 7 | C# | 0.77 sec. |1.53x |
-| 8 | VB.net | 0.77 sec. |1.53x |
-| 9 | Java | 0.79 sec. |1.57x |
-| 10 | Crystal | 0.83 sec. |1.65x |
-| 11 | JS | 0.85 sec. |1.67x |
-| 12 | Fortran | 1.10 sec. |2.17x |
-| 13 | Python | 1.55 sec. |3.06x |
-| 14 | OCaml | 1.71 sec. |3.38x |
-| 15 | F# | 2.11 sec. |4.17x |
-| 16 | R | 2.51 sec. |4.96x |
-| 17 | Cython | 3.79 sec. |7.49x |
-| 18 | PyPy | 4.14 sec. |8.19x |
-| 19 | Ruby | 19.60 sec. |38.74x |
+| 1 | C++ | 0.54 sec. |1.00x |
+| 2 | Rust | 0.58 sec. |1.06x |
+| 3 | Assembly | 0.65 sec. |1.19x |
+| 4 | C | 0.72 sec. |1.32x |
+| 5 | Haskell | 0.76 sec. |1.39x |
+| 6 | Julia | 0.76 sec. |1.40x |
+| 7 | C# | 0.84 sec. |1.54x |
+| 8 | VB.net | 0.87 sec. |1.59x |
+| 9 | JS | 0.90 sec. |1.65x |
+| 10 | Crystal | 0.90 sec. |1.65x |
+| 11 | Java | 0.91 sec. |1.67x |
+| 12 | Fortran | 1.20 sec. |2.21x |
+| 13 | Python | 1.72 sec. |3.15x |
+| 14 | OCaml | 1.87 sec. |3.44x |
+| 15 | F# | 2.37 sec. |4.35x |
+| 16 | R | 2.79 sec. |5.12x |
+| 17 | Cython | 3.88 sec. |7.13x |
+| 18 | PyPy | 4.05 sec. |7.43x |
+| 19 | Ruby | 20.34 sec. |37.31x |
 
 
 ## <a name='anchor8'></a>貢献者一覧
