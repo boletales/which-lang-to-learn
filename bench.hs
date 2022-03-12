@@ -28,7 +28,7 @@ main :: IO ()
 main = do
   files   <- readFile "files.csv"    >>= (pack >>> readFileSettings  >>> traverse getSource >>> fmap rights)
   results <- readFile "settings.csv" >>= (pack >>> readSettings      >>> traverse runBench  >>> fmap rights)
-  TIO.readFile "langs_template.md" >>= (embedResult files results >>> TIO.writeFile "langs.md")
+  TIO.readFile "langs_template.md" >>= (embed files results >>> TIO.writeFile "langs.md")
 
 
 data Settings = Settings {
@@ -129,29 +129,45 @@ withTailLf t =
     Just (_,'\n') -> t
     _             -> t <> "\n"
 
+embed :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text
+embed files results = embedIndex >>> embedResult files results
+
+embedIndex :: Text -> Text
+embedIndex text =
+  let anchortag t    = "<a name='" <> t <> "'></a>"
+      anchoridl2 i   = "anchor" <> tshow i
+      anchoridl3 i j = "anchor" <> tshow i <> "-" <> tshow j
+      (sections, anchored)
+        = ( let self = fst $ T.breakOn "\n## " text
+            in 
+            T.breakOnAll "\n## " >>>
+            L.foldl' (\(i,xs,t) (before, after) ->
+                let (inner,outer)        = T.breakOn "\n## " (T.drop 4 after)
+                    title                = fst $ T.breakOn "\n" inner
+                    self                 = fst $ T.breakOn "\n### " inner
+                    (sections, anchored) =
+                        (T.breakOnAll "\n### " >>>
+                        L.foldl' (\(j,xs,t) (before, after) ->
+                          let title    = fst $ T.breakOn "\n" $ T.drop 5 after
+                              anchored = fst $ T.breakOn "\n### " (T.drop 5 after)
+                          in (j+1, (title,[]):xs, t <> "\n### " <> anchortag (anchoridl3 i j) <> anchored)
+                        ) (0,[],self) >>>
+                        (\(j,xs,t) -> (reverse xs, t))
+                        ) inner
+                in (i+1, (title, sections):xs, t <> "\n## " <> anchortag (anchoridl2 i) <> anchored)
+              ) (0,[],self) >>>
+            (\(j,xs,t) -> (reverse xs, t))
+          ) text
+      indexmd = T.intercalate "\n" $ mapWithIndex (\i s ->
+                    "- <a href='#"<> anchoridl2 i <>"'>" <> fst s <> "</a>\n" <> T.intercalate "\n" (mapWithIndex (\j s ->
+                    "  - <a href='#"<> anchoridl3 i j <>"'>" <> fst s <> "</a>"
+                  ) (snd s))) sections
+  in replace "{index}" indexmd anchored
+
 embedResult :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text
 embedResult files results =
     ( \text ->
-      let sections
-            = ( T.breakOnAll "\n## " >>>
-                L.foldl' (\xs(before, after) ->
-                    let (inner,outer) = T.breakOn "\n## " (T.drop 4 after)
-                        title         = fst $ T.breakOn "\n" inner
-                        sections      =
-                            (T.breakOnAll "\n### " >>>
-                            L.foldl' (\xs (before, after) ->
-                              let title    = fst $ T.breakOn "\n" $ T.drop 5 after
-                              in (title,[]):xs ) []
-                            >>> reverse
-                            ) inner
-                    in (title, sections):xs
-                  ) [] >>> reverse
-              ) text
-          indexmd = T.intercalate "\n" $ mapWithIndex (\i s ->
-                        "- <a href='#"<> fst s <>"'>" <> fst s <> "</a>\n" <> T.intercalate "\n" (mapWithIndex (\j s ->
-                        "  - <a href='#"<> fst s <>"'>" <> fst s <> "</a>"
-                      ) (snd s))) sections
-      in replace "{index}" indexmd text
+      
     ) >>>
     flip (L.foldl' (\t file ->
       let fid  = (fst >>> fileid  ) file
