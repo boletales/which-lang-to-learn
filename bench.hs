@@ -132,7 +132,7 @@ withTailLf t =
 embedResult :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text
 embedResult files results =
     ( \text ->
-      let anchortag t  = "<div id='" <> t <> "'>"
+      let anchortag t  = "<a href='" <> t <> "'></a>"
           anchoridl2 i   = "anchor" <> tshow i
           anchoridl3 i j = "anchor" <> tshow i <> "-" <> tshow j
           (sections, anchored)
@@ -143,7 +143,7 @@ embedResult files results =
                         (sections, anchored) =
                             (T.breakOnAll "\n### " >>>
                             L.foldl' (\(j,xs,t) (before, after) ->
-                              let title    = fst $ T.breakOn "\n### " $ T.drop 5 after
+                              let title    = fst $ T.breakOn "\n" $ T.drop 5 after
                               in (j+1, (title,[]):xs, t <> before <> anchortag (anchoridl3 i j) <> after)
                             ) (0,[],"") >>>
                             (\(j,xs,t) -> (reverse xs, t))
@@ -153,7 +153,7 @@ embedResult files results =
                 (\(j,xs,t) -> (reverse xs, t))
               ) text
           indexmd = T.intercalate "\n" $ mapWithIndex (\i s ->
-                        "- <a href='#"<> anchoridl2 i <>"'>" <> fst s <> "</a>" <> T.intercalate "\n" (mapWithIndex (\j s ->
+                        "- <a href='#"<> anchoridl2 i <>"'>" <> fst s <> "</a>\n" <> T.intercalate "\n" (mapWithIndex (\j s ->
                         "  - <a href='#"<> anchoridl3 i j <>"'>" <> fst s <> "</a>"
                       ) (snd s))) sections
       in replace "{index}" indexmd text
