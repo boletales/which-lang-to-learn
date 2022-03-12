@@ -3,21 +3,21 @@ function main()
     
     println("start")
     
-    sieve = fill(true,MAX)
+    sieve = trues(MAX)
     
     sieve[1] = false
-    for i :: Int64 in 2:Int64(floor(sqrt(MAX)))
+    @inbounds for i :: Int64 in 2:Int64(floor(sqrt(MAX)))
         if sieve[i]
-            for j in (i*i):i:MAX
+            @inbounds for j in (i*i):i:MAX
                 sieve[j] = false
             end
         end
     end
     
     
-    primes = fill(0,MAX)
+    primes = zeros(Int64,MAX)
     pcount = 1
-    for i in 2:MAX
+    @inbounds for i in 2:MAX
         if sieve[i]
             primes[pcount] = i
             pcount += 1
