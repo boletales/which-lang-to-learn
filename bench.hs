@@ -14,7 +14,7 @@ import System.Directory
 import Control.Exception
 import Control.Monad
 import Data.Char
-import Data.Text as T (Text, pack, unpack, replace, splitOn, strip, intercalate, breakOn, tail, breakOnEnd, unsnoc)
+import Data.Text as T (Text, pack, unpack, replace, splitOn, strip, intercalate, breakOn, tail, breakOnEnd, unsnoc, breakOnAll, drop)
 import qualified Data.Text.IO as TIO
 import Text.Read
 import Text.Printf
@@ -26,7 +26,7 @@ import Data.Time (parseTime)
 
 main :: IO ()
 main = do
-  files   <- readFile "files.csv"    >>= (pack >>> readFileSettings  >>> traverse getSource >>> fmap rights) 
+  files   <- readFile "files.csv"    >>= (pack >>> readFileSettings  >>> traverse getSource >>> fmap rights)
   results <- readFile "settings.csv" >>= (pack >>> readSettings      >>> traverse runBench  >>> fmap rights)
   TIO.readFile "langs_template.md" >>= (embedResult files results >>> TIO.writeFile "langs.md")
 
@@ -67,7 +67,7 @@ readSettings str = catMaybes $ lineToSettings <$> Prelude.tail (splitOn "\n" str
         sid:dir:nam:src:bld:exe:_ -> Just $ Settings sid dir nam src bld exe
         _                     -> Nothing
 
-readFileSettings :: Text -> [SourceFile] 
+readFileSettings :: Text -> [SourceFile]
 readFileSettings str = catMaybes $ lineToSettings <$> Prelude.tail (splitOn "\n" str)
   where
     lineToSettings line =
@@ -76,7 +76,7 @@ readFileSettings str = catMaybes $ lineToSettings <$> Prelude.tail (splitOn "\n"
         _                     -> Nothing
 
 getSource :: SourceFile -> IO (Either Text (SourceFile, Text))
-getSource sf = 
+getSource sf =
   handle (\(e :: SomeException) -> (tshow >>> Left >>> pure) e) (do
       (pack >>> (sf,) >>> Right) <$> readCreateProcess (proc "cat" [unpack $ filepath sf]) ""
     )
@@ -120,7 +120,7 @@ parseTimeResult str =
 mapWithIndex :: (Int -> a -> b) -> [a] -> [b]
 mapWithIndex f = zipWith f [0..]
 
-numToText2 :: Double -> Text 
+numToText2 :: Double -> Text
 numToText2 = printf "%.2f" >>> pack
 
 withTailLf :: Text -> Text
@@ -131,6 +131,33 @@ withTailLf t =
 
 embedResult :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text
 embedResult files results =
+    ( \text ->
+      let anchortag t  = "<div id='anchor" <> t <> "'>"
+          anchoridl2 i   = tshow i
+          anchoridl3 i j = tshow i <> "-" <> tshow j
+          (sections, anchored)
+            = ( T.breakOnAll "\n## " >>>
+                L.foldl' (\(i,xs,t) (before, after) ->
+                    let (inner,outer)        = T.breakOn "\n## " (T.drop 4 after)
+                        title                = fst $ T.breakOn "\n" inner
+                        (sections, anchored) =
+                            (T.breakOnAll "\n### " >>>
+                            L.foldl' (\(j,xs,t) (before, after) ->
+                              let title    = fst $ T.breakOn "\n" $ T.drop 5 after
+                              in (j+1, (title,[]):xs, t <> before <> anchortag (anchoridl3 i j) <> after)
+                            ) (0,[],"") >>>
+                            (\(j,xs,t) -> (reverse xs, t))
+                            ) inner
+                    in (i+1, (title, sections):xs, t <> before <> anchortag (anchoridl2 i) <> "\n## " <> anchored <> outer)
+                  ) (0,[],"") >>>
+                (\(j,xs,t) -> (reverse xs, t))
+              ) text
+          indexmd = T.intercalate "\n" $ mapWithIndex (\i s ->
+                        "- <a href='#"<> anchoridl2 i <>"'>" <> fst s <> "</a>\n" <> T.intercalate "\n" (mapWithIndex (\j s ->
+                        "  - <a href='#"<> anchoridl3 i j <>"'>" <> fst s <> "</a>"
+                      ) (snd s))) sections
+      in replace "{index}" indexmd text
+    ) >>>
     flip (L.foldl' (\t file ->
       let fid  = (fst >>> fileid  ) file
           lang = (fst >>> filelang) file
