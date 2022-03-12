@@ -15,4 +15,4 @@ vb   , vb  , VB.net      , Program.vb , dotnet publish -c release -r linux-x64, 
 cs   , cs  , C#          , Program.cs , dotnet publish -c release -r linux-x64, ./bin/release/net6.0/linux-x64/cs
 asm  , asm , Assembly    , main.s     , gcc main.s                            , ./a.out
 java , java, Java        , main.java  , javac main.java                       , java Primes
-    
+cr   , cr  , Crystal     , main.cr    , crystal build --release main.cr       , ./main
