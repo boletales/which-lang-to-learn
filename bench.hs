@@ -17,6 +17,7 @@ import Data.Char
 import Data.Text as T (Text, pack, unpack, replace, splitOn, strip, intercalate, breakOn, tail, breakOnEnd)
 import qualified Data.Text.IO as TIO
 import Text.Read
+import Text.Printf
 import Data.Map
 import Data.List as L
 import Data.Monoid
@@ -119,6 +120,9 @@ parseTimeResult str =
 mapWithIndex :: (Int -> a -> b) -> [a] -> [b]
 mapWithIndex f = zipWith f [0..]
 
+numToText2 :: Double -> Text 
+numToText2 = printf "%.2f" >>> pack
+
 embedResult :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text
 embedResult files results =
     flip (L.foldl' (\t file ->
@@ -142,8 +146,8 @@ embedResult files results =
     replace "{ranking}" (
           let sortedByReal = (L.map (\res -> ((settings >>> langname) res, (timeresult >>> \(r,u,s) -> r) res)) >>> sortOn snd) results
               sortedByUser = (L.map (\res -> ((settings >>> langname) res, (timeresult >>> \(r,u,s) -> u) res)) >>> sortOn snd) results
-              tocol rank (lang, time) = "| " <> tshow (rank+1) <> " | " <> lang <> " | " <> tshow time <> " sec. |\n"
-              header = "| rank | lang | time |\n| - | - | - |\n"
-          in "実行時間：\n" <> (header <> T.intercalate "" (mapWithIndex tocol sortedByReal)) <> "\n" <>
-             "CPU時間：\n" <> (header <> T.intercalate "" (mapWithIndex tocol sortedByUser))
+              tocol fastest rank (lang, time) = "| " <> tshow (rank+1) <> " | " <> lang <> " | " <> numToText2 time <> " sec. |" <> numToText2 (time/fastest) <> "x |\n"
+              header = "| rank | lang | time | ratio | \n| - | - | - | - |\n"
+          in "実行時間：\n" <> (header <> T.intercalate "" (mapWithIndex (tocol $ snd $ head sortedByReal) sortedByReal)) <> "\n" <>
+             "CPU時間：\n" <> (header <> T.intercalate "" (mapWithIndex (tocol $ snd $ head sortedByUser) sortedByUser))
         )
