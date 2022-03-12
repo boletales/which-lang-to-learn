@@ -9,21 +9,15 @@ main <- function(){
     
     for(i in 1:floor(sqrt(max))){
         if(sieve[i]){
-            for(j in seq(i*i,max,by=i)) sieve[j] = FALSE
+            #for(j in seq(i*i,max,by=i)) sieve[j] = FALSE
+            sieve[(i:(max%/%i))*i] = FALSE
         }
     }
     
-    primes <- rep(0, max)
-    pcount <- 0;
+    nums   <- 1:max
+    primes <- nums[sieve[nums]]
     
-    for(i in 1:max){
-        if(sieve[i]){
-            primes[pcount] = i
-            pcount = pcount + 1
-        }
-    }
-    
-    print(primes[pcount-1])
+    print(primes[length(primes)])
     
     print("end")
 }
