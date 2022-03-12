@@ -5,8 +5,8 @@ rs   , rs  , Rust        , src/main.rs, cargo build --release                 , 
 hs   , hs  , Haskell     , app/Main.hs, stack install --local-bin-path ./     , ./hs-exe
 py   , py  , Python      , main_nd.py , :                                     , python main_nd.py
 pypy , py  , PyPy        , main.py    , :                                     , pypy main.py
-rb   , rb  , Ruby        , main.rb    , :                                     , ruby main.rb
 cy   , py  , Cython      , cylib.pyx  , python setup.py build_ext --inplace   , python cymain.py
+rb   , rb  , Ruby        , main.rb    , :                                     , ruby main.rb
 jl   , jl  , Julia       , main.jl    , julia main.jl                         , julia main.jl
 js   , js  , JS          , main.js    , :                                     , node main.js
 f95  , f95 , Fortran     , main.f95   , gfortran -Ofast main.f95              , ./a.out
