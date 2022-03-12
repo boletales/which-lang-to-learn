@@ -1,2 +1,8 @@
 *.out
 *.class
+*.cmi
+*.cmx
+*.o
+*/bin/*
+*/obj/*
+*/target/*
