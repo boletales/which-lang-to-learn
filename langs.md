@@ -15,57 +15,58 @@
 
 ## スクリプトみの強いやつ
 ### Python
-  - とてもおそい(最速組比20倍以上)
+- 理系大学生のリンガフランカ
+- いいところ
+  - ライブラリが豊富（機械学習とかスクレイピングとか）
+  - 使ってる人が多い
+  - 文法が簡単
   - PyPy(高速な実装)とかCython(一部コードをCに変換するツール)を使えば人道的な実行時間で済む
-  - やれと言わなくてもやることになる
-  - ライブラリが豊富
-  - 比較的簡単
-  - 型アノテーションはあるらしい
-  - 京大の資料読め
+- わるいところ
+  - とてもおそい(最速組比20倍以上)
+  - デバッグがしづらい
+  - オフサイドルールはクソ
+- 有用なリソース
+  - 京大の資料(https://repository.kulib.kyoto-u.ac.jp/dspace/bitstream/2433/265459/1/Version2021_10_08_01.pdf)
+
+高速なライブラリ(numpyとか)を使えば十分な速度を出せる
 
 code:
 ```py
 import math
+import numpy as np
 
 print("start")
 MAX = 100000000
 
-sieve = [True]*(MAX+1)
+sieve = np.ones(MAX+1, dtype="bool")
 
 sieve[0] = False
 sieve[1] = False
 
 for i in range(2,int(math.sqrt(MAX))):
     if sieve[i]:
-        for j in range(i*i,MAX+1,i):
-            sieve[j] = False
+        sieve[np.arange(i,MAX//i + 1)*i] = False
 
-primes = [0]*(MAX+1)
-pcount = 0
-
-for i in range(2,MAX+1):
-    if sieve[i]:
-        primes[pcount] = i
-        pcount += 1
-
-print(primes[pcount-1])
+nums   = np.arange(0,MAX+1)
+primes = nums[sieve[nums]]
+print(primes[-1])
 print("end")
 ```
 
 result:
 ```
 $ :
-$ time python main.py
+$ time python main_nd.py
 start
 99999989
 end
 
-real	0m28.579s
-user	0m27.984s
-sys	0m0.455s
+real	0m1.683s
+user	0m1.601s
+sys	0m1.167s
 ```
 
-同じコードでもPyPyで実行するとだいぶマシになる
+普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
 
 result:
 ```
@@ -75,9 +76,9 @@ start
 99999989
 end
 
-real	0m4.745s
-user	0m4.197s
-sys	0m0.476s
+real	0m4.458s
+user	0m3.924s
+sys	0m0.492s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -87,8 +88,8 @@ code:
 import cylib
 
 print("start")
-(primes,pcount) = cylib.main()
-print(primes[pcount-1])
+primes = cylib.main()
+print(primes[-1])
 print("end")
 ```
 
@@ -137,26 +138,97 @@ result:
 $ python setup.py build_ext --inplace
 $ time python cymain.py
 start
+5761455
+end
+
+real	0m3.674s
+user	0m3.754s
+sys	0m0.981s
+```
+
+
+### Julia
+  - FortranとmatlabとPythonの後釜をいっぺんに狙おうとしている言語
+  - いいところ
+    - 文法がシンプル
+    - 事前にコンパイルする必要がないが、JITのおかげで比較的速い（最速組には勝てない）
+    - PyCallでpythonのライブラリが使える
+    - 数式・行列が扱いやすい
+    - numpyやmatplotlibがpythonよりだいぶ使いやすい
+    - PythonとCとMATLABの良いところどり的存在 by あなばす
+    - Jupyter notebookで使える
+  - わるいところ
+    - いまのところ入門向けの良書はあまりない
+  - 特徴
+    - 1-indexed、縦行列基本など癖がある（数式をそのまま使えるから数学屋とかシミュレーション屋には便利）
+    - クラスはない（Pythonのサンプルコードを脳死で移植はできない）（構造体で似たようなものは作れる）
+    - ちゃんと考えてコーディングしないといまいち速度が出ない
+  - 有用なリソース
+    - 公式wiki
+
+コード全体を関数で包まないと死ぬほど遅くなるので注意（一敗）
+
+code:
+```jl
+function main()
+    MAX = 100000000
+    
+    println("start")
+    
+    sieve = fill(true,MAX)
+    
+    sieve[1] = false
+    for i :: Int64 in 2:Int64(floor(sqrt(MAX)))
+        if sieve[i]
+            for j in (i*i):i:MAX
+                sieve[j] = false
+            end
+        end
+    end
+    
+    
+    primes = fill(0,MAX)
+    pcount = 1
+    for i in 2:MAX
+        if sieve[i]
+            primes[pcount] = i
+            pcount += 1
+        end
+    end
+    
+    println(primes[pcount-1])
+    
+    println("end")
+end
+main()
+```
+
+result:
+```
+$ julia main.jl
+$ time julia main.jl
+start
 99999989
 end
 
-real	0m4.664s
-user	0m4.780s
-sys	0m0.878s
+real	0m1.129s
+user	0m0.906s
+sys	0m0.197s
 ```
 
-### PHP
-  - おそい
-  - やれとは全く言わないけどたのしいよ
-  - Web屋さん(サーバーサイド)専用
-{sample:php}
 
 ## コンパイルして使うやつ
 ### C
-  - 最速組
-  - 工学erはやることになりそう
-  - 静的型、型推論なし
-  - 自己責任系プログラミング言語
+  - 組み込みやさんの必携、恐怖の自己責任系プログラミング言語
+  - いいところ
+    - 最速組。とにかく速い
+    - メモリを直接扱える
+    - マイコンみたいな制限された環境下でも動く
+    - 勉強にはなる
+  - わるいところ
+    - メモリを直接扱わされる
+    - 初学者には難しい
+    - 何もかも自己責任
 
 code:
 ```c
@@ -202,18 +274,21 @@ start
 99999989
 end
 
-real	0m0.736s
-user	0m0.697s
-sys	0m0.037s
+real	0m0.727s
+user	0m0.704s
+sys	0m0.017s
 ```
 
 
 ### C++
-  - 最速組
-  - 競プロerはやっとけ
-  - 自分のこと現代的だと思ってる古参言語
-  - 書き味はいたって素直。自分の足を撃ち抜く権利はあなたの手に託されています
-  - 静的型、型推論ややあり
+  - 自分のことを最新鋭だと思っている古参言語
+  - いいところ
+    - 最速組。とにかく速い2
+    - メモリを直接扱える2
+    - 現代的な機能がたくさん追加されている
+  - わるいところ
+    - 何もかも自己責任
+    - 初学者には難しい
   - Cにない型がいっぱいある
 
 コンパイル時に最適化フラグを渡さないと10倍以上遅い(一敗)
@@ -263,24 +338,27 @@ start
 99999989
 start
 
-real	0m0.695s
-user	0m0.572s
-sys	0m0.120s
+real	0m0.636s
+user	0m0.553s
+sys	0m0.080s
 ```
 
   
 ### Rust
-  - 最速組
-  - やれ
-  - 2言語目推奨
-  - プログラマのことを信頼していない
-  - 型が強い
-  - 静的型、型推論強い
-  - 新世代の勝者？
-  - パッケージ管理ツールが優秀
-  - ライブラリが豊富
-  - ビルドが遅い（特に初回）
-  - The Rust Programming Language 読んどけ
+  - マルチパラダイム言語界の新星 新時代の勝者……！？
+  - いいところ
+    - 最速組。とにかく速い3
+    - メモリを直接扱えるが、直接扱わずに済む！！！ココ重要！！
+    - メモリ安全
+    - 型の力でより安全なコードが書ける
+    - 他の言語から大量に有用な機能を輸入している
+    - コンパイラが世話を焼いてくれる
+  - わるいところ
+    - 難易度が、高い。（さすがに一言語目にはおすすめできない）
+    - コンパイラが口うるさい
+    - ビルドが遅い（特に初回）
+  - 有用なリソース
+    - The Rust Programming Language (和訳): https://doc.rust-jp.rs/book-ja/
 
 code:
 ```rs
@@ -321,21 +399,25 @@ start
 99999989
 end
 
-real	0m1.002s
-user	0m0.933s
-sys	0m0.043s
+real	0m0.882s
+user	0m0.829s
+sys	0m0.044s
 ```
 
 
 ### Assembly
-  - 最速組（書く人間にオプティマイザが搭載されていれば）
-  - 生で書くのは苦行
-  - CPU の気持ちになれる
-  - デバッグはアホほど大変
-  - `gcc -S main.c` をすればアセンブリが見れるので、そこから修正するのがおすすめ。
-  - [Compiler Explorer](https://gcc.godbolt.org/)を使うのも良い。
-  - (C/C++などの) コンパイラはたまにいい感じのコードを吐いてくれないので、コンパイルされたものを見て、適宜手動でアセンブリ最適化するのが良い。
-  - 生で書くのは苦行
+  - これどうやって書くんですか
+  - いいところ
+    - 最速組（書く人間にオプティマイザが搭載されていれば）
+    - CPU の気持ちになれる
+  - わるいところ
+    - 生で書くのは苦行
+    - デバッグはアホほど大変
+    - 生で書くのは苦行
+  - アドバイス
+    - `gcc -S main.c` をすればアセンブリが見れるので、そこから修正するのがおすすめ。
+    - [Compiler Explorer](https://gcc.godbolt.org/)を使うのも良い。
+    - (C/C++などの) コンパイラはたまにいい感じのコードを吐いてくれないので、コンパイルされたものを見て、適宜手動でアセンブリ最適化するのが良い。
 
 code:
 ```asm
@@ -554,84 +636,22 @@ end
 count 5717621
 
 
-real	0m0.681s
-user	0m0.660s
-sys	0m0.017s
+real	0m0.628s
+user	0m0.599s
+sys	0m0.020s
 ```
 
 
-## JIT(ジャストインタイムコンパイル)を使うやつ
-### Julia
-  - 事前にコンパイルする必要がない
-  - が、JITのおかげで比較的速い（最速組には勝てない）
-  - PyCallでpythonのライブラリが使える
-  - 文法はシンプル
-  - 数式・行列が扱いやすい
-  - numpyやmatplotlibがpythonよりだいぶ使いやすい
-  - 1-indexed、縦行列基本など癖がある（数式をそのまま使えるから数学屋とかシミュレーション屋には便利）
-  - Jupyter notebookで使える
-  - ちゃんと考えてコーディングしないといまいち速度が出ない
-  - クラスはない（Pythonのサンプルコードを脳死で移植はできない）（構造体で似たようなものは作れる）
-  - PythonとCとMATLABの良いところどり的存在 by あなばす
-  - いまのところ入門向けの良書はあまりない
-  - 公式wikiはわかりやすい。
-
-コード全体を関数で包まないと死ぬほど遅くなるので注意（一敗）
-
-code:
-```jl
-function main()
-    MAX = 100000000
-    
-    println("start")
-    
-    sieve = fill(true,MAX)
-    
-    sieve[1] = false
-    for i :: Int64 in 2:Int64(floor(sqrt(MAX)))
-        if sieve[i]
-            for j in (i*i):i:MAX
-                sieve[j] = false
-            end
-        end
-    end
-    
-    
-    primes = fill(0,MAX)
-    pcount = 1
-    for i in 2:MAX
-        if sieve[i]
-            primes[pcount] = i
-            pcount += 1
-        end
-    end
-    
-    println(primes[pcount-1])
-    
-    println("end")
-end
-main()
-```
-
-result:
-```
-$ julia main.jl
-$ time julia main.jl
-start
-99999989
-end
-
-real	0m1.156s
-user	0m0.923s
-sys	0m0.229s
-```
-
+## クラスベースオブジェクト指向一味
 
 ### Java
-  - 五十歩百歩組
-  - 業務で使われがち
-  - ザ・クラスベースオブジェクト指向
-  - 静的型
+  - いいところ
+    - コードの規模が大きくなることに大して耐性が強い
+  - わるいところ
+    - コードが冗長
+  - 特徴
+    - 業務で使われがち
+    - ザ・クラスベースオブジェクト指向
 
 code:
 ```java
@@ -673,17 +693,19 @@ start
 99999989
 end
 
-real	0m1.094s
-user	0m0.951s
-sys	0m0.139s
+real	0m0.971s
+user	0m0.853s
+sys	0m0.103s
 ```
 
 ### C#
-  - 五十歩百歩組2
-  - MS製のJava
-  - Win向けのGUIアプリを書くのが簡単（後述のVB.netとF#も）
-  - Unityでつかうらしい
-  - 静的型、型推論ややあり
+  - MS製のJavaのようななにか
+  - いいところ
+    - コードの規模が大きくなることに大して耐性が強い2
+    - Win向けのGUIアプリを書くのが簡単
+    - Unityで使うらしい
+  - わるいところ
+    - コードが冗長2(Javaよりややマシかも)
 
 code:
 ```cs
@@ -719,14 +741,24 @@ start
 99999989
 end
 
-real	0m0.926s
-user	0m0.837s
-sys	0m0.043s
+real	0m0.818s
+user	0m0.756s
+sys	0m0.037s
 ```
 
 ### VB.net
-  - C#。
-  - C#(Basic風味)。
+  - C#(VisualBasic風味)
+  - いいところ
+    - 文法が初学者にもわかりやすい(Basicの血を引いているだけある)
+    - C#との相互運用が容易。めっちゃ容易。
+    - Win向けのGUIアプリを書くのが簡単2
+    - コードの規模が大きくなることに大して耐性が強い3
+    - C#
+  - わるいところ
+    - Windows以外での使いみちがあまりない
+    - 構文が冗長なので補完がないとつらい(VisualStudioで書く分には補完が強いので気にならない)
+    - 不遇
+    - C#
 
 code:
 ```vb
@@ -769,9 +801,9 @@ start
 99999989
 end
 
-real	0m0.873s
-user	0m0.789s
-sys	0m0.053s
+real	0m0.861s
+user	0m0.779s
+sys	0m0.033s
 ```
 
 
@@ -783,13 +815,25 @@ sys	0m0.053s
   - 静的型、型推論強い
 {sample:ocaml}
 ### Haskell
-  - 五十歩百歩組4
-  - †純粋†関数型言語
-  - 中二病患者におすすめ
-  - 副作用の詳細な制御、
-  - こみいった副作用に対する制御とか複雑なルールの組み合わせとかに滅法強い
-  - ビルドが遅い（特に初回）
-  - 静的型、型推論強い
+  - 中二病患者向けへそ曲がり実用†純粋†関数型言語
+  - いいところ
+    - 副作用が常に明示され、細かい制御ができる
+    - パッケージマネージャが優秀
+    - 機械語から遠そうなわりに非最速組と同程度の速度で動く
+    - 自己拡張性が高い
+    - 学べば学ぶほど生産性が上がる
+    - （すくなくとも世間の噂より）実用性は高い
+    - 言語もツールも進化が速い
+  - わるいところ
+    - 言語もツールも進化が速すぎる
+    - 名前だけ物々しい概念が多すぎる
+    - 生産性を上げようとすると底なしの勉強を強いられる
+    - オフサイドルールはクソ
+    - パフォーマンスのチューニングには知識と努力が必要
+    - 過去のしがらみが多い（ツールとライブラリと言語拡張の力で殴ってなんとかする）
+    - ビルドが遅い（特に初回）
+  - 日本Haskellユーザーグループ: https://haskell.jp/ と、そこのslack（初心者にやさしい）
+  - 
 
 最適化すると十分速いが、知識と試行錯誤が必要
 
@@ -857,9 +901,9 @@ start
 99999989
 end
 
-real	0m1.013s
-user	0m0.759s
-sys	0m0.246s
+real	0m0.934s
+user	0m0.709s
+sys	0m0.207s
 ```
 
 ### Lisp
@@ -869,13 +913,21 @@ sys	0m0.246s
   - きもいモンスター
   - かっこかっこかっこかっこ
 
-## ブラウザでつかえるやつ
+## Web屋さん向け
 ### javascript
-  - 五十歩百歩組6（なんで？？？きみ動的型のスクリプト言語だろ？？？？？）
-  - GUI作りたくなったらHTML+CSS+JSでやるのが一番かんたんかもしれない
-  - サーバーサイドもスタンドアロンも書ける
-  - 動的型、型アノテーションすらない
-  - 愛すべきカス
+  - もうぜんぶこれでいいや
+  - いいところ
+    - GUI作りたくなったらHTML+CSS+JSでやるのが一番かんたんかもしれない
+    - ブラウザで使える（非常に重要）というより、これを除くとWebAssembry以外の選択肢が存在しない
+    - サーバーサイドでもローカルでも使える
+    - "スクリプト言語にしては"異常に速い(非最速組と同格)
+  - わるいところ
+    - 型がない。型アノテーションすらない
+    - 過去のしがらみが多い（マシになりつつある）
+    - 愛すべきカス
+  - 有用なリソース
+    - MDNのチュートリアル: https://developer.mozilla.org/ja/docs/Web/Tutorials
+    - 困ったらMDN
 
 TypedArray使ったら最速組と張り合える速さが出た
 普通の配列を使ったらメモリ確保ができなくなって落ちた
@@ -918,18 +970,31 @@ start
 99999989
 end
 
-real	0m0.918s
-user	0m0.888s
-sys	0m0.030s
+real	0m0.866s
+user	0m0.814s
+sys	0m0.050s
 ```
 
+
+### PHP
+  - Web屋さん専用のかんたんサーバーサイド言語
+  - いいところ
+    - 動的サイトを作りたいなら一番かんたん
+    - HTMLを埋め込むだけなのでクライアントサイドの知識しかなくてもとっつきやすい
+    - ホスティングしてくれるサービスが多い(スターサーバーとかエックスサーバーとか)
+  - わるいところ
+    - カオス
+{sample:php}
+
+### WebAssembly
+  - 直接は書かない
+  - 他の言語(RustとかC++とか)からWASMにコンパイルしてブラウザで使える
+
+### 以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部
 ### Typescript
   - AltJSのデファクトスタンダード、型のあるJS
   - 型がある！！！しかも強い！！！！！！！（とても重要）
 {sample:ts}
-### (WebAsssamplery)
-  - JS一族ではない
-  - 他の言語(RustとかC++とか)からWASMにコンパイルしてブラウザで使える
 ### coffeescript
   - Rubyのようななにか
 {sample:coffee}
@@ -949,13 +1014,15 @@ sys	0m0.030s
 
 ## 統計とかシミュレーションに使うやつ
 ### R
-  - 統計にめっちゃ強い
-  - 検定がコマンド一発でできる
-  - 図が綺麗で細かく指定できる
-  - データフレームが使いやすい
-  - 機械学習のライブラリが多い
-  - 複雑なことをすると遅い
-  - 検索がしにくい
+  - いいところ
+    - 統計にめっちゃ強い。デファクトスタンダード。どうせやらされる（文系含む）
+    - 検定がコマンド一発でできる
+    - 図が綺麗で細かく指定できる
+    - データフレームが使いやすい
+    - 機械学習のライブラリが多い
+  - わるいところ
+    - 複雑なことをすると遅い
+    - カオス
 
 code:
 ```r
@@ -970,21 +1037,15 @@ main <- function(){
     
     for(i in 1:floor(sqrt(max))){
         if(sieve[i]){
-            for(j in seq(i*i,max,by=i)) sieve[j] = FALSE
+            #for(j in seq(i*i,max,by=i)) sieve[j] = FALSE
+            sieve[(i:(max%/%i))*i] = FALSE
         }
     }
     
-    primes <- rep(0, max)
-    pcount <- 0;
+    nums   <- 1:max
+    primes <- nums[sieve[nums]]
     
-    for(i in 1:max){
-        if(sieve[i]){
-            primes[pcount] = i
-            pcount = pcount + 1
-        }
-    }
-    
-    print(primes[pcount-1])
+    print(primes[length(primes)])
     
     print("end")
 }
@@ -1000,20 +1061,26 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m15.448s
-user	0m14.416s
-sys	0m0.962s
+real	0m3.214s
+user	0m2.532s
+sys	0m0.664s
 ```
 
 ### MATLAB
-  - 数式とかシミュレーションが強い
-  - グラフィクスが強い
-  - 有料だけど東大生は使える
-  - そんなに速くはない
+  - いいところ
+    - 数式とかシミュレーションが強い
+    - グラフィクスが強い
+  - わるいところ
+    - 有料(東大生は大学がアカウントくれるので使える)
+    - そんなに速くはない
 ### Fortran
-  - すごく速いらしい
-  - スパコンでよく使われている
-  - 文法が独特
+  - いいところ
+    - 数値計算に強い。めっちゃ強い。
+    - 速い
+    - スパコンでよく使われている
+  - わるいところ
+    - 文法が独特
+    - さすがにつくりが古くてつらい
 
 なにを間違えたのか大して速くならなかった
 
@@ -1063,56 +1130,56 @@ $ time ./a.out
     99999989
  end
 
-real	0m1.261s
-user	0m1.112s
-sys	0m0.125s
+real	0m1.150s
+user	0m1.045s
+sys	0m0.089s
 ```
 
  
 ## 速度ランキング
 実行時間：
-| rank | lang | time |
-| - | - | - |
-| 1 | Assembly | 0.681 sec. |
-| 2 | C++ | 0.695 sec. |
-| 3 | C | 0.736 sec. |
-| 4 | VB.net | 0.873 sec. |
-| 5 | JS | 0.918 sec. |
-| 6 | C# | 0.926 sec. |
-| 7 | Rust | 1.002 sec. |
-| 8 | Haskell | 1.013 sec. |
-| 9 | Java | 1.094 sec. |
-| 10 | Julia | 1.156 sec. |
-| 11 | Fortran | 1.261 sec. |
-| 12 | Cython | 4.664 sec. |
-| 13 | PyPy | 4.745 sec. |
-| 14 | R | 15.448 sec. |
-| 15 | Python | 28.579 sec. |
+| rank | lang | time | ratio | 
+| - | - | - | - |
+| 1 | Assembly | 0.63 sec. |1.00x |
+| 2 | C++ | 0.64 sec. |1.01x |
+| 3 | C | 0.73 sec. |1.16x |
+| 4 | C# | 0.82 sec. |1.30x |
+| 5 | VB.net | 0.86 sec. |1.37x |
+| 6 | JS | 0.87 sec. |1.38x |
+| 7 | Rust | 0.88 sec. |1.40x |
+| 8 | Haskell | 0.93 sec. |1.49x |
+| 9 | Java | 0.97 sec. |1.55x |
+| 10 | Julia | 1.13 sec. |1.80x |
+| 11 | Fortran | 1.15 sec. |1.83x |
+| 12 | Python | 1.68 sec. |2.68x |
+| 13 | R | 3.21 sec. |5.12x |
+| 14 | Cython | 3.67 sec. |5.85x |
+| 15 | PyPy | 4.46 sec. |7.10x |
 
 CPU時間：
-| rank | lang | time |
-| - | - | - |
-| 1 | C++ | 0.572 sec. |
-| 2 | Assembly | 0.66 sec. |
-| 3 | C | 0.697 sec. |
-| 4 | Haskell | 0.759 sec. |
-| 5 | VB.net | 0.789 sec. |
-| 6 | C# | 0.837 sec. |
-| 7 | JS | 0.888 sec. |
-| 8 | Julia | 0.923 sec. |
-| 9 | Rust | 0.933 sec. |
-| 10 | Java | 0.951 sec. |
-| 11 | Fortran | 1.112 sec. |
-| 12 | PyPy | 4.197 sec. |
-| 13 | Cython | 4.78 sec. |
-| 14 | R | 14.416 sec. |
-| 15 | Python | 27.984 sec. |
+| rank | lang | time | ratio | 
+| - | - | - | - |
+| 1 | C++ | 0.55 sec. |1.00x |
+| 2 | Assembly | 0.60 sec. |1.08x |
+| 3 | C | 0.70 sec. |1.27x |
+| 4 | Haskell | 0.71 sec. |1.28x |
+| 5 | C# | 0.76 sec. |1.37x |
+| 6 | VB.net | 0.78 sec. |1.41x |
+| 7 | JS | 0.81 sec. |1.47x |
+| 8 | Rust | 0.83 sec. |1.50x |
+| 9 | Java | 0.85 sec. |1.54x |
+| 10 | Julia | 0.91 sec. |1.64x |
+| 11 | Fortran | 1.04 sec. |1.89x |
+| 12 | Python | 1.60 sec. |2.90x |
+| 13 | R | 2.53 sec. |4.58x |
+| 14 | Cython | 3.75 sec. |6.79x |
+| 15 | PyPy | 3.92 sec. |7.10x |
 
 
 ## 貢献者一覧
-- 筆者 
-  - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP
-  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R
+- メタリックはんぺん 
+  - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java
+  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, Java
   - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
 - あなばす
   - 説明: Julia, Lisp, R, MATLAB, Fortran
