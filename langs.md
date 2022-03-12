@@ -1,17 +1,5 @@
-メモ：
-## 発表に入れるやつ
-- Python
-- Julia
-- C++
-- Rust
-- JS
-- Haskell
-
-## 実行環境について
-サンプルコードの実行時間は以下の環境で計測しました
-- CPU: Ryzen 7 PRO 4750G
-- メモリ: 32GB
-- OS: Manjaro Linux
+# 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
+この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(言語の特徴が死んでいる)コードサンプルを掲載しています。
 
 ## スクリプトみの強いやつ
 ### Python
@@ -63,9 +51,9 @@ start
 99999989
 end
 
-real	0m1.703s
-user	0m1.622s
-sys	0m1.142s
+real	0m1.619s
+user	0m1.628s
+sys	0m1.086s
 
 ```
 
@@ -79,9 +67,9 @@ start
 99999989
 end
 
-real	0m4.376s
-user	0m3.886s
-sys	0m0.418s
+real	0m4.536s
+user	0m3.925s
+sys	0m0.575s
 
 ```
 
@@ -146,9 +134,59 @@ start
 5761455
 end
 
-real	0m3.714s
-user	0m3.823s
-sys	0m0.888s
+real	0m3.609s
+user	0m3.740s
+sys	0m0.963s
+
+```
+
+
+### Ruby
+- 松江在住のプログラマが作った言語
+- C言語的なfor文が存在しないので、文字列や配列や連想配列などの操作はmapやselectなどの各種メソッドで行う文化
+  - `gets.split.map(&:to_i).sort.first(3).reduce(&:+)`みたいにメソッドをつなげて書いていくの、慣れると爽快
+- いいところ
+  - 書きやすい(個人の感想)
+  - 標準ライブラリが充実している
+  - サードパーティーのライブラリも豊富
+  - CLIツールやWebサービスのサーバサイド(バックエンド)を書くのに向いてる
+  - Ruby on RailsというWebアプリ用の超有名フレームワークがある(いろいろ悪く言われがちだが、なんだかんだ強力)
+  - パッケージ管理ツール(Bundler)がまとも
+  - 環境構築は特に難しくない
+- わるいところ
+  - とてもおそい(スクリプト言語の中では普通くらいだが、それでも)
+  - 正直、データサイエンスや機械学習周りは弱い(おとなしくPythonとか使った方がいい)
+  - 型アノテーションや静的な型チェックは存在するが、いろいろ未成熟
+- どうしても速度が欲しい人、あるいは静的型付けの安心感が欲しいRuby書きはCrystalを検討してみよう
+
+code:
+```rb
+puts "start"
+
+MAX = 100000000
+sieve = Array.new(MAX + 1, true)
+sieve[0] = sieve[1] = false
+
+2.upto(Integer.sqrt(MAX)) do |i|
+  (i * i).step(by: i, to: MAX) { |j| sieve[j] = false } if sieve[i]
+end
+
+primes = sieve.filter_map.with_index { |v, i| i if v }
+puts primes.last, "end"
+
+```
+
+result:
+```
+$ :
+$ time ruby main.rb
+start
+99999989
+end
+
+real	0m20.715s
+user	0m20.351s
+sys	0m0.249s
 
 ```
 
@@ -182,29 +220,20 @@ function main()
     
     println("start")
     
-    sieve = fill(true,MAX)
+    sieve = trues(MAX) :: BitVector
     
     sieve[1] = false
-    for i :: Int64 in 2:Int64(floor(sqrt(MAX)))
+    @inbounds for i :: Int64 in 2:Int64(floor(sqrt(MAX)))
         if sieve[i]
-            for j in (i*i):i:MAX
+            @inbounds for j in (i*i):i:MAX
                 sieve[j] = false
             end
         end
     end
+
+    primes = [i for i in 1:MAX if sieve[i]] :: Vector{Int64}
     
-    
-    primes = fill(0,MAX)
-    pcount = 1
-    for i in 2:MAX
-        if sieve[i]
-            primes[pcount] = i
-            pcount += 1
-        end
-    end
-    
-    println(primes[pcount-1])
-    
+    println(primes[length(primes)])
     println("end")
 end
 main()
@@ -219,9 +248,9 @@ start
 99999989
 end
 
-real	0m1.104s
-user	0m0.887s
-sys	0m0.213s
+real	0m0.849s
+user	0m0.769s
+sys	0m0.077s
 
 ```
 
@@ -284,9 +313,9 @@ start
 99999989
 end
 
-real	0m0.714s
-user	0m0.684s
-sys	0m0.020s
+real	0m0.731s
+user	0m0.698s
+sys	0m0.030s
 
 ```
 
@@ -350,9 +379,9 @@ start
 99999989
 start
 
-real	0m0.610s
-user	0m0.520s
-sys	0m0.086s
+real	0m0.622s
+user	0m0.516s
+sys	0m0.103s
 
 ```
 
@@ -415,9 +444,52 @@ start
 99999989
 end
 
-real	0m0.857s
-user	0m0.824s
-sys	0m0.026s
+real	0m0.893s
+user	0m0.852s
+sys	0m0.033s
+
+```
+
+
+### Crystal
+- いいところ
+  - 最速組。とにかく速い4
+  - Rubyの書きやすさとCの速度が合わさり完璧に見える
+  - 静的型付け、型推論が強い(というか明示的に型を書く必要がほぼない)
+  - Rubyのいいところはだいたい受け継いでいる
+- わるいところ
+  - ビルドが遅い
+  - ライブラリがまだまだ少ない
+- Ruby風の言語ではあるが、文法は多少違うし、標準ライブラリにもそれなりに差異があるので注意
+
+code:
+```cr
+puts "start"
+
+MAX = 100000000
+sieve = Array.new(MAX + 1, true)
+sieve[0] = sieve[1] = false
+
+2.upto(Math.isqrt(MAX)) do |i|
+  (i * i).step(by: i, to: MAX) { |j| sieve[j] = false } if sieve[i]
+end
+
+primes = (1..MAX).select{ |i| sieve[i] }
+puts primes.last, "end"
+
+```
+
+result:
+```
+$ crystal build --release main.cr
+$ time ./main
+start
+99999989
+end
+
+real	0m0.875s
+user	0m0.825s
+sys	0m0.050s
 
 ```
 
@@ -654,8 +726,8 @@ end
 count 5717621
 
 
-real	0m0.634s
-user	0m0.620s
+real	0m0.646s
+user	0m0.641s
 sys	0m0.003s
 
 ```
@@ -713,9 +785,9 @@ start
 99999989
 end
 
-real	0m0.969s
-user	0m0.859s
-sys	0m0.128s
+real	0m1.001s
+user	0m0.841s
+sys	0m0.166s
 
 ```
 
@@ -763,9 +835,9 @@ start
 99999989
 end
 
-real	0m0.834s
-user	0m0.765s
-sys	0m0.030s
+real	0m0.870s
+user	0m0.785s
+sys	0m0.050s
 
 ```
 
@@ -825,9 +897,9 @@ start
 99999989
 end
 
-real	0m0.852s
-user	0m0.771s
-sys	0m0.033s
+real	0m0.874s
+user	0m0.800s
+sys	0m0.047s
 
 ```
 
@@ -838,7 +910,58 @@ sys	0m0.033s
 - ML族
 - 非純粋
 - 静的型、型推論強い
-{sample:ocaml}
+
+code:
+```ocaml
+let main = 
+  Printf.printf "start\n";;
+
+  let max = 100000000 in
+  let sqrtmax = truncate (sqrt (float_of_int max))
+  and sieve = Array.make (max+1) true in
+
+  sieve.(0) <- false;
+  sieve.(1) <- false;
+  for i = 2 to sqrtmax do
+    if sieve.(i) then
+      for j = i to Int.div max i do
+        sieve.(j*i) <- false;
+        ()
+      done
+    else ()
+  done;
+
+
+  let pcount = ref 0
+  and primes = Array.make (max+1) 0 in
+  for i = 0 to max do
+    if sieve.(i) then begin
+      primes.(!pcount) <- i;
+      pcount := !pcount+1;
+      ()
+    end else ()
+  done;
+
+  Printf.printf "%d\n" primes.(!pcount - 1);;
+
+  Printf.printf "end\n";;
+
+```
+
+result:
+```
+$ ocamlopt main.ml -O3
+$ time ./a.out
+start
+99999989
+end
+
+real	0m2.156s
+user	0m1.668s
+sys	0m0.460s
+
+```
+
 ### Haskell
 - 中二病患者向けへそ曲がり実用†純粋†関数型言語
 - いいところ
@@ -930,9 +1053,9 @@ start
 99999989
 end
 
-real	0m0.942s
-user	0m0.695s
-sys	0m0.205s
+real	0m0.995s
+user	0m0.717s
+sys	0m0.276s
 
 ```
 
@@ -1002,9 +1125,9 @@ start
 99999989
 end
 
-real	0m0.845s
-user	0m0.819s
-sys	0m0.027s
+real	0m0.917s
+user	0m0.862s
+sys	0m0.054s
 
 ```
 
@@ -1096,9 +1219,9 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m3.166s
-user	0m2.554s
-sys	0m0.597s
+real	0m3.513s
+user	0m2.648s
+sys	0m0.857s
 
 ```
 
@@ -1167,51 +1290,65 @@ $ time ./a.out
     99999989
  end
 
-real	0m1.142s
-user	0m1.050s
-sys	0m0.086s
+real	0m1.233s
+user	0m1.097s
+sys	0m0.133s
 
 ```
 
- 
-## 速度ランキング
+
+## 実行環境について
+サンプルコードの実行時間は以下の環境で計測しました
+- CPU: Ryzen 7 PRO 4750G
+- メモリ: 32GB
+- OS: Manjaro Linux
+
+## 速度ランキング（あんまり参考にならない）
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | C++ | 0.61 sec. |1.00x |
-| 2 | Assembly | 0.63 sec. |1.04x |
-| 3 | C | 0.71 sec. |1.17x |
-| 4 | C# | 0.83 sec. |1.37x |
-| 5 | JS | 0.84 sec. |1.39x |
-| 6 | VB.net | 0.85 sec. |1.40x |
-| 7 | Rust | 0.86 sec. |1.40x |
-| 8 | Haskell | 0.94 sec. |1.54x |
-| 9 | Java | 0.97 sec. |1.59x |
-| 10 | Julia | 1.10 sec. |1.81x |
-| 11 | Fortran | 1.14 sec. |1.87x |
-| 12 | Python | 1.70 sec. |2.79x |
-| 13 | R | 3.17 sec. |5.19x |
-| 14 | Cython | 3.71 sec. |6.09x |
-| 15 | PyPy | 4.38 sec. |7.17x |
+| 1 | C++ | 0.62 sec. |1.00x |
+| 2 | Assembly | 0.65 sec. |1.04x |
+| 3 | C | 0.73 sec. |1.18x |
+| 4 | Julia | 0.85 sec. |1.36x |
+| 5 | C# | 0.87 sec. |1.40x |
+| 6 | VB.net | 0.87 sec. |1.41x |
+| 7 | Crystal | 0.88 sec. |1.41x |
+| 8 | Rust | 0.89 sec. |1.44x |
+| 9 | JS | 0.92 sec. |1.47x |
+| 10 | Haskell | 1.00 sec. |1.60x |
+| 11 | Java | 1.00 sec. |1.61x |
+| 12 | Fortran | 1.23 sec. |1.98x |
+| 13 | Python | 1.62 sec. |2.60x |
+| 14 | OCaml | 2.16 sec. |3.47x |
+| 15 | F# | 2.41 sec. |3.87x |
+| 16 | R | 3.51 sec. |5.65x |
+| 17 | Cython | 3.61 sec. |5.80x |
+| 18 | PyPy | 4.54 sec. |7.29x |
+| 19 | Ruby | 20.72 sec. |33.30x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
 | 1 | C++ | 0.52 sec. |1.00x |
-| 2 | Assembly | 0.62 sec. |1.19x |
-| 3 | C | 0.68 sec. |1.32x |
-| 4 | Haskell | 0.70 sec. |1.34x |
-| 5 | C# | 0.76 sec. |1.47x |
-| 6 | VB.net | 0.77 sec. |1.48x |
-| 7 | JS | 0.82 sec. |1.58x |
-| 8 | Rust | 0.82 sec. |1.58x |
-| 9 | Java | 0.86 sec. |1.65x |
-| 10 | Julia | 0.89 sec. |1.71x |
-| 11 | Fortran | 1.05 sec. |2.02x |
-| 12 | Python | 1.62 sec. |3.12x |
-| 13 | R | 2.55 sec. |4.91x |
-| 14 | Cython | 3.82 sec. |7.35x |
-| 15 | PyPy | 3.89 sec. |7.47x |
+| 2 | Assembly | 0.64 sec. |1.24x |
+| 3 | C | 0.70 sec. |1.35x |
+| 4 | Haskell | 0.72 sec. |1.39x |
+| 5 | Julia | 0.77 sec. |1.49x |
+| 6 | C# | 0.78 sec. |1.52x |
+| 7 | VB.net | 0.80 sec. |1.55x |
+| 8 | Crystal | 0.82 sec. |1.60x |
+| 9 | Java | 0.84 sec. |1.63x |
+| 10 | Rust | 0.85 sec. |1.65x |
+| 11 | JS | 0.86 sec. |1.67x |
+| 12 | Fortran | 1.10 sec. |2.13x |
+| 13 | Python | 1.63 sec. |3.16x |
+| 14 | OCaml | 1.67 sec. |3.23x |
+| 15 | F# | 2.21 sec. |4.29x |
+| 16 | R | 2.65 sec. |5.13x |
+| 17 | Cython | 3.74 sec. |7.25x |
+| 18 | PyPy | 3.92 sec. |7.61x |
+| 19 | Ruby | 20.35 sec. |39.44x |
 
 
 ## 貢献者一覧
@@ -1228,4 +1365,8 @@ CPU時間：
 - TumoiYorozu
   - サンプル: Assembly
   - 一言: 生のアセンブリ、もう書かない
+- ふぁぼん
+  - 説明: Ruby, Crystal
+  - サンプル: Ruby, Crystal
+  - 一言: なんだかんだRubyはいい言語だと思う。コードゴルフにも向いてるし。
   
