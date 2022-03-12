@@ -7,6 +7,7 @@ import Data.Foldable
 import Control.Monad
 import Control.Monad.ST
 import Data.STRef
+import Control.Loop
 import GHC.Float
 
 num :: Int
@@ -19,7 +20,6 @@ main = do
   print $ V.last ps
   putStrLn "end"
 
-
 generatePrimes :: Int -> V.Vector Int
 generatePrimes max =
   let sieve = runST (do
@@ -27,16 +27,16 @@ generatePrimes max =
           MV.write msieve 0 False
           MV.write msieve 1 False
           
-          forM_ [2..(double2Int $ sqrt $ fromIntegral max)] $ \i -> do
+          numLoop 2 (double2Int $ sqrt $ fromIntegral max) $ \i -> do
             isprime <- MV.unsafeRead msieve i
-            when isprime (forM_ [i..max `div` i] (\j -> MV.unsafeWrite msieve (i*j) False))
+            when isprime (numLoop i (max `div` i) (\j -> MV.unsafeWrite msieve (i*j) False))
           
           V.unsafeFreeze msieve
         )
 
       primes = runST (do
-          mprimes <- MV.replicate (max+1) 0
-
+          mprimes <- MV.unsafeNew (max+1)
+            
           pcount <- foldM (\pcount i -> do
             let isprime = V.unsafeIndex sieve i
             if isprime
