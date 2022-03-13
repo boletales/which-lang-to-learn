@@ -95,9 +95,9 @@ $ time python main_nd.pystart
 99999989
 end
 
-real	0m1.725s
-user	0m1.716s
-sys	0m1.070s
+real	0m1.726s
+user	0m1.640s
+sys	0m1.165s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -109,9 +109,9 @@ $ time pypy main.pystart
 99999989
 end
 
-real	0m4.679s
-user	0m4.047s
-sys	0m0.577s
+real	0m4.569s
+user	0m4.026s
+sys	0m0.515s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -173,9 +173,9 @@ $ time python cymain.pystart
 5761455
 end
 
-real	0m3.698s
-user	0m3.885s
-sys	0m0.888s
+real	0m3.673s
+user	0m3.808s
+sys	0m0.939s
 ```
 
 
@@ -220,9 +220,9 @@ $ time ruby main.rbstart
 99999989
 end
 
-real	0m20.635s
-user	0m20.335s
-sys	0m0.222s
+real	0m19.925s
+user	0m19.621s
+sys	0m0.239s
 ```
 
 
@@ -281,9 +281,9 @@ $ time julia main.jlstart
 99999989
 end
 
-real	0m0.878s
-user	0m0.765s
-sys	0m0.100s
+real	0m0.834s
+user	0m0.735s
+sys	0m0.089s
 ```
 
 
@@ -343,9 +343,9 @@ $ time ./a.outstart
 99999989
 end
 
-real	0m0.760s
-user	0m0.717s
-sys	0m0.040s
+real	0m0.734s
+user	0m0.710s
+sys	0m0.017s
 ```
 
 
@@ -406,9 +406,9 @@ $ time ./a.outstart
 99999989
 start
 
-real	0m0.648s
-user	0m0.545s
-sys	0m0.100s
+real	0m0.641s
+user	0m0.525s
+sys	0m0.106s
 ```
 
   
@@ -468,9 +468,9 @@ $ time ./target/release/rsstart
 9991
 end
 
-real	0m0.609s
-user	0m0.575s
-sys	0m0.030s
+real	0m0.602s
+user	0m0.577s
+sys	0m0.020s
 ```
 
 
@@ -508,9 +508,9 @@ $ time ./mainstart
 99999989
 end
 
-real	0m0.966s
-user	0m0.898s
-sys	0m0.056s
+real	0m0.878s
+user	0m0.841s
+sys	0m0.037s
 ```
 
 
@@ -744,9 +744,9 @@ end
 count 5717621
 
 
-real	0m0.676s
-user	0m0.647s
-sys	0m0.014s
+real	0m0.603s
+user	0m0.599s
+sys	0m0.003s
 ```
 
 
@@ -800,9 +800,9 @@ $ time java Primesstart
 99999989
 end
 
-real	0m1.034s
-user	0m0.908s
-sys	0m0.135s
+real	0m0.976s
+user	0m0.852s
+sys	0m0.136s
 ```
 
 ### <a name='anchor2-1'></a>C#
@@ -848,9 +848,9 @@ $ time ./bin/release/net6.0/linux-x64/csstart
 99999989
 end
 
-real	0m0.945s
-user	0m0.839s
-sys	0m0.043s
+real	0m0.845s
+user	0m0.777s
+sys	0m0.033s
 ```
 
 ### <a name='anchor2-2'></a>VB.net
@@ -907,9 +907,9 @@ $ time ./bin/release/net6.0/linux-x64/vbstart
 99999989
 end
 
-real	0m0.952s
-user	0m0.867s
-sys	0m0.050s
+real	0m0.850s
+user	0m0.775s
+sys	0m0.030s
 ```
 
 
@@ -919,6 +919,7 @@ sys	0m0.050s
 - いいところ
   - 速い
   - 変数の再代入が禁止されている（同名変数の再宣言で見た目再代入っぽいことはできる）
+  - 
 
 速いはずの言語でもコードがよろしくないと速度もよろしくなくなるのはよくある話である
 
@@ -965,8 +966,8 @@ $ time ./a.outstart
 99999989
 end
 
-real	0m2.262s
-user	0m1.873s
+real	0m2.106s
+user	0m1.727s
 sys	0m0.362s
 ```
 
@@ -1060,8 +1061,8 @@ $ time ./hs-exestart
 end
 
 real	0m0.809s
-user	0m0.759s
-sys	0m0.033s
+user	0m0.766s
+sys	0m0.037s
 ```
 
 ### <a name='anchor3-2'></a>Lisp
@@ -1128,9 +1129,9 @@ $ time node main.jsstart
 99999989
 end
 
-real	0m0.969s
-user	0m0.897s
-sys	0m0.066s
+real	0m0.888s
+user	0m0.842s
+sys	0m0.036s
 ```
 
 
@@ -1219,9 +1220,9 @@ $ time Rscript main.r[1] "start"
 [1] 99999989
 [1] "end"
 
-real	0m3.633s
-user	0m2.790s
-sys	0m0.821s
+real	0m3.288s
+user	0m2.547s
+sys	0m0.724s
 ```
 
 ### <a name='anchor5-1'></a>MATLAB
@@ -1235,6 +1236,7 @@ sys	0m0.821s
 - いいところ
   - 数値計算に強い。めっちゃ強い。
   - 速い
+  - 並列化がすごく簡単（プログラムに2行付け足してコンパイラに渡すフラグを一個増やすだけ）
   - スパコンでよく使われている
 - わるいところ
   - 文法が独特
@@ -1261,9 +1263,11 @@ program eratosthenes
     print *, "start"
     do i=2 , int(sqrt(real(pmax)))
         if(sieve(i))then
-            do j = i*i , pmax , i
-                sieve(j) = .false.
+            !$omp parallel do
+            do j = i , pmax/i
+                sieve(j*i) = .false.
             end do
+            !$omp end parallel do
         end if
     end do
 
@@ -1282,14 +1286,14 @@ end program eratosthenes
 
 result:
 ```
-$ gfortran -Ofast main.f95
+$ gfortran -fopenmp -Ofast main.f95
 $ time ./a.out start
     99999989
  end
 
-real	0m1.336s
-user	0m1.203s
-sys	0m0.110s
+real	0m0.859s
+user	0m9.485s
+sys	0m0.127s
 ```
 
 
@@ -1305,57 +1309,58 @@ sys	0m0.110s
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust | 0.61 sec. |1.00x |
-| 2 | C++ | 0.65 sec. |1.06x |
-| 3 | Assembly | 0.68 sec. |1.11x |
-| 4 | C | 0.76 sec. |1.25x |
-| 5 | Haskell | 0.81 sec. |1.33x |
-| 6 | Julia | 0.88 sec. |1.44x |
-| 7 | C# | 0.94 sec. |1.55x |
-| 8 | VB.net | 0.95 sec. |1.56x |
-| 9 | Crystal | 0.97 sec. |1.59x |
-| 10 | JS | 0.97 sec. |1.59x |
-| 11 | Java | 1.03 sec. |1.70x |
-| 12 | Fortran | 1.34 sec. |2.19x |
-| 13 | Python | 1.72 sec. |2.83x |
-| 14 | OCaml | 2.26 sec. |3.71x |
-| 15 | F# | 2.56 sec. |4.21x |
-| 16 | R | 3.63 sec. |5.97x |
-| 17 | Cython | 3.70 sec. |6.07x |
-| 18 | PyPy | 4.68 sec. |7.68x |
-| 19 | Ruby | 20.64 sec. |33.88x |
+| 1 | Rust | 0.60 sec. |1.00x |
+| 2 | Assembly | 0.60 sec. |1.00x |
+| 3 | C++ | 0.64 sec. |1.06x |
+| 4 | C | 0.73 sec. |1.22x |
+| 5 | Haskell | 0.81 sec. |1.34x |
+| 6 | Julia | 0.83 sec. |1.39x |
+| 7 | C# | 0.84 sec. |1.40x |
+| 8 | VB.net | 0.85 sec. |1.41x |
+| 9 | Fortran | 0.86 sec. |1.43x |
+| 10 | Crystal | 0.88 sec. |1.46x |
+| 11 | JS | 0.89 sec. |1.48x |
+| 12 | Java | 0.98 sec. |1.62x |
+| 13 | Python | 1.73 sec. |2.87x |
+| 14 | OCaml | 2.11 sec. |3.50x |
+| 15 | F# | 2.35 sec. |3.90x |
+| 16 | R | 3.29 sec. |5.46x |
+| 17 | Cython | 3.67 sec. |6.10x |
+| 18 | PyPy | 4.57 sec. |7.59x |
+| 19 | Ruby | 19.92 sec. |33.10x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | C++ | 0.54 sec. |1.00x |
-| 2 | Rust | 0.58 sec. |1.06x |
-| 3 | Assembly | 0.65 sec. |1.19x |
-| 4 | C | 0.72 sec. |1.32x |
-| 5 | Haskell | 0.76 sec. |1.39x |
-| 6 | Julia | 0.76 sec. |1.40x |
-| 7 | C# | 0.84 sec. |1.54x |
-| 8 | VB.net | 0.87 sec. |1.59x |
-| 9 | JS | 0.90 sec. |1.65x |
-| 10 | Crystal | 0.90 sec. |1.65x |
-| 11 | Java | 0.91 sec. |1.67x |
-| 12 | Fortran | 1.20 sec. |2.21x |
-| 13 | Python | 1.72 sec. |3.15x |
-| 14 | OCaml | 1.87 sec. |3.44x |
-| 15 | F# | 2.37 sec. |4.35x |
-| 16 | R | 2.79 sec. |5.12x |
-| 17 | Cython | 3.88 sec. |7.13x |
-| 18 | PyPy | 4.05 sec. |7.43x |
-| 19 | Ruby | 20.34 sec. |37.31x |
+| 1 | C++ | 0.52 sec. |1.00x |
+| 2 | Rust | 0.58 sec. |1.10x |
+| 3 | Assembly | 0.60 sec. |1.14x |
+| 4 | C | 0.71 sec. |1.35x |
+| 5 | Julia | 0.74 sec. |1.40x |
+| 6 | Haskell | 0.77 sec. |1.46x |
+| 7 | VB.net | 0.78 sec. |1.48x |
+| 8 | C# | 0.78 sec. |1.48x |
+| 9 | Crystal | 0.84 sec. |1.60x |
+| 10 | JS | 0.84 sec. |1.60x |
+| 11 | Java | 0.85 sec. |1.62x |
+| 12 | Python | 1.64 sec. |3.12x |
+| 13 | OCaml | 1.73 sec. |3.29x |
+| 14 | F# | 2.20 sec. |4.19x |
+| 15 | R | 2.55 sec. |4.85x |
+| 16 | Cython | 3.81 sec. |7.25x |
+| 17 | PyPy | 4.03 sec. |7.67x |
+| 18 | Fortran | 9.48 sec. |18.07x |
+| 19 | Ruby | 19.62 sec. |37.37x |
 
 
 ## <a name='anchor8'></a>貢献者一覧
 - メタリックはんぺん 
   - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java
-  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, Java
+  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, F#, OCaml, Java
   - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
 - あなばす
   - 説明: Julia, Lisp, R, MATLAB, Fortran
+  - サンプル: Julia
   - 一言: Julia最高！Juliaしか勝たん！
 - 綿谷 雫
   - サンプル: Fortran

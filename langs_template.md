@@ -302,6 +302,7 @@ TypedArray使ったら最速組と張り合える速さが出た
 - いいところ
   - 数値計算に強い。めっちゃ強い。
   - 速い
+  - 並列化がすごく簡単（プログラムに2行付け足してコンパイラに渡すフラグを一個増やすだけ）
   - スパコンでよく使われている
 - わるいところ
   - 文法が独特
@@ -324,10 +325,11 @@ TypedArray使ったら最速組と張り合える速さが出た
 ## 貢献者一覧
 - メタリックはんぺん 
   - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java
-  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, Java
+  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, F#, OCaml, Java
   - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
 - あなばす
   - 説明: Julia, Lisp, R, MATLAB, Fortran
+  - サンプル: Julia
   - 一言: Julia最高！Juliaしか勝たん！
 - 綿谷 雫
   - サンプル: Fortran

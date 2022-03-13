@@ -15,9 +15,11 @@ program eratosthenes
     print *, "start"
     do i=2 , int(sqrt(real(pmax)))
         if(sieve(i))then
-            do j = i*i , pmax , i
-                sieve(j) = .false.
+            !$omp parallel do
+            do j = i , pmax/i
+                sieve(j*i) = .false.
             end do
+            !$omp end parallel do
         end if
     end do
 
