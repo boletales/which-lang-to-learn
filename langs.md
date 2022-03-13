@@ -95,9 +95,9 @@ $ time python main_nd.pystart
 99999989
 end
 
-real	0m1.726s
-user	0m1.640s
-sys	0m1.165s
+real	0m1.758s
+user	0m1.691s
+sys	0m1.087s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -109,9 +109,9 @@ $ time pypy main.pystart
 99999989
 end
 
-real	0m4.569s
-user	0m4.026s
-sys	0m0.515s
+real	0m4.601s
+user	0m4.039s
+sys	0m0.525s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -173,9 +173,9 @@ $ time python cymain.pystart
 5761455
 end
 
-real	0m3.673s
-user	0m3.808s
-sys	0m0.939s
+real	0m3.703s
+user	0m3.825s
+sys	0m0.951s
 ```
 
 
@@ -220,9 +220,9 @@ $ time ruby main.rbstart
 99999989
 end
 
-real	0m19.925s
-user	0m19.621s
-sys	0m0.239s
+real	0m20.423s
+user	0m20.057s
+sys	0m0.209s
 ```
 
 
@@ -281,9 +281,9 @@ $ time julia main.jlstart
 99999989
 end
 
-real	0m0.834s
-user	0m0.735s
-sys	0m0.089s
+real	0m0.814s
+user	0m0.734s
+sys	0m0.072s
 ```
 
 
@@ -344,8 +344,8 @@ $ time ./a.outstart
 end
 
 real	0m0.734s
-user	0m0.710s
-sys	0m0.017s
+user	0m0.695s
+sys	0m0.030s
 ```
 
 
@@ -406,9 +406,9 @@ $ time ./a.outstart
 99999989
 start
 
-real	0m0.641s
-user	0m0.525s
-sys	0m0.106s
+real	0m0.637s
+user	0m0.531s
+sys	0m0.093s
 ```
 
   
@@ -419,13 +419,18 @@ sys	0m0.106s
   - メモリを直接扱えるが、直接扱わずに済む！！！ココ重要！！
   - メモリ安全
   - 型の力でより安全なコードが書ける
+  - 標準ライブラリに文句がない
+  - エラーハンドリングする人にやさしい（型レベルでハンドルする）
   - 他の言語から大量に有用な機能を輸入している
   - コンパイラが世話を焼いてくれる
+  - マクロが別言語を実装できるレベルで自由度高い
   - パッケージマネージャが優秀
   - 並列化に強い
+  - コミュニティの民度が高い
 - わるいところ
   - 難易度が、高い。（さすがに一言語目にはおすすめできない）
   - コンパイラが口うるさい
+  - エラーハンドリングしない人に厳しい
   - ビルドが遅い（特に初回）
 - 有用なリソース
   - The Rust Programming Language (和訳): https://doc.rust-jp.rs/book-ja/
@@ -442,7 +447,7 @@ fn main() {
     let sqrtmax = f32::sqrt(MAX as f32) as usize;
     for i in 2..=sqrtmax {
         if sieve[i]{
-            for j in i*i..=MAX/i {
+            for j in i..=MAX/i {
                 sieve[j*i] = false;
             }
         }
@@ -450,7 +455,7 @@ fn main() {
 
     let mut primes = vec![0; MAX+1];
     let mut pcount = 0;
-    for i in 2..=sqrtmax {
+    for i in 2..=MAX {
         if sieve[i] {
             primes[pcount] = i;
             pcount += 1;
@@ -463,14 +468,14 @@ fn main() {
 
 result:
 ```
-$ cargo build --release
-$ time ./target/release/rsstart
-9991
+$ rustc -O main.rs
+$ time ./mainstart
+99999989
 end
 
-real	0m0.602s
-user	0m0.577s
-sys	0m0.020s
+real	0m0.821s
+user	0m0.772s
+sys	0m0.034s
 ```
 
 
@@ -508,9 +513,9 @@ $ time ./mainstart
 99999989
 end
 
-real	0m0.878s
-user	0m0.841s
-sys	0m0.037s
+real	0m0.887s
+user	0m0.834s
+sys	0m0.046s
 ```
 
 
@@ -744,8 +749,8 @@ end
 count 5717621
 
 
-real	0m0.603s
-user	0m0.599s
+real	0m0.643s
+user	0m0.637s
 sys	0m0.003s
 ```
 
@@ -800,9 +805,9 @@ $ time java Primesstart
 99999989
 end
 
-real	0m0.976s
-user	0m0.852s
-sys	0m0.136s
+real	0m0.973s
+user	0m0.841s
+sys	0m0.141s
 ```
 
 ### <a name='anchor2-1'></a>C#
@@ -848,9 +853,9 @@ $ time ./bin/release/net6.0/linux-x64/csstart
 99999989
 end
 
-real	0m0.845s
-user	0m0.777s
-sys	0m0.033s
+real	0m0.859s
+user	0m0.773s
+sys	0m0.044s
 ```
 
 ### <a name='anchor2-2'></a>VB.net
@@ -907,9 +912,9 @@ $ time ./bin/release/net6.0/linux-x64/vbstart
 99999989
 end
 
-real	0m0.850s
-user	0m0.775s
-sys	0m0.030s
+real	0m0.833s
+user	0m0.770s
+sys	0m0.043s
 ```
 
 
@@ -966,9 +971,9 @@ $ time ./a.outstart
 99999989
 end
 
-real	0m2.106s
-user	0m1.727s
-sys	0m0.362s
+real	0m2.097s
+user	0m1.748s
+sys	0m0.342s
 ```
 
 ### <a name='anchor3-1'></a>Haskell
@@ -1060,9 +1065,9 @@ $ time ./hs-exestart
 99999989
 end
 
-real	0m0.809s
-user	0m0.766s
-sys	0m0.037s
+real	0m0.820s
+user	0m0.744s
+sys	0m0.053s
 ```
 
 ### <a name='anchor3-2'></a>Lisp
@@ -1129,9 +1134,9 @@ $ time node main.jsstart
 99999989
 end
 
-real	0m0.888s
-user	0m0.842s
-sys	0m0.036s
+real	0m0.877s
+user	0m0.841s
+sys	0m0.037s
 ```
 
 
@@ -1220,9 +1225,9 @@ $ time Rscript main.r[1] "start"
 [1] 99999989
 [1] "end"
 
-real	0m3.288s
-user	0m2.547s
-sys	0m0.724s
+real	0m3.341s
+user	0m2.555s
+sys	0m0.775s
 ```
 
 ### <a name='anchor5-1'></a>MATLAB
@@ -1291,9 +1296,9 @@ $ time ./a.out start
     99999989
  end
 
-real	0m0.859s
-user	0m9.485s
-sys	0m0.127s
+real	0m0.874s
+user	0m9.324s
+sys	0m0.215s
 ```
 
 
@@ -1309,48 +1314,50 @@ sys	0m0.127s
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust | 0.60 sec. |1.00x |
-| 2 | Assembly | 0.60 sec. |1.00x |
-| 3 | C++ | 0.64 sec. |1.06x |
-| 4 | C | 0.73 sec. |1.22x |
-| 5 | Haskell | 0.81 sec. |1.34x |
-| 6 | Julia | 0.83 sec. |1.39x |
-| 7 | C# | 0.84 sec. |1.40x |
-| 8 | VB.net | 0.85 sec. |1.41x |
-| 9 | Fortran | 0.86 sec. |1.43x |
-| 10 | Crystal | 0.88 sec. |1.46x |
-| 11 | JS | 0.89 sec. |1.48x |
-| 12 | Java | 0.98 sec. |1.62x |
-| 13 | Python | 1.73 sec. |2.87x |
-| 14 | OCaml | 2.11 sec. |3.50x |
-| 15 | F# | 2.35 sec. |3.90x |
-| 16 | R | 3.29 sec. |5.46x |
-| 17 | Cython | 3.67 sec. |6.10x |
-| 18 | PyPy | 4.57 sec. |7.59x |
-| 19 | Ruby | 19.92 sec. |33.10x |
+| 1 | Rust-bit | 0.30 sec. |1.00x |
+| 2 | C++ | 0.64 sec. |2.14x |
+| 3 | Assembly | 0.64 sec. |2.16x |
+| 4 | C | 0.73 sec. |2.46x |
+| 5 | Julia | 0.81 sec. |2.73x |
+| 6 | Haskell | 0.82 sec. |2.75x |
+| 7 | Rust | 0.82 sec. |2.76x |
+| 8 | VB.net | 0.83 sec. |2.80x |
+| 9 | C# | 0.86 sec. |2.88x |
+| 10 | Fortran | 0.87 sec. |2.93x |
+| 11 | JS | 0.88 sec. |2.94x |
+| 12 | Crystal | 0.89 sec. |2.98x |
+| 13 | Java | 0.97 sec. |3.27x |
+| 14 | Python | 1.76 sec. |5.90x |
+| 15 | OCaml | 2.10 sec. |7.04x |
+| 16 | F# | 2.40 sec. |8.05x |
+| 17 | R | 3.34 sec. |11.21x |
+| 18 | Cython | 3.70 sec. |12.43x |
+| 19 | PyPy | 4.60 sec. |15.44x |
+| 20 | Ruby | 20.42 sec. |68.53x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | C++ | 0.52 sec. |1.00x |
-| 2 | Rust | 0.58 sec. |1.10x |
-| 3 | Assembly | 0.60 sec. |1.14x |
-| 4 | C | 0.71 sec. |1.35x |
-| 5 | Julia | 0.74 sec. |1.40x |
-| 6 | Haskell | 0.77 sec. |1.46x |
-| 7 | VB.net | 0.78 sec. |1.48x |
-| 8 | C# | 0.78 sec. |1.48x |
-| 9 | Crystal | 0.84 sec. |1.60x |
-| 10 | JS | 0.84 sec. |1.60x |
-| 11 | Java | 0.85 sec. |1.62x |
-| 12 | Python | 1.64 sec. |3.12x |
-| 13 | OCaml | 1.73 sec. |3.29x |
-| 14 | F# | 2.20 sec. |4.19x |
-| 15 | R | 2.55 sec. |4.85x |
-| 16 | Cython | 3.81 sec. |7.25x |
-| 17 | PyPy | 4.03 sec. |7.67x |
-| 18 | Fortran | 9.48 sec. |18.07x |
-| 19 | Ruby | 19.62 sec. |37.37x |
+| 1 | Rust-bit | 0.28 sec. |1.00x |
+| 2 | C++ | 0.53 sec. |1.87x |
+| 3 | Assembly | 0.64 sec. |2.24x |
+| 4 | C | 0.70 sec. |2.45x |
+| 5 | Julia | 0.73 sec. |2.58x |
+| 6 | Haskell | 0.74 sec. |2.62x |
+| 7 | VB.net | 0.77 sec. |2.71x |
+| 8 | Rust | 0.77 sec. |2.72x |
+| 9 | C# | 0.77 sec. |2.72x |
+| 10 | Crystal | 0.83 sec. |2.94x |
+| 11 | JS | 0.84 sec. |2.96x |
+| 12 | Java | 0.84 sec. |2.96x |
+| 13 | Python | 1.69 sec. |5.95x |
+| 14 | OCaml | 1.75 sec. |6.15x |
+| 15 | F# | 2.22 sec. |7.80x |
+| 16 | R | 2.56 sec. |9.00x |
+| 17 | Cython | 3.82 sec. |13.47x |
+| 18 | PyPy | 4.04 sec. |14.22x |
+| 19 | Fortran | 9.32 sec. |32.83x |
+| 20 | Ruby | 20.06 sec. |70.62x |
 
 
 ## <a name='anchor8'></a>貢献者一覧
@@ -1372,6 +1379,10 @@ CPU時間：
   - 説明: Ruby, Crystal
   - サンプル: Ruby, Crystal
   - 一言: なんだかんだRubyはいい言語だと思う。コードゴルフにも向いてるし。
+- 🌱🌿☘️🍀
+  - 説明: Rust
+  - サンプル: Rust-bit
+  - 一言: Rustの真価はWebサーバーなどのシビアな用途で初めて発揮される．
 - femshima(Nanigashi)
   - サンプル: C
   - 一言: いつか組み込みのasmを書けるようになりたい(願望)

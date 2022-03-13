@@ -2,7 +2,7 @@ id   , dir  , name        , source     , build                                 ,
 c    , c    , C           , main.c     , clang   main.c   -O3                  , ./a.out
 cpp  , cpp  , C++         , main.cpp   , clang++ main.cpp -O3                  , ./a.out
 rs   , rs   , Rust        , main.rs    , rustc -O main.rs                      , ./main
-rs-b , rs-b , Rust-bit    , bit.rs     , rustc -O bit.rs                       , ./bit
+rs-b , rs   , Rust-bit    , bit.rs     , rustc -O bit.rs                       , ./bit
 hs   , hs   , Haskell     , app/Main.hs, stack install --local-bin-path ./     , ./hs-exe
 py   , py   , Python      , main_nd.py , :                                     , python main_nd.py
 pypy , py   , PyPy        , main.py    , :                                     , pypy main.py
