@@ -1372,4 +1372,7 @@ CPU時間：
   - 説明: Ruby, Crystal
   - サンプル: Ruby, Crystal
   - 一言: なんだかんだRubyはいい言語だと思う。コードゴルフにも向いてるし。
+- femshima(Nanigashi)
+  - サンプル: C
+  - 一言: いつか組み込みのasmを書けるようになりたい(願望)
   
