@@ -238,6 +238,7 @@ Cythonで重い部分をCに変換しても速くなる
 - わるいところ
   - 型がない。型アノテーションすらない
   - 過去のしがらみが多い（マシになりつつある）
+  - コミュニティの民度がカス
   - 愛すべきカス
 - 有用なリソース
   - MDNのチュートリアル: https://developer.mozilla.org/ja/docs/Web/Tutorials
@@ -258,30 +259,52 @@ TypedArray使ったら最速組と張り合える速さが出た
 {sample:php}
 
 ### WebAssembly
-  - 直接は書かない
-  - 他の言語(RustとかC++とか)からWASMにコンパイルしてブラウザで使える
+- 直接は書かない
+- 他の言語(RustとかC++とか)からWASMにコンパイルしてブラウザで使える
+- （一応直接書けるが、その名の通りAssembly級にわけわからない）
 
-### 以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部
 ### Typescript
-  - AltJSのデファクトスタンダード、型のあるJS
+- AltJS(JSにコンパイルされる代替言語)のデファクトスタンダード、型のあるJS
+- 特徴
+  - 構造的部分型
+    - クラスの継承ベースではなく，現にプロパティの型があっているかで代入可能性を判断する
+  - リテラル型（`'world'`だけが代入できる型，のような）がある
+  - 非常に複雑な型定義が可能
+- いいところ
   - 型がある！！！しかも強い！！！！！！！（とても重要）
-{sample:ts}
+  - 型推論強め（型を手書きするのは基本的に関数の引数だけ）
+  - Microsoft製でサポート手厚い
+  - コミュニティの民度がJavaScriptより幾分良い
+- わるいところ
+  - 型はあくまで「飾り」でしかない（ランタイムでは無視される）
+  - けしからんやつが使うと型の恩恵を全く受けられない（`any`滅ぶべし慈悲はない）
+- 豆知識・備考
+  - 型システムだけでチューリング完全である（brainfxxkを実装できる）
+  - いまどきのJavaScriptパッケージは必ずと言っていいほどTypeScriptで書かれている
+    - 型がないとパッケージとして使いにくいため
+  - 実はVSCodeでJavaScriptを書くときはコード補完の恩恵をTypeScriptから受けている
+  - 型推論のおかげでコードがJavaScriptとほぼ変わらないのでサンプルなし
+  - 書いてる最中の型チェック・コード補完が死ぬほど速い（言語全体がその意図のもと設計されている）
+
 ### coffeescript
-  - Rubyのようななにか
-{sample:coffee}
+- AltJSその2
+- Rubyのようななにか
+
 ### purescript
-  - AltJSの異端児、Haskellの生き写し
-{sample:purs}
+- AltJSその3
+- AltJSの異端児、Haskellの生き写し
+
 ### scala.js
-  - scalaがjsにコンパイルされる
-{result:scjs}
+- AltJSその4
+- scalaがjsにコンパイルされる
+
 ### GHCjs
-  - Haskellがjsにコンパイルされる
-{sample:hsjs}
+- AltJSその5
+- Haskellがjsにコンパイルされる
+
 ### js_of_ocaml
-  - OCamlがjsにコンパイルされる
-{sample:jsocaml}
-{sample:ocjs}
+- AltJSその6
+- OCamlがjsにコンパイルされる
 
 ## 統計とかシミュレーションに使うやつ
 ### R
@@ -294,6 +317,8 @@ TypedArray使ったら最速組と張り合える速さが出た
   - パッケージマネージャが優秀
 - わるいところ
   - 複雑なことをすると遅い
+  - メソッドの呼び出し方が`method(target)`
+  - 1-indexed, 縦基本行列
   - カオス
 {sample:r}
 ### MATLAB
@@ -347,7 +372,7 @@ TypedArray使ったら最速組と張り合える速さが出た
   - サンプル: Ruby, Crystal
   - 一言: なんだかんだRubyはいい言語だと思う。コードゴルフにも向いてるし。
 - 🌱🌿☘️🍀
-  - 説明: Rust
+  - 説明: Rust, TypeScript(, R)
   - サンプル: Rust-bit
   - 一言: Rustの真価はWebサーバーなどのシビアな用途で初めて発揮される．
 - femshima(Nanigashi)
