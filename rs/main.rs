@@ -8,7 +8,7 @@ fn main() {
     let sqrtmax = f32::sqrt(MAX as f32) as usize;
     for i in 2..=sqrtmax {
         if sieve[i]{
-            for j in i*i..=MAX/i {
+            for j in i..=MAX/i {
                 sieve[j*i] = false;
             }
         }
@@ -16,7 +16,7 @@ fn main() {
 
     let mut primes = vec![0; MAX+1];
     let mut pcount = 0;
-    for i in 2..=sqrtmax {
+    for i in 2..=MAX {
         if sieve[i] {
             primes[pcount] = i;
             pcount += 1;
