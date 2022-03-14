@@ -7,7 +7,7 @@ hs   , hs   , Haskell     , app/Main.hs, stack install --local-bin-path ./     ,
 py   , py   , Python      , main_nd.py , :                                     , python main_nd.py
 pypy , py   , PyPy        , main.py    , :                                     , pypy main.py
 cy   , py   , Cython      , cylib.pyx  , python setup.py build_ext --inplace   , python cymain.py
-rb   , rb   , Ruby        , main.rb    , :                                     , ruby main.rb
+rb   , rb   , Ruby        , main.rb    , bundle                                , bundle exec ruby main.rb
 jl   , jl   , Julia       , main.jl    , julia main.jl                         , julia main.jl
 js   , js   , JS          , main.js    , :                                     , node main.js
 f95  , f95  , Fortran     , main.f95   , gfortran -fopenmp -Ofast main.f95     , ./a.out

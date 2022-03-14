@@ -1,12 +1,14 @@
+require 'numo/narray'
+
 puts "start"
 
 MAX = 100000000
-sieve = Array.new(MAX + 1, true)
-sieve[0] = sieve[1] = false
+sieve = Numo::Bit.ones(MAX + 1)
+sieve[0] = sieve[1] = 0
 
 2.upto(Integer.sqrt(MAX)) do |i|
-  (i * i).step(by: i, to: MAX) { |j| sieve[j] = false } if sieve[i]
+  sieve[((i * i)..-1) % i] = 0 if sieve[i]
 end
 
-primes = sieve.filter_map.with_index { |v, i| i if v }
-puts primes.last, "end"
+primes = Numo::Int32.new(MAX + 1).seq(0, 1)[sieve[0..MAX]]
+puts primes[-1], "end"
