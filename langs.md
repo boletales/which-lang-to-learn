@@ -1,53 +1,115 @@
 # 新入生のための「結局俺は何のプログラミング言語を学べばいいんだ」
-この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。
+この記事では、「これからプログラミングを学習したいけど何をやったらいいかわからないっ！」「新しくプログラミング言語を学びたいのでおすすめを知りたいっ！」というひとたちのために、各言語の特徴と(題材が簡単すぎて各言語の味がしない)コードサンプルを掲載しています。改善･修正の提案は https://github.com/boletales/which-lang-to-learn で常に受け付けているので、推し言語を布教したいみなさんはぜひプルリクを投げつけてください！
 
-- <a href='#anchor0'>スクリプトみの強いやつ</a>
-  - <a href='#anchor0-0'>Python</a>
-  - <a href='#anchor0-1'>Ruby</a>
-  - <a href='#anchor0-2'>Julia</a>
+- <a href='#anchor0'>そもそもプログラミング言語ってどうやって学べばいいのさ</a>
 
-- <a href='#anchor1'>コンパイルして使うやつ</a>
-  - <a href='#anchor1-0'>C</a>
-  - <a href='#anchor1-1'>C++</a>
-  - <a href='#anchor1-2'>Rust</a>
-  - <a href='#anchor1-3'>Crystal</a>
-  - <a href='#anchor1-4'>Assembly</a>
+- <a href='#anchor1'>用語解説</a>
 
-- <a href='#anchor2'>クラスベースオブジェクト指向一味</a>
-  - <a href='#anchor2-0'>Java</a>
-  - <a href='#anchor2-1'>C#</a>
-  - <a href='#anchor2-2'>VB.net</a>
+- <a href='#anchor2'>スクリプトみの強いやつ</a>
+  - <a href='#anchor2-0'>Python</a>
+  - <a href='#anchor2-1'>Ruby</a>
+  - <a href='#anchor2-2'>Julia</a>
 
-- <a href='#anchor3'>関数型プログラミングに対するサポートが強いやつ</a>
-  - <a href='#anchor3-0'>OCaml</a>
-  - <a href='#anchor3-1'>Haskell</a>
-  - <a href='#anchor3-2'>Lisp</a>
+- <a href='#anchor3'>コンパイルして使うやつ</a>
+  - <a href='#anchor3-0'>C</a>
+  - <a href='#anchor3-1'>C++</a>
+  - <a href='#anchor3-2'>Rust</a>
+  - <a href='#anchor3-3'>Crystal</a>
+  - <a href='#anchor3-4'>Assembly</a>
 
-- <a href='#anchor4'>Web屋さん向け</a>
-  - <a href='#anchor4-0'>javascript</a>
-  - <a href='#anchor4-1'>PHP</a>
-  - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>Typescript</a>
-  - <a href='#anchor4-4'>coffeescript</a>
-  - <a href='#anchor4-5'>purescript</a>
-  - <a href='#anchor4-6'>scala.js</a>
-  - <a href='#anchor4-7'>GHCjs</a>
-  - <a href='#anchor4-8'>js_of_ocaml</a>
+- <a href='#anchor4'>クラスベースオブジェクト指向一味</a>
+  - <a href='#anchor4-0'>Java</a>
+  - <a href='#anchor4-1'>C#</a>
+  - <a href='#anchor4-2'>VB.net</a>
 
-- <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
-  - <a href='#anchor5-0'>R</a>
-  - <a href='#anchor5-1'>MATLAB</a>
-  - <a href='#anchor5-2'>Fortran</a>
+- <a href='#anchor5'>関数型プログラミングに対するサポートが強いやつ</a>
+  - <a href='#anchor5-0'>OCaml</a>
+  - <a href='#anchor5-1'>F#</a>
+  - <a href='#anchor5-2'>Haskell</a>
+  - <a href='#anchor5-3'>Lisp</a>
 
-- <a href='#anchor6'>実行環境について</a>
+- <a href='#anchor6'>Web屋さん向け</a>
+  - <a href='#anchor6-0'>javascript</a>
+  - <a href='#anchor6-1'>PHP</a>
+  - <a href='#anchor6-2'>WebAssembly</a>
+  - <a href='#anchor6-3'>Typescript</a>
+  - <a href='#anchor6-4'>coffeescript</a>
+  - <a href='#anchor6-5'>purescript</a>
+  - <a href='#anchor6-6'>scala.js</a>
+  - <a href='#anchor6-7'>GHCjs</a>
+  - <a href='#anchor6-8'>js_of_ocaml</a>
 
-- <a href='#anchor7'>速度ランキング（あんまり参考にならない）</a>
+- <a href='#anchor7'>統計とかシミュレーションに使うやつ</a>
+  - <a href='#anchor7-0'>R</a>
+  - <a href='#anchor7-1'>MATLAB</a>
+  - <a href='#anchor7-2'>Fortran</a>
 
-- <a href='#anchor8'>貢献者一覧</a>
+- <a href='#anchor8'>実行環境について</a>
+
+- <a href='#anchor9'>速度ランキング（あんまり参考にならない）</a>
+
+- <a href='#anchor10'>貢献者一覧</a>
 
 
-## <a name='anchor0'></a>スクリプトみの強いやつ
-### <a name='anchor0-0'></a>Python
+## <a name='anchor0'></a>そもそもプログラミング言語ってどうやって学べばいいのさ
+新しいプログラミング言語を学びたいときには基本的に以下のような流れで選ぶことになります。
+1. 習得の目的を考える
+  - なんでもよい
+  - 極論「かっこよさそうだから」でもよい（筆者はこれでHaskell使いになってしまった）
+  - 本当になにも思いつかないなら潔くPythonやっとけ
+2. 言語を選ぶ
+  深く考えなくてよい。どうせ1年も経たないうちにもう一言語習得する羽目になるのだから
+  - とにかく「プログラミング」を学習したい！
+    - プログラミングできる友人が使ってる言語。友人のふりがなは当然「サポートデスク」である
+    - とりあえずPython 簡単だし、教養の授業で使わされることがある、という意味で有用だし、ライブラリも多い
+    - 「プログラミング教育用」と銘打たれている言語 (Scratch, SmallBasic, HSP, その他たくさん)。有用かどうかはともかくとして学習には向いている
+  - シミュレーションとかやりたい
+    - Julia 文法が簡単で、配列や数式の扱いが得意で、それなりの速度で動く
+    - Rust 速くて素直で安全で汎用。コンパイラは口うるさい。マジで良い言語だけど一言語目にはおすすめしない
+    - Fortran スパコンとかでよく使われているらしい
+  - Webサイトを作って見せびらかしたい
+    - HTML, CSS, JavaScript それぞれ使えないとおはなしにならない。(なおHTMLとCSSはプログラミング言語ではない。)
+    - Ruby なんかいろんなところでつかわれてたきがする
+    - PHP 将来有望かと言われると首をかしげたくなるが、簡単
+  - 自分用の便利用ツールをつくって生活を豊かにしたい
+    - スクリプト言語(スクリプトみの強いやつ+JavaScript)のどれか。事前コンパイルが不要(うれしい)で、書き捨てに向いた文法をしていがちなので
+    - Haskell, 【心優しいコントリビューターがここにスクリプト扱いできる言語を書いてくれる】 コンパイラ言語だけどスクリプトっぽい使い方もできる。書き味も軽め
+    - Rust 他の用途に使い回せるので
+    - (初学者なら)VB.net, (Cっぽい文法の言語が既習なら)C# Win民限定だけどGUIをつくるのが簡単
+  - ふつうのプログラミングに飽きた
+    - Haskell お望み通り副作用すら禁止されてる言語を連れてきたぞ。「結局Haskellもふつうの実用プログラミング言語なんだな」となる頃には飽きも治ってるだろ、たぶん
+    - C++ 極めると黒魔術師になれる闇の言語。AtCoderで緑になるぐらいなら全く黒魔術には触れないが
+    - 難解プログラミング言語 お前は実用もできないようなプログラミング言語を習得していったい何がしたいんだ？？？
+3. 学習をする
+  - プログラミング自体はじめてなら本があったほうが安心
+  - そうでなければインターネット上の資料だけでなんとかなる
+  - 公式のコミュニティとか公然性の高いコミュニティは有用。たとえ英語であっても。
+  - 本文の説明欄に知ってるものは載せといたので、読め
+4. 1に戻る
+  逃れられない運命。どうせこうなる
+
+## <a name='anchor1'></a>用語解説
+  - コンパイル
+    - プログラムをコンピュータで実行できる形式に変換すること
+    - これが遅い言語はちょっとイラッとする(Rust, Haskell, おまえらのことだぞ)
+  - コンパイル言語・スクリプト言語
+    - コンパイルが必要な言語・不要な言語
+    - いまではあまりあてにならない分類
+    - 一般的にコンパイル言語のほうが速いが、実行中にコンパイル(JIT)を行うスクリプト言語は比較的速い(JuliaとかJSとか)
+    - コンパイル言語のほうが実行前にエラーを出してくれることが多くて親切
+  - (データ)型
+    - プログラム中の値に与えられたタグで、それが何なのかを表すもの
+    - 整数、真偽値の配列、32ビット浮動小数点数の3つ組、文字列をとって文字列を返す関数、整数をとって「文字をとって文字列を返す関数」を返す関数、など、まあ、いろいろある
+    - 型の表現力が強いと「関数を取る関数」「無効な値を返すかもしれない」「これらのうちいずれかになる」みたいなのが表せて嬉しい
+  - 静的型付け・動的型付け
+    - 実行される前に値や変数の型が決まっている言語・そうでない言語
+    - 動的型付け言語は実行するまでわからないエラーがあったり遅かったりしてややつらい
+    - 型推論のない静的型付け言語は自分で型を明示しないといけないので面倒
+    - 逆に、型推論の強いやつはほぼ自分で型を書かなくても動いたりする（けどコード読むときに拡張機能つかわないと型わからないのつらいので書いてくれ）
+    - __静的型付けの言語は最低一つ習得するべき__
+
+## <a name='anchor2'></a>スクリプトみの強いやつ
+### <a name='anchor2-0'></a>Python
 - 理系大学生のリンガフランカ
 - いいところ
   - ライブラリが豊富（機械学習とかスクレイピングとか）
@@ -94,9 +156,9 @@ $ time python main_nd.pystart
 99999989
 end
 
-real	0m1.702s
+real	0m1.645s
 user	0m1.571s
-sys	0m0.990s
+sys	0m1.145s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -108,9 +170,9 @@ $ time pypy main.pystart
 99999989
 end
 
-real	0m4.841s
-user	0m4.238s
-sys	0m0.571s
+real	0m3.694s
+user	0m3.167s
+sys	0m0.502s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -172,13 +234,13 @@ $ time python cymain.pystart
 5761455
 end
 
-real	0m3.666s
-user	0m3.614s
-sys	0m1.083s
+real	0m3.603s
+user	0m3.712s
+sys	0m0.893s
 ```
 
 
-### <a name='anchor0-1'></a>Ruby
+### <a name='anchor2-1'></a>Ruby
 - 松江在住のプログラマが作った言語
 - C言語的なfor文が存在しないので、文字列や配列や連想配列などの操作はmapやselectなどの各種メソッドで行う文化
   - `gets.split.map(&:to_i).sort.first(3).reduce(&:+)`みたいにメソッドをつなげて書いていくの、慣れると爽快
@@ -223,14 +285,14 @@ $ time bundle exec ruby main.rbstart
 99999989
 end
 
-real	0m4.615s
-user	0m4.402s
-sys	0m0.156s
+real	0m4.337s
+user	0m4.180s
+sys	0m0.143s
 ```
 
 Rubyの高速化テクはいろいろあるが、とりあえず各種メソッドによるループをwhileに変換するとかなり速くなる(ブロックはオーバーヘッドが大きい)。もっとも、while文を使うと「これRubyでやる意味ある?」という感じになるし、それなら他の言語を使った方がいい(ネイティブ拡張を書くという選択肢は一応ある)。何度も言うがRubyistのサブ言語としてCrystalマジでオススメ。
 
-### <a name='anchor0-2'></a>Julia
+### <a name='anchor2-2'></a>Julia
 - FortranとmatlabとPythonの後釜をいっぺんに狙おうとしている言語
 - いいところ
   - 文法がシンプル
@@ -285,14 +347,14 @@ $ time julia main.jlstart
 99999989
 end
 
-real	0m0.846s
-user	0m0.745s
-sys	0m0.086s
+real	0m0.788s
+user	0m0.722s
+sys	0m0.063s
 ```
 
 
-## <a name='anchor1'></a>コンパイルして使うやつ
-### <a name='anchor1-0'></a>C
+## <a name='anchor3'></a>コンパイルして使うやつ
+### <a name='anchor3-0'></a>C
 - 組み込みやさんの必携、恐怖の自己責任系プログラミング言語
 - いいところ
   - 最速組。とにかく速い
@@ -347,13 +409,13 @@ $ time ./a.outstart
 99999989
 end
 
-real	0m0.718s
-user	0m0.689s
-sys	0m0.027s
+real	0m0.726s
+user	0m0.687s
+sys	0m0.036s
 ```
 
 
-### <a name='anchor1-1'></a>C++
+### <a name='anchor3-1'></a>C++
 - 自分のことを最新鋭だと思っている古参言語
 - いいところ
   - 最速組。とにかく速い2
@@ -364,7 +426,7 @@ sys	0m0.027s
   - 初学者には難しい
 - Cにない型がいっぱいある
 
-コンパイル時に最適化フラグを渡さないと10倍以上遅い(一敗)
+コンパイル時に最適化フラグを渡さないと10倍以上遅くなってしまった(一敗)
 
 code:
 ```cpp
@@ -410,13 +472,13 @@ $ time ./a.outstart
 99999989
 start
 
-real	0m0.621s
-user	0m0.516s
-sys	0m0.103s
+real	0m0.637s
+user	0m0.547s
+sys	0m0.079s
 ```
 
   
-### <a name='anchor1-2'></a>Rust
+### <a name='anchor3-2'></a>Rust
 - マルチパラダイム言語界の新星 新時代の勝者……！？
 - いいところ
   - 最速組。とにかく速い3
@@ -438,6 +500,7 @@ sys	0m0.103s
   - ビルドが遅い（特に初回）
 - 有用なリソース
   - The Rust Programming Language (和訳): https://doc.rust-jp.rs/book-ja/
+  - crates.io: https://crates.io/ パッケージの情報がまとまっています
 
 code:
 ```rs
@@ -477,59 +540,58 @@ $ time ./mainstart
 99999989
 end
 
-real	0m0.891s
-user	0m0.823s
-sys	0m0.037s
+real	0m0.765s
+user	0m0.737s
+sys	0m0.023s
 ```
 
 
-
+sieveにbit演算を用いたら非常に高速になった
 
 code:
 ```rs
-const MAX :usize = 100000000;
+const MAX: usize = 100000000;
 fn main() {
     println!("start");
 
-    let mut sieve = vec![true; MAX+1];
-    sieve[0] = false;
-    sieve[1] = false;
+    let mut sieve = [0; MAX / 64 + 1];
+    sieve[0] ^= 3;
     let sqrtmax = f32::sqrt(MAX as f32) as usize;
     for i in 2..=sqrtmax {
-        if sieve[i]{
-            for j in i..=MAX/i {
-                sieve[j*i] = false;
+        if (sieve[i / 64] >> i % 64) & 1 == 0 {
+            let mut j = i * i;
+            while j <= MAX {
+                sieve[j / 64] |= 1 << j % 64;
+                j += i;
             }
         }
     }
 
-    let mut primes = vec![0; MAX+1];
-    let mut pcount = 0;
+    let mut primes = Vec::new();
     for i in 2..=MAX {
-        if sieve[i] {
-            primes[pcount] = i;
-            pcount += 1;
+        if (sieve[i / 64] >> i % 64) & 1 == 0 {
+            primes.push(i);
         }
     }
-    println!("{}",primes[pcount-1]);
+    println!("{}", primes.last().unwrap());
     println!("end");
 }
 ```
 
 result:
 ```
-$ rustc -O main.rs
-$ time ./mainstart
-99999989
+$ rustc -O bit.rs
+$ time ./bitstart
+99999991
 end
 
-real	0m0.891s
-user	0m0.823s
-sys	0m0.037s
+real	0m0.284s
+user	0m0.273s
+sys	0m0.010s
 ```
 
 
-### <a name='anchor1-3'></a>Crystal
+### <a name='anchor3-3'></a>Crystal
 - いいところ
   - 最速組。とにかく速い4
   - Rubyの書きやすさとCの速度が合わさり完璧に見える
@@ -563,13 +625,13 @@ $ time ./mainstart
 99999989
 end
 
-real	0m0.872s
-user	0m0.816s
-sys	0m0.056s
+real	0m0.853s
+user	0m0.804s
+sys	0m0.050s
 ```
 
 
-### <a name='anchor1-4'></a>Assembly
+### <a name='anchor3-4'></a>Assembly
 - これどうやって書くんですか
 - いいところ
   - 最速組（書く人間にオプティマイザが搭載されていれば）
@@ -799,15 +861,15 @@ end
 count 5717621
 
 
-real	0m0.638s
-user	0m0.623s
-sys	0m0.010s
+real	0m0.616s
+user	0m0.607s
+sys	0m0.007s
 ```
 
 
-## <a name='anchor2'></a>クラスベースオブジェクト指向一味
+## <a name='anchor4'></a>クラスベースオブジェクト指向一味
 
-### <a name='anchor2-0'></a>Java
+### <a name='anchor4-0'></a>Java
 - いいところ
   - コードの規模が大きくなることに大して耐性が強い
 - わるいところ
@@ -855,12 +917,13 @@ $ time java Primesstart
 99999989
 end
 
-real	0m0.947s
-user	0m0.807s
-sys	0m0.156s
+real	0m0.908s
+user	0m0.800s
+sys	0m0.119s
 ```
 
-### <a name='anchor2-1'></a>C#
+
+### <a name='anchor4-1'></a>C#
 - MS製のJavaのようななにか
 - いいところ
   - コードの規模が大きくなることに大して耐性が強い2
@@ -868,6 +931,8 @@ sys	0m0.156s
   - Unityで使うらしい
 - わるいところ
   - コードが冗長2(Javaよりややマシかも)
+- 有用なリソース
+  - Visual Studio: https://visualstudio.microsoft.com/ja/free-developer-offers/ win向けなら必須。
 
 code:
 ```cs
@@ -903,12 +968,13 @@ $ time ./bin/release/net6.0/linux-x64/csstart
 99999989
 end
 
-real	0m0.835s
-user	0m0.774s
+real	0m0.819s
+user	0m0.762s
 sys	0m0.037s
 ```
 
-### <a name='anchor2-2'></a>VB.net
+
+### <a name='anchor4-2'></a>VB.net
 - C#(VisualBasic風味)
 - いいところ
   - 文法が初学者にもわかりやすい(Basicの血を引いているだけある)
@@ -918,9 +984,11 @@ sys	0m0.037s
   - C#
 - わるいところ
   - Windows以外での使いみちがあまりない
-  - 構文が冗長なので補完がないとつらい(VisualStudioで書く分には補完が強いので気にならない)
+  - 構文が冗長なので補完がないとつらい(Visual Studioで書く分には補完がはちゃめちゃに強いので気にならない)
   - 不遇
   - C#
+- 有用なリソース
+  - Visual Studio: https://visualstudio.microsoft.com/ja/free-developer-offers/ 実質必須。
 
 code:
 ```vb
@@ -962,19 +1030,19 @@ $ time ./bin/release/net6.0/linux-x64/vbstart
 99999989
 end
 
-real	0m0.843s
-user	0m0.757s
-sys	0m0.050s
+real	0m0.816s
+user	0m0.743s
+sys	0m0.043s
 ```
 
 
-## <a name='anchor3'></a>関数型プログラミングに対するサポートが強いやつ
-### <a name='anchor3-0'></a>OCaml
+## <a name='anchor5'></a>関数型プログラミングに対するサポートが強いやつ
+### <a name='anchor5-0'></a>OCaml
 - 実用非純粋関数型言語
 - いいところ
-  - 速い
+  - 速い(と聞いているのでだれか最適化してくれ)
   - 変数の再代入が禁止されている（同名変数の再宣言で見た目再代入っぽいことはできる）
-  - 
+  - 型の力が強い、型推論がめっちゃ強い
 
 速いはずの言語でもコードがよろしくないと速度もよろしくなくなるのはよくある話である
 
@@ -1021,18 +1089,71 @@ $ time ./a.outstart
 99999989
 end
 
-real	0m2.030s
-user	0m1.634s
-sys	0m0.387s
+real	0m2.056s
+user	0m1.722s
+sys	0m0.318s
 ```
 
-### <a name='anchor3-1'></a>Haskell
+
+### <a name='anchor5-1'></a>F#
+- MS製のF#のようななにか
+- いいところ
+  - .NET一族唯一の関数型枠
+  - ほかの.NET族との連携ができる
+- 有用なリソース
+  - Visual Studio: https://visualstudio.microsoft.com/ja/free-developer-offers/ win向けなら必須。
+
+改善求む2
+
+code:
+```fs
+﻿printfn "start"
+
+let max = 100000000
+let sqrtmax = int (sqrt (double max))
+let mutable sieve = Array.create (max+1) true
+
+sieve[0] <- false
+sieve[1] <- false
+for i in 2 .. sqrtmax do
+  if sieve[i] then
+    for j in i*i .. i .. max do
+      sieve[j] <- false
+    ()
+
+let mutable primes = Array.create (max+1) 0
+let mutable pcount = 0
+for i in 2 .. max do
+  if sieve[i] then
+    primes[pcount] <- i
+    pcount <- pcount+1
+    ()
+
+printfn "%d" primes[pcount-1]
+
+printfn "end"
+```
+
+result:
+```
+$ dotnet publish -c release -r linux-x64
+$ time ./bin/release/net6.0/linux-x64/fsstart
+99999989
+end
+
+real	0m2.321s
+user	0m2.185s
+sys	0m0.113s
+```
+
+
+### <a name='anchor5-2'></a>Haskell
 - 中二病患者向けへそ曲がり実用†純粋†関数型言語
 - いいところ
   - 副作用が常に明示され、細かい制御ができる
-  - 文法は一応シンプル
   - パッケージマネージャが優秀
   - 機械語から遠そうなわりに非最速組と同程度の速度で動く
+  - 型の力が強い、型推論がめっちゃ強い2
   - 自己拡張性が高い
   - 学べば学ぶほど生産性が上がる
   - （すくなくとも世間の噂より）実用性は高い
@@ -1049,6 +1170,8 @@ sys	0m0.387s
   - ビルドが遅い（特に初回）
 - 有用なリソース
   - 日本Haskellユーザーグループ: https://haskell.jp/ と、そこのslack（初心者にやさしい）
+  - GHCup: https://www.haskell.org/ghcup/ バージョン管理ツール。開発に必要なソフト一式を簡単に導入できます
+  - Hoogle: https://hoogle.haskell.org/ 型を入力するとそれに当てはまる関数を検索できます。死ぬほど便利。
 
 最適化すると十分速いが、知識と試行錯誤が必要
 
@@ -1115,20 +1238,23 @@ $ time ./hs-exestart
 99999989
 end
 
-real	0m0.819s
-user	0m0.770s
-sys	0m0.046s
+real	0m0.769s
+user	0m0.728s
+sys	0m0.037s
 ```
 
-### <a name='anchor3-2'></a>Lisp
+
+
+
+### <a name='anchor5-3'></a>Lisp
   - 古代の関数型言語
   - アーティファクト
   - 方言が多い
   - きもいモンスター
   - かっこかっこかっこかっこ
 
-## <a name='anchor4'></a>Web屋さん向け
-### <a name='anchor4-0'></a>javascript
+## <a name='anchor6'></a>Web屋さん向け
+### <a name='anchor6-0'></a>javascript
 - もうぜんぶこれでいいや
 - いいところ
   - GUI作りたくなったらHTML+CSS+JSでやるのが一番かんたんかもしれない
@@ -1185,13 +1311,13 @@ $ time node main.jsstart
 99999989
 end
 
-real	0m0.892s
-user	0m0.867s
-sys	0m0.026s
+real	0m0.863s
+user	0m0.845s
+sys	0m0.020s
 ```
 
 
-### <a name='anchor4-1'></a>PHP
+### <a name='anchor6-1'></a>PHP
 - Web屋さん専用のかんたんサーバーサイド言語
 - いいところ
   - 動的サイトを作りたいなら一番かんたん
@@ -1201,12 +1327,12 @@ sys	0m0.026s
   - カオス
 {sample:php}
 
-### <a name='anchor4-2'></a>WebAssembly
+### <a name='anchor6-2'></a>WebAssembly
 - 直接は書かない
 - 他の言語(RustとかC++とか)からWASMにコンパイルしてブラウザで使える
 - （一応直接書けるが、その名の通りAssembly級にわけわからない）
 
-### <a name='anchor4-3'></a>Typescript
+### <a name='anchor6-3'></a>Typescript
 - AltJS(JSにコンパイルされる代替言語)のデファクトスタンダード、型のあるJS
 - 特徴
   - 構造的部分型
@@ -1229,28 +1355,28 @@ sys	0m0.026s
   - 型推論のおかげでコードがJavaScriptとほぼ変わらないのでサンプルなし
   - 書いてる最中の型チェック・コード補完が死ぬほど速い（言語全体がその意図のもと設計されている）
 
-### <a name='anchor4-4'></a>coffeescript
+### <a name='anchor6-4'></a>coffeescript
 - AltJSその2
 - Rubyのようななにか
 
-### <a name='anchor4-5'></a>purescript
+### <a name='anchor6-5'></a>purescript
 - AltJSその3
 - AltJSの異端児、Haskellの生き写し
 
-### <a name='anchor4-6'></a>scala.js
+### <a name='anchor6-6'></a>scala.js
 - AltJSその4
 - scalaがjsにコンパイルされる
 
-### <a name='anchor4-7'></a>GHCjs
+### <a name='anchor6-7'></a>GHCjs
 - AltJSその5
 - Haskellがjsにコンパイルされる
 
-### <a name='anchor4-8'></a>js_of_ocaml
+### <a name='anchor6-8'></a>js_of_ocaml
 - AltJSその6
 - OCamlがjsにコンパイルされる
 
-## <a name='anchor5'></a>統計とかシミュレーションに使うやつ
-### <a name='anchor5-0'></a>R
+## <a name='anchor7'></a>統計とかシミュレーションに使うやつ
+### <a name='anchor7-0'></a>R
 - いいところ
   - 統計にめっちゃ強い。デファクトスタンダード。どうせやらされる（文系含む）
   - 検定がコマンド一発でできる
@@ -1263,6 +1389,8 @@ sys	0m0.026s
   - メソッドの呼び出し方が`method(target)`
   - 1-indexed, 縦基本行列
   - カオス
+- 有用なリソース
+  - 奥村研究室: https://oku.edu.mie-u.ac.jp/~okumura/stat/ もう三重に足を向けて寝られない
 
 code:
 ```r
@@ -1300,19 +1428,21 @@ $ time Rscript main.r[1] "start"
 [1] 99999989
 [1] "end"
 
-real	0m3.301s
-user	0m2.586s
-sys	0m0.707s
+real	0m3.199s
+user	0m2.536s
+sys	0m0.658s
 ```
 
-### <a name='anchor5-1'></a>MATLAB
+
+### <a name='anchor7-1'></a>MATLAB
 - いいところ
   - 数式とかシミュレーションが強い
   - グラフィクスが強い
 - わるいところ
   - 有料(東大生は大学がアカウントくれるので使える)
   - そんなに速くはない
-### <a name='anchor5-2'></a>Fortran
+
+### <a name='anchor7-2'></a>Fortran
 - いいところ
   - 数値計算に強い。めっちゃ強い。
   - 速い
@@ -1371,74 +1501,74 @@ $ time ./a.out start
     99999989
  end
 
-real	0m1.567s
-user	0m19.458s
-sys	0m0.160s
+real	0m0.881s
+user	0m9.883s
+sys	0m0.125s
 ```
 
 
-## <a name='anchor6'></a>実行環境について
+## <a name='anchor8'></a>実行環境について
 サンプルコードの実行時間は以下の環境で計測しました
 - CPU: Ryzen 7 PRO 4750G
 - メモリ: 32GB
 - OS: Manjaro Linux
 
-## <a name='anchor7'></a>速度ランキング（あんまり参考にならない）
-おことわり：今回題材とした「素数の計算」は比較的単純なコードなので、一部言語を除いて実際以上に似たりよったりな結果になっています。どちらかといえば「どの言語が速いか」より「どのサンプルがうまく書けているか」のほうがだいぶ影響が大きそうです。
+## <a name='anchor9'></a>速度ランキング（あんまり参考にならない）
+おことわり：今回題材とした「素数の計算」は比較的単純なコードなので、一部言語を除いて実際以上に似たりよったりな結果になっています。どちらかといえば「どの言語が速いか」より「どのサンプルがうまく書けているか」のほうがだいぶ影響が大きそうです。それぞれの言語について、速度を大きく改善するようなライブラリや機能を用いたものはカッコ書きで付記しました。
 
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust (bit operation) | 0.36 sec. |1.00x |
-| 2 | C++ | 0.62 sec. |1.73x |
-| 3 | Assembly | 0.64 sec. |1.78x |
-| 4 | C | 0.72 sec. |2.01x |
-| 5 | Haskell (MVector) | 0.82 sec. |2.29x |
-| 6 | C# | 0.84 sec. |2.33x |
-| 7 | VB.net | 0.84 sec. |2.35x |
-| 8 | Julia | 0.85 sec. |2.36x |
-| 9 | Crystal | 0.87 sec. |2.44x |
-| 10 | Rust | 0.89 sec. |2.49x |
-| 11 | JavaScript (TypedArray) | 0.89 sec. |2.49x |
-| 12 | Java | 0.95 sec. |2.65x |
-| 13 | Fortran (parallel) | 1.57 sec. |4.38x |
-| 14 | Python (numpy) | 1.70 sec. |4.75x |
-| 15 | OCaml | 2.03 sec. |5.67x |
-| 16 | F# | 2.41 sec. |6.73x |
-| 17 | R | 3.30 sec. |9.22x |
-| 18 | Cython (numpy) | 3.67 sec. |10.24x |
-| 19 | Ruby (numo) | 4.62 sec. |12.89x |
-| 20 | PyPy | 4.84 sec. |13.52x |
+| 1 | Rust (bit operation) | 0.28 sec. |1.00x |
+| 2 | Assembly | 0.62 sec. |2.17x |
+| 3 | C++ | 0.64 sec. |2.24x |
+| 4 | C | 0.73 sec. |2.56x |
+| 5 | Rust | 0.76 sec. |2.69x |
+| 6 | Haskell (MVector) | 0.77 sec. |2.71x |
+| 7 | Julia | 0.79 sec. |2.77x |
+| 8 | VB.net | 0.82 sec. |2.87x |
+| 9 | C# | 0.82 sec. |2.88x |
+| 10 | Crystal | 0.85 sec. |3.00x |
+| 11 | JavaScript (TypedArray) | 0.86 sec. |3.04x |
+| 12 | Fortran (parallel) | 0.88 sec. |3.10x |
+| 13 | Java | 0.91 sec. |3.20x |
+| 14 | Python (numpy) | 1.64 sec. |5.79x |
+| 15 | OCaml | 2.06 sec. |7.24x |
+| 16 | F# | 2.32 sec. |8.17x |
+| 17 | R | 3.20 sec. |11.26x |
+| 18 | Cython (numpy) | 3.60 sec. |12.69x |
+| 19 | PyPy | 3.69 sec. |13.01x |
+| 20 | Ruby (numo) | 4.34 sec. |15.27x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust (bit operation) | 0.34 sec. |1.00x |
-| 2 | C++ | 0.52 sec. |1.50x |
-| 3 | Assembly | 0.62 sec. |1.81x |
-| 4 | C | 0.69 sec. |2.00x |
-| 5 | Julia | 0.74 sec. |2.16x |
-| 6 | VB.net | 0.76 sec. |2.19x |
-| 7 | Haskell (MVector) | 0.77 sec. |2.23x |
-| 8 | C# | 0.77 sec. |2.24x |
-| 9 | Java | 0.81 sec. |2.34x |
-| 10 | Crystal | 0.82 sec. |2.37x |
-| 11 | Rust | 0.82 sec. |2.39x |
-| 12 | JavaScript (TypedArray) | 0.87 sec. |2.51x |
-| 13 | Python (numpy) | 1.57 sec. |4.55x |
-| 14 | OCaml | 1.63 sec. |4.74x |
-| 15 | F# | 2.25 sec. |6.52x |
-| 16 | R | 2.59 sec. |7.50x |
-| 17 | Cython (numpy) | 3.61 sec. |10.48x |
-| 18 | PyPy | 4.24 sec. |12.28x |
-| 19 | Ruby (numo) | 4.40 sec. |12.76x |
-| 20 | Fortran (parallel) | 19.46 sec. |56.40x |
+| 1 | Rust (bit operation) | 0.27 sec. |1.00x |
+| 2 | C++ | 0.55 sec. |2.00x |
+| 3 | Assembly | 0.61 sec. |2.22x |
+| 4 | C | 0.69 sec. |2.52x |
+| 5 | Julia | 0.72 sec. |2.64x |
+| 6 | Haskell (MVector) | 0.73 sec. |2.67x |
+| 7 | Rust | 0.74 sec. |2.70x |
+| 8 | VB.net | 0.74 sec. |2.72x |
+| 9 | C# | 0.76 sec. |2.79x |
+| 10 | Java | 0.80 sec. |2.93x |
+| 11 | Crystal | 0.80 sec. |2.95x |
+| 12 | JavaScript (TypedArray) | 0.84 sec. |3.10x |
+| 13 | Python (numpy) | 1.57 sec. |5.75x |
+| 14 | OCaml | 1.72 sec. |6.31x |
+| 15 | F# | 2.18 sec. |8.00x |
+| 16 | R | 2.54 sec. |9.29x |
+| 17 | PyPy | 3.17 sec. |11.60x |
+| 18 | Cython (numpy) | 3.71 sec. |13.60x |
+| 19 | Ruby (numo) | 4.18 sec. |15.31x |
+| 20 | Fortran (parallel) | 9.88 sec. |36.20x |
 
 
-## <a name='anchor8'></a>貢献者一覧
+## <a name='anchor10'></a>貢献者一覧
 - メタリックはんぺん 
   - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java
-  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, F#, OCaml, Java
+  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, F#, OCaml, Java, Julia
   - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
 - あなばす
   - 説明: Julia, Lisp, R, MATLAB, Fortran
@@ -1456,7 +1586,7 @@ CPU時間：
   - 一言: なんだかんだRubyはいい言語だと思う。コードゴルフにも向いてるし。
 - 🌱🌿☘️🍀
   - 説明: Rust, TypeScript(, R)
-  - サンプル: Rust-bit
+  - サンプル: Rust (bit operation)
   - 一言: Rustの真価はWebサーバーなどのシビアな用途で初めて発揮される．
 - femshima(Nanigashi)
   - サンプル: C
