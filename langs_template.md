@@ -124,6 +124,9 @@ Rubyの高速化テクはいろいろあるが、とりあえず各種メソッ�
   - The Rust Programming Language (和訳): https://doc.rust-jp.rs/book-ja/
 {sample:rs}
 
+
+{sample:rs}
+
 ### Crystal
 - いいところ
   - 最速組。とにかく速い4

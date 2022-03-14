@@ -1,21 +1,21 @@
-id   , dir  , name        , source     , build                                 , exec
-c    , c    , C           , main.c     , clang   main.c   -O3                  , ./a.out
-cpp  , cpp  , C++         , main.cpp   , clang++ main.cpp -O3                  , ./a.out
-rs   , rs   , Rust        , main.rs    , rustc -O main.rs                      , ./main
-rs-b , rs   , Rust-bit    , bit.rs     , rustc -O bit.rs                       , ./bit
-hs   , hs   , Haskell     , app/Main.hs, stack install --local-bin-path ./     , ./hs-exe
-py   , py   , Python      , main_nd.py , :                                     , python main_nd.py
-pypy , py   , PyPy        , main.py    , :                                     , pypy main.py
-cy   , py   , Cython      , cylib.pyx  , python setup.py build_ext --inplace   , python cymain.py
-rb   , rb   , Ruby        , main.rb    , bundle                                , bundle exec ruby main.rb
-jl   , jl   , Julia       , main.jl    , julia main.jl                         , julia main.jl
-js   , js   , JS          , main.js    , :                                     , node main.js
-f95  , f95  , Fortran     , main.f95   , gfortran -fopenmp -Ofast main.f95     , ./a.out
-r    , r    , R           , main.r     , :                                     , Rscript main.r
-vb   , vb   , VB.net      , Program.vb , dotnet publish -c release -r linux-x64, ./bin/release/net6.0/linux-x64/vb
-cs   , cs   , C#          , Program.cs , dotnet publish -c release -r linux-x64, ./bin/release/net6.0/linux-x64/cs
-fs   , fs   , F#          , Program.fs , dotnet publish -c release -r linux-x64, ./bin/release/net6.0/linux-x64/fs
-asm  , asm  , Assembly    , main.s     , gcc main.s                            , ./a.out
-java , java , Java        , main.java  , javac main.java                       , java Primes
-cr   , cr   , Crystal     , main.cr    , crystal build --release main.cr       , ./main
-ocaml, ocaml, OCaml       , main.ml    , ocamlopt main.ml -O3                  , ./a.out
+id   , dir  , name        , source        , build                                 , exec
+c    , c    , C           , main.c        , clang   main.c   -O3                  , ./a.out
+cpp  , cpp  , C++         , main.cpp      , clang++ main.cpp -O3                  , ./a.out
+rs   , rs   , Rust        , main.rs       , rustc -O main.rs                      , ./main
+rs-b , rs   , Rust-bit    , bit.rs        , rustc -O bit.rs                       , ./bit
+hs   , hs   , Haskell     , app/MVector.hs, stack install --local-bin-path ./     , ./hs-exe
+py   , py   , Python      , main_nd.py    , :                                     , python main_nd.py
+pypy , py   , PyPy        , main.py       , :                                     , pypy main.py
+cy   , py   , Cython      , cylib.pyx     , python setup.py build_ext --inplace   , python cymain.py
+rb   , rb   , Ruby        , main.rb       , bundle                                , bundle exec ruby main.rb
+jl   , jl   , Julia       , main.jl       , julia main.jl                         , julia main.jl
+js   , js   , JS          , main.js       , :                                     , node main.js
+f95  , f95  , Fortran     , main.f95      , gfortran -fopenmp -Ofast main.f95     , ./a.out
+r    , r    , R           , main.r        , :                                     , Rscript main.r
+vb   , vb   , VB.net      , Program.vb    , dotnet publish -c release -r linux-x64, ./bin/release/net6.0/linux-x64/vb
+cs   , cs   , C#          , Program.cs    , dotnet publish -c release -r linux-x64, ./bin/release/net6.0/linux-x64/cs
+fs   , fs   , F#          , Program.fs    , dotnet publish -c release -r linux-x64, ./bin/release/net6.0/linux-x64/fs
+asm  , asm  , Assembly    , main.s        , gcc main.s                            , ./a.out
+java , java , Java        , main.java     , javac main.java                       , java Primes
+cr   , cr   , Crystal     , main.cr       , crystal build --release main.cr       , ./main
+ocaml, ocaml, OCaml       , main.ml       , ocamlopt main.ml -O3                  , ./a.out

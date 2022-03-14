@@ -27,13 +27,12 @@
   - <a href='#anchor4-0'>javascript</a>
   - <a href='#anchor4-1'>PHP</a>
   - <a href='#anchor4-2'>WebAssembly</a>
-  - <a href='#anchor4-3'>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部</a>
-  - <a href='#anchor4-4'>Typescript</a>
-  - <a href='#anchor4-5'>coffeescript</a>
-  - <a href='#anchor4-6'>purescript</a>
-  - <a href='#anchor4-7'>scala.js</a>
-  - <a href='#anchor4-8'>GHCjs</a>
-  - <a href='#anchor4-9'>js_of_ocaml</a>
+  - <a href='#anchor4-3'>Typescript</a>
+  - <a href='#anchor4-4'>coffeescript</a>
+  - <a href='#anchor4-5'>purescript</a>
+  - <a href='#anchor4-6'>scala.js</a>
+  - <a href='#anchor4-7'>GHCjs</a>
+  - <a href='#anchor4-8'>js_of_ocaml</a>
 
 - <a href='#anchor5'>統計とかシミュレーションに使うやつ</a>
   - <a href='#anchor5-0'>R</a>
@@ -95,9 +94,9 @@ $ time python main_nd.pystart
 99999989
 end
 
-real	0m1.758s
-user	0m1.691s
-sys	0m1.087s
+real	0m1.622s
+user	0m1.573s
+sys	0m1.139s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -109,9 +108,9 @@ $ time pypy main.pystart
 99999989
 end
 
-real	0m4.601s
-user	0m4.039s
-sys	0m0.525s
+real	0m3.900s
+user	0m3.324s
+sys	0m0.531s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -173,9 +172,9 @@ $ time python cymain.pystart
 5761455
 end
 
-real	0m3.703s
-user	0m3.825s
-sys	0m0.951s
+real	0m3.630s
+user	0m3.771s
+sys	0m0.959s
 ```
 
 
@@ -197,34 +196,39 @@ sys	0m0.951s
   - 型アノテーションや静的な型チェックは存在するが、いろいろ未成熟
 - どうしても速度が欲しい人、あるいは静的型付けの安心感が欲しいRuby書きはCrystalを検討してみよう
 
+一応、Pythonにおけるnumpyに対応するnumoというライブラリが存在するため、numpyで高速化できる処理ならまあ、なんとかなる(numoはAtCoderでも使える)。ユーザが少なすぎてググっても情報出ないし、開発も活発とはとても言えない状況だが……。
+
 code:
 ```rb
+require 'numo/narray'
+
 puts "start"
 
 MAX = 100000000
-sieve = Array.new(MAX + 1, true)
-sieve[0] = sieve[1] = false
+sieve = Numo::Bit.ones(MAX + 1)
+sieve[0] = sieve[1] = 0
 
 2.upto(Integer.sqrt(MAX)) do |i|
-  (i * i).step(by: i, to: MAX) { |j| sieve[j] = false } if sieve[i]
+  sieve[((i * i)..-1) % i] = 0 if sieve[i]
 end
 
-primes = sieve.filter_map.with_index { |v, i| i if v }
-puts primes.last, "end"
+primes = Numo::Int32.new(MAX + 1).seq(0, 1)[sieve[0..MAX]]
+puts primes[-1], "end"
 ```
 
 result:
 ```
-$ :
-$ time ruby main.rbstart
+$ bundle
+$ time bundle exec ruby main.rbstart
 99999989
 end
 
-real	0m20.423s
-user	0m20.057s
-sys	0m0.209s
+real	0m4.288s
+user	0m4.156s
+sys	0m0.120s
 ```
 
+Rubyの高速化テクはいろいろあるが、とりあえず各種メソッドによるループをwhileに変換するとかなり速くなる(ブロックはオーバーヘッドが大きい)。もっとも、while文を使うと「これRubyでやる意味ある?」という感じになるし、それなら他の言語を使った方がいい(ネイティブ拡張を書くという選択肢は一応ある)。何度も言うがRubyistのサブ言語としてCrystalマジでオススメ。
 
 ### <a name='anchor0-2'></a>Julia
 - FortranとmatlabとPythonの後釜をいっぺんに狙おうとしている言語
@@ -281,9 +285,9 @@ $ time julia main.jlstart
 99999989
 end
 
-real	0m0.814s
-user	0m0.734s
-sys	0m0.072s
+real	0m0.799s
+user	0m0.737s
+sys	0m0.060s
 ```
 
 
@@ -343,9 +347,9 @@ $ time ./a.outstart
 99999989
 end
 
-real	0m0.734s
-user	0m0.695s
-sys	0m0.030s
+real	0m0.730s
+user	0m0.700s
+sys	0m0.027s
 ```
 
 
@@ -406,9 +410,9 @@ $ time ./a.outstart
 99999989
 start
 
-real	0m0.637s
-user	0m0.531s
-sys	0m0.093s
+real	0m0.620s
+user	0m0.518s
+sys	0m0.100s
 ```
 
   
@@ -473,9 +477,55 @@ $ time ./mainstart
 99999989
 end
 
-real	0m0.821s
-user	0m0.772s
-sys	0m0.034s
+real	0m0.805s
+user	0m0.751s
+sys	0m0.033s
+```
+
+
+
+
+code:
+```rs
+const MAX :usize = 100000000;
+fn main() {
+    println!("start");
+
+    let mut sieve = vec![true; MAX+1];
+    sieve[0] = false;
+    sieve[1] = false;
+    let sqrtmax = f32::sqrt(MAX as f32) as usize;
+    for i in 2..=sqrtmax {
+        if sieve[i]{
+            for j in i..=MAX/i {
+                sieve[j*i] = false;
+            }
+        }
+    }
+
+    let mut primes = vec![0; MAX+1];
+    let mut pcount = 0;
+    for i in 2..=MAX {
+        if sieve[i] {
+            primes[pcount] = i;
+            pcount += 1;
+        }
+    }
+    println!("{}",primes[pcount-1]);
+    println!("end");
+}
+```
+
+result:
+```
+$ rustc -O main.rs
+$ time ./mainstart
+99999989
+end
+
+real	0m0.805s
+user	0m0.751s
+sys	0m0.033s
 ```
 
 
@@ -513,9 +563,9 @@ $ time ./mainstart
 99999989
 end
 
-real	0m0.887s
-user	0m0.834s
-sys	0m0.046s
+real	0m0.862s
+user	0m0.823s
+sys	0m0.040s
 ```
 
 
@@ -749,8 +799,8 @@ end
 count 5717621
 
 
-real	0m0.643s
-user	0m0.637s
+real	0m0.686s
+user	0m0.673s
 sys	0m0.003s
 ```
 
@@ -805,9 +855,9 @@ $ time java Primesstart
 99999989
 end
 
-real	0m0.973s
-user	0m0.841s
-sys	0m0.141s
+real	0m0.966s
+user	0m0.842s
+sys	0m0.137s
 ```
 
 ### <a name='anchor2-1'></a>C#
@@ -853,9 +903,9 @@ $ time ./bin/release/net6.0/linux-x64/csstart
 99999989
 end
 
-real	0m0.859s
-user	0m0.773s
-sys	0m0.044s
+real	0m0.812s
+user	0m0.748s
+sys	0m0.037s
 ```
 
 ### <a name='anchor2-2'></a>VB.net
@@ -912,9 +962,9 @@ $ time ./bin/release/net6.0/linux-x64/vbstart
 99999989
 end
 
-real	0m0.833s
-user	0m0.770s
-sys	0m0.043s
+real	0m0.844s
+user	0m0.753s
+sys	0m0.050s
 ```
 
 
@@ -971,9 +1021,9 @@ $ time ./a.outstart
 99999989
 end
 
-real	0m2.097s
-user	0m1.748s
-sys	0m0.342s
+real	0m2.134s
+user	0m1.747s
+sys	0m0.379s
 ```
 
 ### <a name='anchor3-1'></a>Haskell
@@ -1004,7 +1054,7 @@ sys	0m0.342s
 
 code:
 ```hs
-module Main where
+module MVector where
 
 import Lib
 import qualified Data.Vector.Unboxed as V
@@ -1065,8 +1115,8 @@ $ time ./hs-exestart
 99999989
 end
 
-real	0m0.820s
-user	0m0.744s
+real	0m0.810s
+user	0m0.752s
 sys	0m0.053s
 ```
 
@@ -1089,6 +1139,7 @@ sys	0m0.053s
 - わるいところ
   - 型がない。型アノテーションすらない
   - 過去のしがらみが多い（マシになりつつある）
+  - コミュニティの民度がカス
   - 愛すべきカス
 - 有用なリソース
   - MDNのチュートリアル: https://developer.mozilla.org/ja/docs/Web/Tutorials
@@ -1134,9 +1185,9 @@ $ time node main.jsstart
 99999989
 end
 
-real	0m0.877s
-user	0m0.841s
-sys	0m0.037s
+real	0m0.853s
+user	0m0.807s
+sys	0m0.049s
 ```
 
 
@@ -1151,30 +1202,52 @@ sys	0m0.037s
 {sample:php}
 
 ### <a name='anchor4-2'></a>WebAssembly
-  - 直接は書かない
-  - 他の言語(RustとかC++とか)からWASMにコンパイルしてブラウザで使える
+- 直接は書かない
+- 他の言語(RustとかC++とか)からWASMにコンパイルしてブラウザで使える
+- （一応直接書けるが、その名の通りAssembly級にわけわからない）
 
-### <a name='anchor4-3'></a>以下星の数ほどあるAltJS(JSにコンパイルされる代替言語)の一部
-### <a name='anchor4-4'></a>Typescript
-  - AltJSのデファクトスタンダード、型のあるJS
+### <a name='anchor4-3'></a>Typescript
+- AltJS(JSにコンパイルされる代替言語)のデファクトスタンダード、型のあるJS
+- 特徴
+  - 構造的部分型
+    - クラスの継承ベースではなく，現にプロパティの型があっているかで代入可能性を判断する
+  - リテラル型（`'world'`だけが代入できる型，のような）がある
+  - 非常に複雑な型定義が可能
+- いいところ
   - 型がある！！！しかも強い！！！！！！！（とても重要）
-{sample:ts}
-### <a name='anchor4-5'></a>coffeescript
-  - Rubyのようななにか
-{sample:coffee}
-### <a name='anchor4-6'></a>purescript
-  - AltJSの異端児、Haskellの生き写し
-{sample:purs}
-### <a name='anchor4-7'></a>scala.js
-  - scalaがjsにコンパイルされる
-{result:scjs}
-### <a name='anchor4-8'></a>GHCjs
-  - Haskellがjsにコンパイルされる
-{sample:hsjs}
-### <a name='anchor4-9'></a>js_of_ocaml
-  - OCamlがjsにコンパイルされる
-{sample:jsocaml}
-{sample:ocjs}
+  - 型推論強め（型を手書きするのは基本的に関数の引数だけ）
+  - Microsoft製でサポート手厚い
+  - コミュニティの民度がJavaScriptより幾分良い
+- わるいところ
+  - 型はあくまで「飾り」でしかない（ランタイムでは無視される）
+  - けしからんやつが使うと型の恩恵を全く受けられない（`any`滅ぶべし慈悲はない）
+- 豆知識・備考
+  - 型システムだけでチューリング完全である（brainfxxkを実装できる）
+  - いまどきのJavaScriptパッケージは必ずと言っていいほどTypeScriptで書かれている
+    - 型がないとパッケージとして使いにくいため
+  - 実はVSCodeでJavaScriptを書くときはコード補完の恩恵をTypeScriptから受けている
+  - 型推論のおかげでコードがJavaScriptとほぼ変わらないのでサンプルなし
+  - 書いてる最中の型チェック・コード補完が死ぬほど速い（言語全体がその意図のもと設計されている）
+
+### <a name='anchor4-4'></a>coffeescript
+- AltJSその2
+- Rubyのようななにか
+
+### <a name='anchor4-5'></a>purescript
+- AltJSその3
+- AltJSの異端児、Haskellの生き写し
+
+### <a name='anchor4-6'></a>scala.js
+- AltJSその4
+- scalaがjsにコンパイルされる
+
+### <a name='anchor4-7'></a>GHCjs
+- AltJSその5
+- Haskellがjsにコンパイルされる
+
+### <a name='anchor4-8'></a>js_of_ocaml
+- AltJSその6
+- OCamlがjsにコンパイルされる
 
 ## <a name='anchor5'></a>統計とかシミュレーションに使うやつ
 ### <a name='anchor5-0'></a>R
@@ -1187,6 +1260,8 @@ sys	0m0.037s
   - パッケージマネージャが優秀
 - わるいところ
   - 複雑なことをすると遅い
+  - メソッドの呼び出し方が`method(target)`
+  - 1-indexed, 縦基本行列
   - カオス
 
 code:
@@ -1225,9 +1300,9 @@ $ time Rscript main.r[1] "start"
 [1] 99999989
 [1] "end"
 
-real	0m3.341s
-user	0m2.555s
-sys	0m0.775s
+real	0m3.270s
+user	0m2.579s
+sys	0m0.675s
 ```
 
 ### <a name='anchor5-1'></a>MATLAB
@@ -1296,9 +1371,9 @@ $ time ./a.out start
     99999989
  end
 
-real	0m0.874s
-user	0m9.324s
-sys	0m0.215s
+real	0m0.814s
+user	0m9.063s
+sys	0m0.130s
 ```
 
 
@@ -1314,50 +1389,50 @@ sys	0m0.215s
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust-bit | 0.30 sec. |1.00x |
-| 2 | C++ | 0.64 sec. |2.14x |
-| 3 | Assembly | 0.64 sec. |2.16x |
-| 4 | C | 0.73 sec. |2.46x |
-| 5 | Julia | 0.81 sec. |2.73x |
-| 6 | Haskell | 0.82 sec. |2.75x |
-| 7 | Rust | 0.82 sec. |2.76x |
-| 8 | VB.net | 0.83 sec. |2.80x |
-| 9 | C# | 0.86 sec. |2.88x |
-| 10 | Fortran | 0.87 sec. |2.93x |
-| 11 | JS | 0.88 sec. |2.94x |
-| 12 | Crystal | 0.89 sec. |2.98x |
-| 13 | Java | 0.97 sec. |3.27x |
-| 14 | Python | 1.76 sec. |5.90x |
-| 15 | OCaml | 2.10 sec. |7.04x |
-| 16 | F# | 2.40 sec. |8.05x |
-| 17 | R | 3.34 sec. |11.21x |
-| 18 | Cython | 3.70 sec. |12.43x |
-| 19 | PyPy | 4.60 sec. |15.44x |
-| 20 | Ruby | 20.42 sec. |68.53x |
+| 1 | Rust-bit | 0.33 sec. |1.00x |
+| 2 | C++ | 0.62 sec. |1.86x |
+| 3 | Assembly | 0.69 sec. |2.05x |
+| 4 | C | 0.73 sec. |2.19x |
+| 5 | Julia | 0.80 sec. |2.39x |
+| 6 | Rust | 0.80 sec. |2.41x |
+| 7 | Haskell | 0.81 sec. |2.43x |
+| 8 | C# | 0.81 sec. |2.43x |
+| 9 | Fortran | 0.81 sec. |2.44x |
+| 10 | VB.net | 0.84 sec. |2.53x |
+| 11 | JS | 0.85 sec. |2.55x |
+| 12 | Crystal | 0.86 sec. |2.58x |
+| 13 | Java | 0.97 sec. |2.89x |
+| 14 | Python | 1.62 sec. |4.86x |
+| 15 | OCaml | 2.13 sec. |6.39x |
+| 16 | F# | 2.35 sec. |7.04x |
+| 17 | R | 3.27 sec. |9.79x |
+| 18 | Cython | 3.63 sec. |10.87x |
+| 19 | PyPy | 3.90 sec. |11.68x |
+| 20 | Ruby | 4.29 sec. |12.84x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust-bit | 0.28 sec. |1.00x |
-| 2 | C++ | 0.53 sec. |1.87x |
-| 3 | Assembly | 0.64 sec. |2.24x |
-| 4 | C | 0.70 sec. |2.45x |
-| 5 | Julia | 0.73 sec. |2.58x |
-| 6 | Haskell | 0.74 sec. |2.62x |
-| 7 | VB.net | 0.77 sec. |2.71x |
-| 8 | Rust | 0.77 sec. |2.72x |
-| 9 | C# | 0.77 sec. |2.72x |
-| 10 | Crystal | 0.83 sec. |2.94x |
-| 11 | JS | 0.84 sec. |2.96x |
-| 12 | Java | 0.84 sec. |2.96x |
-| 13 | Python | 1.69 sec. |5.95x |
-| 14 | OCaml | 1.75 sec. |6.15x |
-| 15 | F# | 2.22 sec. |7.80x |
-| 16 | R | 2.56 sec. |9.00x |
-| 17 | Cython | 3.82 sec. |13.47x |
-| 18 | PyPy | 4.04 sec. |14.22x |
-| 19 | Fortran | 9.32 sec. |32.83x |
-| 20 | Ruby | 20.06 sec. |70.62x |
+| 1 | Rust-bit | 0.32 sec. |1.00x |
+| 2 | C++ | 0.52 sec. |1.64x |
+| 3 | Assembly | 0.67 sec. |2.13x |
+| 4 | C | 0.70 sec. |2.22x |
+| 5 | Julia | 0.74 sec. |2.33x |
+| 6 | C# | 0.75 sec. |2.37x |
+| 7 | Rust | 0.75 sec. |2.38x |
+| 8 | Haskell | 0.75 sec. |2.38x |
+| 9 | VB.net | 0.75 sec. |2.38x |
+| 10 | JS | 0.81 sec. |2.55x |
+| 11 | Crystal | 0.82 sec. |2.60x |
+| 12 | Java | 0.84 sec. |2.66x |
+| 13 | Python | 1.57 sec. |4.98x |
+| 14 | OCaml | 1.75 sec. |5.53x |
+| 15 | F# | 2.18 sec. |6.91x |
+| 16 | R | 2.58 sec. |8.16x |
+| 17 | PyPy | 3.32 sec. |10.52x |
+| 18 | Cython | 3.77 sec. |11.93x |
+| 19 | Ruby | 4.16 sec. |13.15x |
+| 20 | Fortran | 9.06 sec. |28.68x |
 
 
 ## <a name='anchor8'></a>貢献者一覧
@@ -1380,7 +1455,7 @@ CPU時間：
   - サンプル: Ruby, Crystal
   - 一言: なんだかんだRubyはいい言語だと思う。コードゴルフにも向いてるし。
 - 🌱🌿☘️🍀
-  - 説明: Rust
+  - 説明: Rust, TypeScript(, R)
   - サンプル: Rust-bit
   - 一言: Rustの真価はWebサーバーなどのシビアな用途で初めて発揮される．
 - femshima(Nanigashi)

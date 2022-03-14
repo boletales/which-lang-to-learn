@@ -1,4 +1,4 @@
-module Main where
+module MVector where
 
 import Lib
 import qualified Data.Vector.Unboxed as V

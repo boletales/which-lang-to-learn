@@ -40,7 +40,9 @@ packages:
 # - git: https://github.com/commercialhaskell/stack.git
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
-# extra-deps: []
+extra-deps:
+  - repa-3.4.1.5@sha256:4d94845e66d668345130f75f5de8f7c69139b91495c8c4b5a825014e8985e2fd,3562  
+
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
