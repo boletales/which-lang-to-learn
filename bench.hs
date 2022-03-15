@@ -139,7 +139,7 @@ embedIndex text =
       anchoridl3 i j = "anchor" <> tshow i <> "-" <> tshow j
       (sections, anchored)
         = ( let self = fst $ T.breakOn "\n## " text
-            in 
+            in
             T.breakOnAll "\n## " >>>
             L.foldl' (\(i,xs,t) (before, after) ->
                 let (inner,outer)        = T.breakOn "\n## " (T.drop 4 after)
@@ -158,10 +158,11 @@ embedIndex text =
               ) (0,[],self) >>>
             (\(j,xs,t) -> (reverse xs, t))
           ) text
-      indexmd = T.intercalate "\n" $ mapWithIndex (\i s ->
+      indexmd = "## 目次\n" <>
+                T.intercalate "\n" (mapWithIndex (\i s ->
                     "- <a href='#"<> anchoridl2 i <>"'>" <> fst s <> "</a>\n" <> T.intercalate "" (mapWithIndex (\j s ->
                     "  - <a href='#"<> anchoridl3 i j <>"'>" <> fst s <> "</a>\n"
-                  ) (snd s))) sections
+                  ) (snd s))) sections)
   in replace "{index}" indexmd anchored
 
 embedResult :: [(SourceFile, Text)] -> [BenchResult] -> Text -> Text

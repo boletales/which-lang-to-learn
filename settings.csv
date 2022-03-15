@@ -19,3 +19,4 @@ asm  , asm  , Assembly                , main.s        , gcc main.s              
 java , java , Java                    , main.java     , javac main.java                       , java Primes
 cr   , cr   , Crystal                 , main.cr       , crystal build --release main.cr       , ./main
 ocaml, ocaml, OCaml                   , main.ml       , ocamlopt main.ml -O3                  , ./a.out
+scala, scala, Scala                   , main.scala    , scalac main.scala                     , scala prime -J-Xmx1g
