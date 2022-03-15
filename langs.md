@@ -26,8 +26,9 @@
 - <a href='#anchor5'>関数型プログラミングに対するサポートが強いやつ</a>
   - <a href='#anchor5-0'>OCaml</a>
   - <a href='#anchor5-1'>F#</a>
-  - <a href='#anchor5-2'>Haskell</a>
-  - <a href='#anchor5-3'>Lisp</a>
+  - <a href='#anchor5-2'>Scala</a>
+  - <a href='#anchor5-3'>Haskell</a>
+  - <a href='#anchor5-4'>Lisp</a>
 
 - <a href='#anchor6'>Web屋さん向け</a>
   - <a href='#anchor6-0'>javascript</a>
@@ -108,6 +109,35 @@
     - 型推論のない静的型付け言語は自分で型を明示しないといけないので面倒
     - 逆に、型推論の強いやつはほぼ自分で型を書かなくても動いたりする（けどコード読むときに拡張機能つかわないと型わからないのつらいので書いてくれ）
     - __静的型付けの言語は最低一つ習得するべき__
+  - オブジェクト指向
+    - プログラムの書き方･設計の方針の一種
+      - 物事を、固有のデータ「フィールド」と固有の機能「メソッド」を持つ「オブジェクト」に切り分ける
+      - プログラム全体を「オブジェクト」の相互作用として記述する
+    - いくつか流派がある
+      - クラスベース：かっちりしたオブジェクトの雛型「クラス」や元になるクラスに新たな機能を持たせる「継承」、複数のクラスが共通して持つデータ･機能を表す「インターフェース」を用いる
+      - プロトタイプベース：クラスより緩いひな形「プロトタイプ」や継承に似た「プロトタイプチェーン」を用いる
+    - 一時期めっちゃ流行った
+  - 手続き型プログラミング
+    - プログラムの書き方の一種
+    - プログラムを逐次的な処理の流れとして表すもの
+    - 手続きが縦に伸びていくイメージ
+    - 後述の「関数型プログラミング」とは対になりがち
+    - だいたいどんなプログラミング言語でもできる
+  - 関数型プログラミング
+    - プログラムの書き方の一種
+    - プログラムを大きな関数の適用として表すもの
+    - 式が横に伸びていくイメージ（実際には行を分割して書くけど）
+    - 関数型プログラミングに対するサポートが手薄な言語でやろうとすると辛い
+    - 最低でも言語に以下の特徴がほしい
+      - 関数が第一級オブジェクト（関数の引数として渡したり変数に代入したりできる）であること
+      - 匿名の関数を簡単に宣言できること
+      - (静的型付けなら)関数を表す型が存在すること
+    - 可能なら次のような特徴もほしい
+      - 標準ライブラリに「関数を引数に取る関数」（高階関数）が多く含まれていること
+      - (静的型付けなら)型システムが強力であること。高階関数の型は往々にして複雑になるので
+      - (静的型付けなら)型推論が強いこと。複雑な型を手書きしたくはないので
+      - 「名前付き定数を束縛して式中で使う」みたいな文が用意されていること。ローカルconstでもいいけどスコープが広がって面倒なので
+    - ↑のような特徴を多く持つ、関数型プログラミングでコードを書くことを目的に設計されたプログラミング言語は「関数型プログラミング言語」と呼ばれる
 
 ## <a name='anchor2'></a>スクリプトみの強いやつ
 ### <a name='anchor2-0'></a>Python
@@ -157,9 +187,9 @@ $ time python main_nd.pystart
 99999989
 end
 
-real	0m1.637s
-user	0m1.556s
-sys	0m1.165s
+real	0m1.686s
+user	0m1.589s
+sys	0m1.157s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -171,9 +201,9 @@ $ time pypy main.pystart
 99999989
 end
 
-real	0m4.404s
-user	0m3.868s
-sys	0m0.438s
+real	0m4.436s
+user	0m3.944s
+sys	0m0.397s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -235,9 +265,9 @@ $ time python cymain.pystart
 5761455
 end
 
-real	0m3.457s
-user	0m3.625s
-sys	0m0.944s
+real	0m3.638s
+user	0m3.749s
+sys	0m0.971s
 ```
 
 
@@ -286,9 +316,9 @@ $ time bundle exec ruby main.rbstart
 99999989
 end
 
-real	0m3.914s
-user	0m3.751s
-sys	0m0.143s
+real	0m4.445s
+user	0m4.312s
+sys	0m0.103s
 ```
 
 Rubyの高速化テクはいろいろあるが、とりあえず各種メソッドによるループをwhileに変換するとかなり速くなる(ブロックはオーバーヘッドが大きい)。もっとも、while文を使うと「これRubyでやる意味ある?」という感じになるし、それなら他の言語を使った方がいい(ネイティブ拡張を書くという選択肢は一応ある)。何度も言うがRubyistのサブ言語としてCrystalマジでオススメ。
@@ -348,9 +378,9 @@ $ time julia main.jlstart
 99999989
 end
 
-real	0m0.741s
-user	0m0.689s
-sys	0m0.050s
+real	0m0.782s
+user	0m0.716s
+sys	0m0.053s
 ```
 
 
@@ -410,9 +440,9 @@ $ time ./a.outstart
 99999989
 end
 
-real	0m0.689s
-user	0m0.668s
-sys	0m0.020s
+real	0m0.690s
+user	0m0.664s
+sys	0m0.023s
 ```
 
 
@@ -473,9 +503,9 @@ $ time ./a.outstart
 99999989
 start
 
-real	0m0.572s
-user	0m0.500s
-sys	0m0.070s
+real	0m0.590s
+user	0m0.515s
+sys	0m0.074s
 ```
 
   
@@ -541,9 +571,9 @@ $ time ./mainstart
 99999989
 end
 
-real	0m0.726s
-user	0m0.701s
-sys	0m0.023s
+real	0m0.736s
+user	0m0.707s
+sys	0m0.016s
 ```
 
 
@@ -586,9 +616,9 @@ $ time ./bitstart
 99999991
 end
 
-real	0m0.267s
-user	0m0.260s
-sys	0m0.007s
+real	0m0.279s
+user	0m0.271s
+sys	0m0.003s
 ```
 
 
@@ -626,9 +656,9 @@ $ time ./mainstart
 99999989
 end
 
-real	0m0.823s
-user	0m0.782s
-sys	0m0.046s
+real	0m0.836s
+user	0m0.809s
+sys	0m0.034s
 ```
 
 
@@ -862,9 +892,9 @@ end
 count 5717621
 
 
-real	0m0.578s
-user	0m0.560s
-sys	0m0.017s
+real	0m0.599s
+user	0m0.585s
+sys	0m0.003s
 ```
 
 
@@ -918,9 +948,9 @@ $ time java Primesstart
 99999989
 end
 
-real	0m0.899s
-user	0m0.813s
-sys	0m0.108s
+real	0m0.883s
+user	0m0.773s
+sys	0m0.127s
 ```
 
 
@@ -969,9 +999,9 @@ $ time ./bin/release/net6.0/linux-x64/csstart
 99999989
 end
 
-real	0m0.842s
-user	0m0.734s
-sys	0m0.034s
+real	0m0.866s
+user	0m0.708s
+sys	0m0.046s
 ```
 
 
@@ -1031,7 +1061,7 @@ $ time ./bin/release/net6.0/linux-x64/vbstart
 99999989
 end
 
-real	0m0.821s
+real	0m0.828s
 user	0m0.730s
 sys	0m0.036s
 ```
@@ -1090,9 +1120,9 @@ $ time ./a.outstart
 99999989
 end
 
-real	0m1.858s
-user	0m1.584s
-sys	0m0.269s
+real	0m1.959s
+user	0m1.701s
+sys	0m0.242s
 ```
 
 
@@ -1142,13 +1172,69 @@ $ time ./bin/release/net6.0/linux-x64/fsstart
 99999989
 end
 
-real	0m2.264s
-user	0m2.049s
+real	0m2.330s
+user	0m2.119s
 sys	0m0.123s
 ```
 
 
-### <a name='anchor5-2'></a>Haskell
+### <a name='anchor5-2'></a>Scala
+- Java族の関数型言語
+- いいところ
+  - Javaとの連携ができる
+
+改善求む3
+
+code:
+```scala
+import scala.math.sqrt
+
+object prime {
+  def main(args: Array[String]) : Unit = {
+    println("start")
+    val max = 100000000
+    val sqrtmax = sqrt(max).toInt
+    var sieve = Array.fill[Boolean](max+1)(true)
+    sieve(0) = false
+    sieve(1) = false
+    for (i <- 2 to sqrtmax){
+      if(sieve(i)){
+        for (j <- i*i to max by i){
+          sieve(j) = false
+        }
+      }
+    }
+
+    var primes = new Array[Int](max+1) 
+    var pcount = 0
+    for (i <- 2 to max){
+      if(sieve(i)){
+        primes(pcount) = i
+        pcount += 1
+      }
+    }
+
+    println(primes(pcount-1))
+
+    println("end")
+  }
+}
+```
+
+result:
+```
+$ scalac main.scala
+$ time scala prime -J-Xmx1gstart
+99999989
+end
+
+real	0m2.040s
+user	0m2.379s
+sys	0m0.181s
+```
+
+
+### <a name='anchor5-3'></a>Haskell
 - 中二病患者向けへそ曲がり実用†純粋†関数型言語
 - いいところ
   - 副作用が常に明示され、細かい制御ができる
@@ -1239,15 +1325,15 @@ $ time ./hs-exestart
 99999989
 end
 
-real	0m0.725s
-user	0m0.678s
-sys	0m0.043s
+real	0m0.756s
+user	0m0.711s
+sys	0m0.030s
 ```
 
 
 
 
-### <a name='anchor5-3'></a>Lisp
+### <a name='anchor5-4'></a>Lisp
   - 古代の関数型言語
   - アーティファクト
   - 方言が多い
@@ -1312,9 +1398,9 @@ $ time node main.jsstart
 99999989
 end
 
-real	0m0.827s
-user	0m0.805s
-sys	0m0.020s
+real	0m0.853s
+user	0m0.788s
+sys	0m0.040s
 ```
 
 
@@ -1429,9 +1515,9 @@ $ time Rscript main.r[1] "start"
 [1] 99999989
 [1] "end"
 
-real	0m3.004s
-user	0m2.485s
-sys	0m0.494s
+real	0m3.077s
+user	0m2.509s
+sys	0m0.561s
 ```
 
 
@@ -1502,9 +1588,9 @@ $ time ./a.out start
     99999989
  end
 
-real	0m0.746s
-user	0m8.794s
-sys	0m0.073s
+real	0m0.820s
+user	0m9.280s
+sys	0m0.117s
 ```
 
 
@@ -1520,52 +1606,52 @@ sys	0m0.073s
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust (bit operation) | 0.27 sec. |1.00x |
-| 2 | C++ | 0.57 sec. |2.14x |
-| 3 | Assembly | 0.58 sec. |2.16x |
-| 4 | C | 0.69 sec. |2.58x |
-| 5 | Haskell (MVector) | 0.72 sec. |2.72x |
-| 6 | Rust | 0.73 sec. |2.72x |
-| 7 | Julia | 0.74 sec. |2.78x |
-| 8 | Fortran (parallel) | 0.75 sec. |2.79x |
-| 9 | VB.net | 0.82 sec. |3.07x |
-| 10 | Crystal | 0.82 sec. |3.08x |
-| 11 | JavaScript (TypedArray) | 0.83 sec. |3.10x |
-| 12 | C# | 0.84 sec. |3.15x |
-| 13 | Java | 0.90 sec. |3.37x |
-| 14 | Python (numpy) | 1.64 sec. |6.13x |
-| 15 | OCaml | 1.86 sec. |6.96x |
-| 16 | Scala | 1.97 sec. |7.36x |
-| 17 | F# | 2.26 sec. |8.48x |
-| 18 | R | 3.00 sec. |11.25x |
-| 19 | Cython (numpy) | 3.46 sec. |12.95x |
-| 20 | Ruby (numo) | 3.91 sec. |14.66x |
-| 21 | PyPy | 4.40 sec. |16.49x |
+| 1 | Rust (bit operation) | 0.28 sec. |1.00x |
+| 2 | C++ | 0.59 sec. |2.11x |
+| 3 | Assembly | 0.60 sec. |2.15x |
+| 4 | C | 0.69 sec. |2.47x |
+| 5 | Rust | 0.74 sec. |2.64x |
+| 6 | Haskell (MVector) | 0.76 sec. |2.71x |
+| 7 | Julia | 0.78 sec. |2.80x |
+| 8 | Fortran (parallel) | 0.82 sec. |2.94x |
+| 9 | VB.net | 0.83 sec. |2.97x |
+| 10 | Crystal | 0.84 sec. |3.00x |
+| 11 | JavaScript (TypedArray) | 0.85 sec. |3.06x |
+| 12 | C# | 0.87 sec. |3.10x |
+| 13 | Java | 0.88 sec. |3.16x |
+| 14 | Python (numpy) | 1.69 sec. |6.04x |
+| 15 | OCaml | 1.96 sec. |7.02x |
+| 16 | Scala | 2.04 sec. |7.31x |
+| 17 | F# | 2.33 sec. |8.35x |
+| 18 | R | 3.08 sec. |11.03x |
+| 19 | Cython (numpy) | 3.64 sec. |13.04x |
+| 20 | PyPy | 4.44 sec. |15.90x |
+| 21 | Ruby (numo) | 4.44 sec. |15.93x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust (bit operation) | 0.26 sec. |1.00x |
-| 2 | C++ | 0.50 sec. |1.92x |
-| 3 | Assembly | 0.56 sec. |2.15x |
-| 4 | C | 0.67 sec. |2.57x |
-| 5 | Haskell (MVector) | 0.68 sec. |2.61x |
-| 6 | Julia | 0.69 sec. |2.65x |
-| 7 | Rust | 0.70 sec. |2.70x |
-| 8 | VB.net | 0.73 sec. |2.81x |
-| 9 | C# | 0.73 sec. |2.82x |
-| 10 | Crystal | 0.78 sec. |3.01x |
-| 11 | JavaScript (TypedArray) | 0.80 sec. |3.10x |
-| 12 | Java | 0.81 sec. |3.13x |
-| 13 | Python (numpy) | 1.56 sec. |5.98x |
-| 14 | OCaml | 1.58 sec. |6.09x |
-| 15 | F# | 2.05 sec. |7.88x |
-| 16 | Scala | 2.41 sec. |9.26x |
-| 17 | R | 2.48 sec. |9.56x |
-| 18 | Cython (numpy) | 3.62 sec. |13.94x |
-| 19 | Ruby (numo) | 3.75 sec. |14.43x |
-| 20 | PyPy | 3.87 sec. |14.88x |
-| 21 | Fortran (parallel) | 8.79 sec. |33.82x |
+| 1 | Rust (bit operation) | 0.27 sec. |1.00x |
+| 2 | C++ | 0.52 sec. |1.90x |
+| 3 | Assembly | 0.58 sec. |2.16x |
+| 4 | C | 0.66 sec. |2.45x |
+| 5 | Rust | 0.71 sec. |2.61x |
+| 6 | C# | 0.71 sec. |2.61x |
+| 7 | Haskell (MVector) | 0.71 sec. |2.62x |
+| 8 | Julia | 0.72 sec. |2.64x |
+| 9 | VB.net | 0.73 sec. |2.69x |
+| 10 | Java | 0.77 sec. |2.85x |
+| 11 | JavaScript (TypedArray) | 0.79 sec. |2.91x |
+| 12 | Crystal | 0.81 sec. |2.99x |
+| 13 | Python (numpy) | 1.59 sec. |5.86x |
+| 14 | OCaml | 1.70 sec. |6.28x |
+| 15 | F# | 2.12 sec. |7.82x |
+| 16 | Scala | 2.38 sec. |8.78x |
+| 17 | R | 2.51 sec. |9.26x |
+| 18 | Cython (numpy) | 3.75 sec. |13.83x |
+| 19 | PyPy | 3.94 sec. |14.55x |
+| 20 | Ruby (numo) | 4.31 sec. |15.91x |
+| 21 | Fortran (parallel) | 9.28 sec. |34.24x |
 
 
 ## <a name='anchor10'></a>貢献者一覧
