@@ -1,8 +1,11 @@
-print("start\n");
+<?php
+print "start\n";
 
-my $max = 100000000;
-my $sqrtmax = sqrt($max);
-my @sieve = (1) x ($max+1);
+ini_set('memory_limit', '6G');
+
+$max = 100000000;
+$sqrtmax = sqrt($max);
+$sieve = array_fill(0, $max+1, true);
 $sieve[0] = 0;
 $sieve[1] = 0;
 for($i = 0; $i <= $sqrtmax; $i++){
@@ -13,8 +16,8 @@ for($i = 0; $i <= $sqrtmax; $i++){
   }
 }
 
-my @primes;
-my $pcount = 0;
+$primes = [];
+$pcount = 0;
 for($i = 0; $i <= $max; $i++){
   if($sieve[$i]){
     $primes[$pcount] = $i;

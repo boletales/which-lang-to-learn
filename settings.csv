@@ -21,3 +21,4 @@ cr   , cr   , Crystal                 , main.cr       , crystal build --release 
 ocaml, ocaml, OCaml                   , main.ml       , ocamlopt main.ml -O3                  , ./a.out
 scala, scala, Scala                   , main.scala    , scalac main.scala                     , scala prime -J-Xmx1g
 pl   , pl   , Perl                    , main.pl       , :                                     , perl main.pl
+php  , php  , PHP                     , main.php      , :                                     , php main.php
