@@ -245,4 +245,4 @@ main:
 primes:
 	.zero	400000004
 sieve:
-	.zero	100000001
+	.zero	12500001
