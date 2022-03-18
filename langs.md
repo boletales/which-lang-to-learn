@@ -192,9 +192,9 @@ start
 99999989
 end
 
-real	0m2.012s
-user	0m1.820s
-sys	0m1.030s
+real	0m1.687s
+user	0m1.642s
+sys	0m1.119s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -207,9 +207,9 @@ start
 99999989
 end
 
-real	0m4.183s
-user	0m3.619s
-sys	0m0.528s
+real	0m3.745s
+user	0m3.236s
+sys	0m0.472s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -272,9 +272,9 @@ start
 5761455
 end
 
-real	0m3.807s
-user	0m3.892s
-sys	0m0.944s
+real	0m3.650s
+user	0m3.816s
+sys	0m0.919s
 ```
 
 
@@ -325,9 +325,9 @@ start
 99999989
 end
 
-real	0m32.793s
-user	0m31.620s
-sys	0m1.073s
+real	0m32.899s
+user	0m31.702s
+sys	0m0.956s
 ```
 
 
@@ -377,9 +377,9 @@ start
 99999989
 end
 
-real	0m4.628s
-user	0m4.467s
-sys	0m0.133s
+real	0m4.486s
+user	0m4.342s
+sys	0m0.126s
 ```
 
 Rubyの高速化テクはいろいろあるが、とりあえず各種メソッドによるループをwhileに変換するとかなり速くなる(ブロックはオーバーヘッドが大きい)。もっとも、while文を使うと「これRubyでやる意味ある?」という感じになるし、それなら他の言語を使った方がいい(ネイティブ拡張を書くという選択肢は一応ある)。何度も言うがRubyistのサブ言語としてCrystalマジでオススメ。
@@ -432,9 +432,9 @@ start
 99999989
 end
 
-real	0m6.843s
-user	0m6.285s
-sys	0m0.508s
+real	0m6.886s
+user	0m6.293s
+sys	0m0.568s
 ```
 
 
@@ -446,9 +446,9 @@ start
 99999989
 end
 
-real	0m1.903s
-user	0m1.601s
-sys	0m0.288s
+real	0m2.001s
+user	0m1.648s
+sys	0m0.330s
 ```
 
 
@@ -508,9 +508,9 @@ start
 99999989
 end
 
-real	0m0.822s
-user	0m0.710s
-sys	0m0.106s
+real	0m0.798s
+user	0m0.723s
+sys	0m0.073s
 ```
 
 
@@ -531,35 +531,59 @@ code:
 ```c
 #include <stdio.h>
 #include <stdbool.h>
-#include <math.h>
-#include <string.h>
 
-const int MAX = 100000000;
+#define uchar unsigned char
+#define uint  unsigned int
+#define ull   unsigned long long
 
-int main() {
-    int SQRT_MAX = (int)sqrt((double)MAX);
-    static bool sieve[MAX + 1];
-    static int primes[MAX + 1];
+#define MAX (100000000)
+
+uchar sieve[MAX/8+1];
+uint  primes[MAX+1];
+
+
+static uint isqrt(uint s) {
+	uint x0, x1 = s / 2;
+    if (x1 == 0) return s;
+    do {
+        x0 = x1;
+	    x1 = (x0 + s / x0)/2;
+    } while (x1 < x0);
+	return x0;
+}
+
+
+int main(){
     puts("start");
-    memset(sieve, 1, (MAX + 1) * sizeof(sieve[0]));
-    sieve[0] = false;
-    sieve[1] = false;
-    for (int i = 0; i <= SQRT_MAX; i++) {
-        if (sieve[i]) {
-            for (int j = i * i; j <= MAX; j += i) sieve[j] = false;
-        }
-    }
-    int pcount = 0;
-    for (int i = 0; i <= MAX; i++) {
-        if (sieve[i]) {
-            primes[pcount] = i;
-            pcount++;
-        }
-    }
+    sieve[0] = 0b11;
 
-    printf("%d\n", primes[pcount - 1]);
-    puts("end");
-    return 0;
+    uint sqrt_max = isqrt(MAX);
+    for(uint i=0; i<= sqrt_max; i++){
+        if(sieve[i>>3] & (1<<(i&7))) {
+            continue;
+        }
+        for(uint j = i * i; j<=MAX; j+=i) {
+            uint jj = j >> 3;
+            uchar v = sieve[jj];
+            v |= (1 << (j&7));
+            sieve[jj] = v;
+        }
+    }
+    uint pcount = -1;
+    for(uint i=0; i < MAX / 8; i++){
+        uchar v = sieve[i];
+        uint ii = i << 3;
+        if ((v & 0b00000001) == 0) primes[++pcount] = ii + 0;
+        if ((v & 0b00000010) == 0) primes[++pcount] = ii + 1;
+        if ((v & 0b00000100) == 0) primes[++pcount] = ii + 2;
+        if ((v & 0b00001000) == 0) primes[++pcount] = ii + 3;
+        if ((v & 0b00010000) == 0) primes[++pcount] = ii + 4;
+        if ((v & 0b00100000) == 0) primes[++pcount] = ii + 5;
+        if ((v & 0b01000000) == 0) primes[++pcount] = ii + 6;
+        if ((v & 0b10000000) == 0) primes[++pcount] = ii + 7;
+    }
+    printf("%d\nend\n", primes[pcount]); // 99999989
+    // printf("count-1 %d\n\n", pcount);    // 5761454
 }
 ```
 
@@ -571,9 +595,9 @@ start
 99999989
 end
 
-real	0m0.752s
-user	0m0.710s
-sys	0m0.033s
+real	0m0.486s
+user	0m0.463s
+sys	0m0.016s
 ```
 
 
@@ -635,9 +659,9 @@ start
 99999989
 start
 
-real	0m0.644s
+real	0m0.629s
 user	0m0.530s
-sys	0m0.102s
+sys	0m0.092s
 ```
 
   
@@ -704,9 +728,9 @@ start
 99999989
 end
 
-real	0m0.877s
-user	0m0.825s
-sys	0m0.036s
+real	0m0.794s
+user	0m0.755s
+sys	0m0.026s
 ```
 
 
@@ -750,9 +774,9 @@ start
 99999989
 end
 
-real	0m0.636s
-user	0m0.617s
-sys	0m0.013s
+real	0m0.545s
+user	0m0.526s
+sys	0m0.017s
 ```
 
 
@@ -791,16 +815,16 @@ start
 99999989
 end
 
-real	0m0.875s
-user	0m0.832s
-sys	0m0.040s
+real	0m0.894s
+user	0m0.851s
+sys	0m0.043s
 ```
 
 
 ### <a name='anchor3-4'></a>Assembly
 - これどうやって書くんですか
 - いいところ
-  - 最速組（書く人間にオプティマイザが搭載されていれば）
+  - 最速組（書く人間が、コンパイラのオプティマイザより賢ければ）
   - CPU の気持ちになれる
 - わるいところ
   - 生で書くのは苦行
@@ -818,38 +842,83 @@ code:
 .STR_END:
 	.string	"%d\nend\n"
 .STR_COUNT:
-	.string	"count %d\n\n"
+	.string	"count_1 %d\n\n"
 
 	.globl	main
+
+
+# https://www.mztn.org/lxasm64/amd04.html
+#  64   32   16   8l
+# rax  eax   ax   al
+# rbx  ebx   bx   bl
+# rcx  ecx   cx   cl
+# rdx  edx   dx   dl
+# rsi  esi   si  sil
+# rdi  edi   di  dil
+# rbp  ebp   bp  bpl
+# rsp  esp   sp  spl
+# r8   r8d  r8w  r8b
+# r9   r9d  r9w  r9b
+# r10 r10d r10w r10b
+# r11 r11d r11w r11b
+# r12 r12d r12w r12b
+# r13 r13d r13w r13b
+# r14 r14d r14w r14b
+# r15 r15d r15w r15b
+
+
+
 main:
 	# puts("start");
 	leaq	.STR_START(%rip), %rdi
 	call	puts@PLT
 
+
+	# eax = r8d = MAX;
+	mov 	$100000000, %r8d
+	mov 	%r8d, %eax
+	
+	# eax /= 2;
+	shr  %eax
+.ISQRT_L:
+	# r11d = eax
+	mov   %eax, %r11d
+
+	# eax = MAX / r11d
+	mov   %r8d, %eax
+	xor   %edx, %edx
+	div   %r11d
+
+	# eax = (eax + r11d)/2
+	add   %r11d, %eax
+	shr   %eax
+
+	# if(eax != r11d) goto ISQRT_L;
+	cmp   %eax, %r11d
+	ja   .ISQRT_L
+	
+	# ^^^  %r11d = sqrt(MAX)
+
+
 	# sieve[0] = 0b11;
 	movb	$3, sieve(%rip)
 
-	# uint i = 1;
-	mov 	$1, %esi
+	# esi = 0;
+	mov 	$0, %esi
 
 	# rdi = sieve;
 	leaq	sieve(%rip), %rdi
 
-	# r9d = 1;
-	mov 	$1, %r9d
-
-
-	jmp	.L2
 .L3:
+	# if ((esi += 1) > sqrt(Max)) break;
 	add 	$1, %esi
-.L2:
-	cmp 	$100000001, %esi
+	cmp 	%r11d, %esi
 	je	.L19
 
 	# edx = sieve[esi >> 3];
-	movl	%esi, %eax
-	shrl	$3, %eax
-	movzbl	(%rdi, %rax), %edx
+	mov 	%esi, %eax
+	shr 	$3, %eax
+	movzb	(%rdi, %rax), %edx
 
 	# if(edx & (1 << (si & 7))) continue;
 	mov 	%si, %ax
@@ -859,33 +928,31 @@ main:
 	
 	# rax = esi * esi // rsi = esi
 	mov 	%esi, %eax
-	imulq	%rsi, %rax
+	imul	%esi, %eax
 
-	# if (rax > 99999999) continue;
-	cmp 	$99999999, %eax
-	ja	.L3
 .L4:
 	# edx = eax >> 3;
-	movl	%eax, %edx
-	shrl	$3, %edx
+	mov 	%eax, %edx
+	shr 	$3, %edx
 
 	# cl = ax & 7;
 	mov 	%ax, %cx
 	and 	$7, %cl
 	
 	# eax += esi;
-	addl	%esi, %eax
+	add 	%esi, %eax
 
 	# r10b = 1 << cl;
 	mov 	$1, %r10b
 	sal 	%cl, %r10b
 	
-	# sieve[rdx] |= r10b;
+	# sieve[rdx=edx] |= r10b;
 	orb	%r10b, (%rdi,%rdx)
 
-	cmp 	$100000000, %eax
-	jbe	.L4
-	jmp	.L3
+	# if (eax <= r8d) continue;
+	cmp 	%r8d, %eax
+	jbe 	.L4
+	jmp 	.L3
 
 
 
@@ -894,11 +961,11 @@ main:
 	leaq	primes(%rip), %rcx
 
 	# edx = 0; ebx = -1;
-	xorl	%edx, %edx
-	movl	$-1, %ebx
+	xor 	%edx, %edx
+	mov 	$-1, %ebx
 .L14:
 	# al = eax = *rdi;
-	movzbl	(%rdi), %eax
+	movzb	(%rdi), %eax
 
 	# if (al & 1) goto L6;
 	testb	$1, %al
@@ -908,114 +975,116 @@ main:
 	# primes[r10 = r10d] = edx;
 	lea 	1(%ebx), %r10d
 	mov 	%r10d, %ebx
-	movl	%edx, (%rcx,%r10,4)
+	mov 	%edx, (%rcx,%r10,4)
 .L6:
 	# if (al & 2) goto L7;
 	testb	$2, %al
 	jne	.L7
 
 	# ebx = r10d = ebx + 1;
-	# primes[r10 = r10d] = r8d = edx + 1;
+	# primes[r10 = r10d] = r9d = edx + 1;
 	lea 	1(%ebx), %r10d
-	lea 	1(%edx), %r8d
+	lea 	1(%edx), %r9d
 	mov 	%r10d, %ebx
-	movl	%r8d, (%rcx,%r10,4)
+	mov 	%r9d, (%rcx,%r10,4)
 .L7:
 	testb	$4, %al
 	jne	.L8
 	
 	# ebx = r10d = ebx + 1;
-	# primes[r10 = r10d] = r8d = edx + 2;
+	# primes[r10 = r10d] = r9d = edx + 2;
 	lea 	1(%ebx), %r10d
-	lea 	2(%edx), %r8d
+	lea 	2(%edx), %r9d
 	mov 	%r10d, %ebx
-	movl	%r8d, (%rcx,%r10,4)
+	mov 	%r9d, (%rcx,%r10,4)
 .L8:
 	testb	$8, %al
 	jne	.L9
 	
 	# ebx = r10d = ebx + 1;
-	# primes[r10 = r10d] = r8d = edx + 3;
+	# primes[r10 = r10d] = r9d = edx + 3;
 	lea 	1(%ebx), %r10d
-	lea 	3(%edx), %r8d
+	lea 	3(%edx), %r9d
 	mov 	%r10d, %ebx
-	movl	%r8d, (%rcx,%r10,4)
+	mov 	%r9d, (%rcx,%r10,4)
 .L9:
 	testb	$16, %al
 	jne	.L10
 	
 	# ebx = r10d = ebx + 1;
-	# primes[r10 = r10d] = r8d = edx + 4;
+	# primes[r10 = r10d] = r9d = edx + 4;
 	lea 	1(%ebx), %r10d
-	lea 	4(%edx), %r8d
+	lea 	4(%edx), %r9d
 	mov 	%r10d, %ebx
-	movl	%r8d, (%rcx,%r10,4)
+	mov 	%r9d, (%rcx,%r10,4)
 .L10:
 	testb	$32, %al
 	jne	.L11
 	
 	# ebx = r10d = ebx + 1;
-	# primes[r10 = r10d] = r8d = edx + 5;
+	# primes[r10 = r10d] = r9d = edx + 5;
 	lea 	1(%ebx), %r10d
-	lea 	5(%edx), %r8d
+	lea 	5(%edx), %r9d
 	mov 	%r10d, %ebx
-	movl	%r8d, (%rcx,%r10,4)
+	mov 	%r9d, (%rcx,%r10,4)
 .L11:
 	testb	$64, %al
 	jne	.L12
 	
 	# ebx = r10d = ebx + 1;
-	# primes[r10 = r10d] = r8d = edx + 6;
+	# primes[r10 = r10d] = r9d = edx + 6;
 	lea 	1(%ebx), %r10d
-	lea 	6(%edx), %r8d
+	lea 	6(%edx), %r9d
 	mov 	%r10d, %ebx
-	movl	%r8d, (%rcx,%r10,4)
+	mov 	%r9d, (%rcx,%r10,4)
 .L12:
 	testb	%al, %al
 	js	.L13
 	
 	# ebx = r10d = ebx + 1;
-	# primes[r10 = r10d] = r8d = edx + 7;
+	# primes[r10 = r10d] = r9d = edx + 7;
 	lea 	1(%ebx), %r10d
-	lea 	7(%edx), %r8d
+	lea 	7(%edx), %r9d
 	mov 	%r10d, %ebx
-	movl	%r8d, (%rcx,%r10,4)
+	mov 	%r9d, (%rcx,%r10,4)
 .L13:
 	# ++rdi; // ++sieve;
 	addq	$1, %rdi
 
 	# edx += 8;
-	addl	$8, %edx
-	cmpl	$100000000, %edx
+	add 	$8, %edx
+
+	# if (edx <= MAX) continue;
+	cmp 	%r8d, %edx
 	jne	.L14
 
 
 	# eax = ebx;
-	movl	%ebx, %eax
+	mov 	%ebx, %eax
 
 	# edx = primes[rax = eax];
-	movl	(%rcx,%rax,4), %edx
+	mov 	(%rcx,%rax,4), %edx
 	# rsi = STR_END;
 	leaq	.STR_END(%rip), %rsi
 	# printf
-	xorl	%eax, %eax
+	xor 	%eax, %eax
 	call	__printf_chk@PLT
 
-	# printf(STR_COUNT)
+	# printf(STR_COUNT) // 5761454
 	leaq	.STR_COUNT(%rip), %rsi
-	movl	%ebx, %edx
-	xorl	%eax, %eax
+	mov 	%ebx, %edx
+	xor 	%eax, %eax
 	call	__printf_chk@PLT
 
 	# return 0;
-	xorl	%eax, %eax
+	xor 	%eax, %eax
 	ret
 
 	.bss
 primes:
 	.zero	400000004
 sieve:
-	.zero	100000001
+	.zero	12500001
 ```
 
 result:
@@ -1025,12 +1094,12 @@ $ time ./a.out
 start
 99999989
 end
-count 5717621
+count_1 5761454
 
 
-real	0m0.657s
-user	0m0.647s
-sys	0m0.007s
+real	0m0.530s
+user	0m0.517s
+sys	0m0.010s
 ```
 
 
@@ -1088,9 +1157,9 @@ start
 99999989
 end
 
-real	0m0.772s
-user	0m0.745s
-sys	0m0.023s
+real	0m0.720s
+user	0m0.698s
+sys	0m0.010s
 ```
 
 
@@ -1146,9 +1215,9 @@ start
 99999989
 end
 
-real	0m0.958s
-user	0m0.828s
-sys	0m0.139s
+real	0m0.962s
+user	0m0.845s
+sys	0m0.127s
 ```
 
 
@@ -1198,8 +1267,8 @@ start
 99999989
 end
 
-real	0m0.918s
-user	0m0.854s
+real	0m0.925s
+user	0m0.845s
 sys	0m0.037s
 ```
 
@@ -1261,9 +1330,9 @@ start
 99999989
 end
 
-real	0m0.924s
-user	0m0.827s
-sys	0m0.050s
+real	0m0.893s
+user	0m0.826s
+sys	0m0.037s
 ```
 
 
@@ -1321,9 +1390,9 @@ start
 99999989
 end
 
-real	0m2.104s
-user	0m1.747s
-sys	0m0.349s
+real	0m2.023s
+user	0m1.708s
+sys	0m0.309s
 ```
 
 
@@ -1374,9 +1443,9 @@ start
 99999989
 end
 
-real	0m2.505s
-user	0m2.275s
-sys	0m0.158s
+real	0m2.464s
+user	0m2.301s
+sys	0m0.119s
 ```
 
 
@@ -1431,9 +1500,9 @@ start
 99999989
 end
 
-real	0m2.255s
-user	0m2.428s
-sys	0m0.356s
+real	0m2.145s
+user	0m2.497s
+sys	0m0.206s
 ```
 
 
@@ -1529,9 +1598,9 @@ start
 99999989
 end
 
-real	0m0.933s
-user	0m0.845s
-sys	0m0.071s
+real	0m0.788s
+user	0m0.749s
+sys	0m0.033s
 ```
 
 
@@ -1642,9 +1711,9 @@ start
 99999989
 end
 
-real	0m0.905s
-user	0m0.863s
-sys	0m0.032s
+real	0m0.907s
+user	0m0.850s
+sys	0m0.050s
 ```
 
 
@@ -1701,9 +1770,9 @@ start
 99999989
 end
 
-real	0m9.871s
-user	0m9.095s
-sys	0m0.736s
+real	0m11.718s
+user	0m10.834s
+sys	0m0.843s
 ```
 
 
@@ -1809,9 +1878,9 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m3.443s
-user	0m2.690s
-sys	0m0.739s
+real	0m3.193s
+user	0m2.557s
+sys	0m0.628s
 ```
 
 
@@ -1883,9 +1952,9 @@ $ time ./a.out
     99999989
  end
 
-real	0m1.481s
-user	0m17.620s
-sys	0m0.149s
+real	0m0.877s
+user	0m9.500s
+sys	0m0.191s
 ```
 
 
@@ -1901,62 +1970,62 @@ sys	0m0.149s
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust (bit operation) | 0.64 sec. |1.00x |
-| 2 | C++ | 0.64 sec. |1.01x |
-| 3 | Assembly | 0.66 sec. |1.03x |
-| 4 | C | 0.75 sec. |1.18x |
-| 5 | Go | 0.77 sec. |1.21x |
-| 6 | Julia | 0.82 sec. |1.29x |
-| 7 | Crystal | 0.88 sec. |1.38x |
-| 8 | Rust | 0.88 sec. |1.38x |
-| 9 | JavaScript (TypedArray) | 0.90 sec. |1.42x |
-| 10 | C# | 0.92 sec. |1.44x |
-| 11 | VB.net | 0.92 sec. |1.45x |
-| 12 | Haskell (MVector) | 0.93 sec. |1.47x |
-| 13 | Java | 0.96 sec. |1.51x |
-| 14 | Fortran (parallel) | 1.48 sec. |2.33x |
-| 15 | LuaJIT | 1.90 sec. |2.99x |
-| 16 | Python (numpy) | 2.01 sec. |3.16x |
-| 17 | OCaml | 2.10 sec. |3.31x |
-| 18 | Scala | 2.26 sec. |3.55x |
-| 19 | F# | 2.50 sec. |3.94x |
-| 20 | R | 3.44 sec. |5.41x |
-| 21 | Cython (numpy) | 3.81 sec. |5.99x |
-| 22 | PyPy | 4.18 sec. |6.58x |
-| 23 | Ruby (numo) | 4.63 sec. |7.28x |
-| 24 | Lua | 6.84 sec. |10.76x |
-| 25 | PHP | 9.87 sec. |15.52x |
-| 26 | Perl | 32.79 sec. |51.56x |
+| 1 | C | 0.49 sec. |1.00x |
+| 2 | Assembly | 0.53 sec. |1.09x |
+| 3 | Rust (bit operation) | 0.54 sec. |1.12x |
+| 4 | C++ | 0.63 sec. |1.29x |
+| 5 | Go | 0.72 sec. |1.48x |
+| 6 | Haskell (MVector) | 0.79 sec. |1.62x |
+| 7 | Rust | 0.79 sec. |1.63x |
+| 8 | Julia | 0.80 sec. |1.64x |
+| 9 | Fortran (parallel) | 0.88 sec. |1.80x |
+| 10 | VB.net | 0.89 sec. |1.84x |
+| 11 | Crystal | 0.89 sec. |1.84x |
+| 12 | JavaScript (TypedArray) | 0.91 sec. |1.87x |
+| 13 | C# | 0.92 sec. |1.90x |
+| 14 | Java | 0.96 sec. |1.98x |
+| 15 | Python (numpy) | 1.69 sec. |3.47x |
+| 16 | LuaJIT | 2.00 sec. |4.12x |
+| 17 | OCaml | 2.02 sec. |4.16x |
+| 18 | Scala | 2.14 sec. |4.41x |
+| 19 | F# | 2.46 sec. |5.07x |
+| 20 | R | 3.19 sec. |6.57x |
+| 21 | Cython (numpy) | 3.65 sec. |7.51x |
+| 22 | PyPy | 3.74 sec. |7.71x |
+| 23 | Ruby (numo) | 4.49 sec. |9.23x |
+| 24 | Lua | 6.89 sec. |14.17x |
+| 25 | PHP | 11.72 sec. |24.11x |
+| 26 | Perl | 32.90 sec. |67.69x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | C++ | 0.53 sec. |1.00x |
-| 2 | Rust (bit operation) | 0.62 sec. |1.16x |
-| 3 | Assembly | 0.65 sec. |1.22x |
-| 4 | C | 0.71 sec. |1.34x |
-| 5 | Julia | 0.71 sec. |1.34x |
-| 6 | Go | 0.74 sec. |1.41x |
-| 7 | Rust | 0.82 sec. |1.56x |
-| 8 | VB.net | 0.83 sec. |1.56x |
-| 9 | Java | 0.83 sec. |1.56x |
-| 10 | Crystal | 0.83 sec. |1.57x |
-| 11 | Haskell (MVector) | 0.84 sec. |1.59x |
-| 12 | C# | 0.85 sec. |1.61x |
-| 13 | JavaScript (TypedArray) | 0.86 sec. |1.63x |
-| 14 | LuaJIT | 1.60 sec. |3.02x |
-| 15 | OCaml | 1.75 sec. |3.30x |
-| 16 | Python (numpy) | 1.82 sec. |3.43x |
-| 17 | F# | 2.28 sec. |4.29x |
-| 18 | Scala | 2.43 sec. |4.58x |
-| 19 | R | 2.69 sec. |5.08x |
-| 20 | PyPy | 3.62 sec. |6.83x |
-| 21 | Cython (numpy) | 3.89 sec. |7.34x |
-| 22 | Ruby (numo) | 4.47 sec. |8.43x |
-| 23 | Lua | 6.28 sec. |11.86x |
-| 24 | PHP | 9.10 sec. |17.16x |
-| 25 | Fortran (parallel) | 17.62 sec. |33.25x |
-| 26 | Perl | 31.62 sec. |59.66x |
+| 1 | C | 0.46 sec. |1.00x |
+| 2 | Assembly | 0.52 sec. |1.12x |
+| 3 | Rust (bit operation) | 0.53 sec. |1.14x |
+| 4 | C++ | 0.53 sec. |1.14x |
+| 5 | Go | 0.70 sec. |1.51x |
+| 6 | Julia | 0.72 sec. |1.56x |
+| 7 | Haskell (MVector) | 0.75 sec. |1.62x |
+| 8 | Rust | 0.76 sec. |1.63x |
+| 9 | VB.net | 0.83 sec. |1.78x |
+| 10 | C# | 0.84 sec. |1.83x |
+| 11 | Java | 0.84 sec. |1.83x |
+| 12 | JavaScript (TypedArray) | 0.85 sec. |1.84x |
+| 13 | Crystal | 0.85 sec. |1.84x |
+| 14 | Python (numpy) | 1.64 sec. |3.55x |
+| 15 | LuaJIT | 1.65 sec. |3.56x |
+| 16 | OCaml | 1.71 sec. |3.69x |
+| 17 | F# | 2.30 sec. |4.97x |
+| 18 | Scala | 2.50 sec. |5.39x |
+| 19 | R | 2.56 sec. |5.52x |
+| 20 | PyPy | 3.24 sec. |6.99x |
+| 21 | Cython (numpy) | 3.82 sec. |8.24x |
+| 22 | Ruby (numo) | 4.34 sec. |9.38x |
+| 23 | Lua | 6.29 sec. |13.59x |
+| 24 | Fortran (parallel) | 9.50 sec. |20.52x |
+| 25 | PHP | 10.83 sec. |23.40x |
+| 26 | Perl | 31.70 sec. |68.47x |
 
 
 ## <a name='anchor10'></a>貢献者一覧
@@ -1972,7 +2041,7 @@ CPU時間：
   - サンプル: Fortran
   - 一言: 古典を学ぶことは物事の根幹に触れることであり，そこから派生してできたものの理解が深まります．古典語をやりましょう．
 - TumoiYorozu
-  - サンプル: Assembly
+  - サンプル: Assembly, C(bit)
   - 一言: 生のアセンブリ、もう書かない
 - ふぁぼん
   - 説明: Ruby, Crystal
