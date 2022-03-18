@@ -179,7 +179,7 @@ embedResult files results =
           code   = "\ncode:\n```" <> lang <> "\n" <> withTailLf (sourcestr result) <> "```\n"
           run    = "\nresult:\n```\n" <>
                     "$ " <> buildcmd (result :: BenchResult) <> "\n" <>
-                    "$ " <> benchcmd result <> withTailLf (benchresult result) <> "```\n"
+                    "$ " <> benchcmd result <> "\n" <> withTailLf (benchresult result) <> "```\n"
       in (replace ("{code:"   <> langid <> "}") code >>>
           replace ("{result:" <> langid <> "}") run >>>
           replace ("{sample:" <> langid <> "}") (code <> run)

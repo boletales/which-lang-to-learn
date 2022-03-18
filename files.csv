@@ -1,2 +1,3 @@
-id    , lang, path
-cymain, py  , py/cymain.py
+id      , lang, path
+cymain  , py  , py/cymain.py
+hs-naive, hs  , hs/app/Immutable.hs 
