@@ -11,13 +11,13 @@ uint  primes[MAX+1];
 
 
 static uint isqrt(uint s) {
-	uint x0, x1 = s / 2;
+    uint x0, x1 = s / 2;
     if (x1 == 0) return s;
     do {
         x0 = x1;
-	    x1 = (x0 + s / x0)/2;
+        x1 = (x0 + s / x0)/2;
     } while (x1 < x0);
-	return x0;
+    return x0;
 }
 
 
