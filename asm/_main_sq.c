@@ -9,16 +9,28 @@ const uint MAX = 100000000;
 uchar sieve[MAX/8+1];
 uint  primes[MAX+1];
 
+
+static uint isqrt(uint s) {
+	uint x0, x1 = s / 2;
+    if (x1 == 0) return s;
+    do {
+        x0 = x1;
+	    x1 = (x0 + s / x0)/2;
+    } while (x1 < x0);
+	return x0;
+}
+
+
 int main(){
     puts("start");
     sieve[0] = 0b11;
-    for(uint i=0; i<=MAX; i++){
+
+    uint sqrt_max = isqrt(MAX);
+    for(uint i=0; i<= sqrt_max; i++){
         if(sieve[i>>3] & (1<<(i&7))) {
             continue;
         }
-        ull j0 = (ull)i * i;
-        if (j0 >= MAX) continue;
-        for(uint j = j0; j<=MAX; j+=i) {
+        for(uint j = i * i; j<=MAX; j+=i) {
             uint jj = j >> 3;
             uchar v = sieve[jj];
             v |= (1 << (j&7));
@@ -38,6 +50,6 @@ int main(){
         if ((v & 0b01000000) == 0) primes[++pcount] = ii + 6;
         if ((v & 0b10000000) == 0) primes[++pcount] = ii + 7;
     }
-    printf("%d\nend\n", primes[pcount]);
-    printf("count %d\n\n", pcount);
+    printf("%d\nend\n", primes[pcount]); // 99999989
+    printf("count-1 %d\n\n", pcount);    // 5761454
 }
