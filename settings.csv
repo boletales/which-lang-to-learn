@@ -2,7 +2,7 @@ id    , dir  , name                    , source        , build                  
 c     , c    , C                       , main.c        , clang   main.c   -O3                  , ./a.out
 cpp   , cpp  , C++                     , main.cpp      , clang++ main.cpp -O3                  , ./a.out
 rs    , rs   , Rust                    , main.rs       , rustc -O main.rs                      , ./main
-rs-b  , rs   , Rust (bit operation)    , bit.rs        , rustc -O bit.rs                       , ./bit
+rs-b  , rs   , Rust (bit operation)    , bit_vec.rs    , rustc -O bit_vec.rs                   , ./bit_vec
 hs    , hs   , Haskell (MVector)       , app/MVector.hs, stack install --local-bin-path ./     , ./hs-exe
 py    , py   , Python (numpy)          , main_nd.py    , :                                     , python main_nd.py
 pypy  , py   , PyPy                    , main.py       , :                                     , pypy main.py

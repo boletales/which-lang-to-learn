@@ -192,9 +192,9 @@ start
 99999989
 end
 
-real	0m1.801s
-user	0m1.709s
-sys	0m1.133s
+real	0m2.012s
+user	0m1.820s
+sys	0m1.030s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -207,9 +207,9 @@ start
 99999989
 end
 
-real	0m4.029s
-user	0m3.420s
-sys	0m0.575s
+real	0m4.183s
+user	0m3.619s
+sys	0m0.528s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -272,9 +272,9 @@ start
 5761455
 end
 
-real	0m3.860s
-user	0m3.921s
-sys	0m0.899s
+real	0m3.807s
+user	0m3.892s
+sys	0m0.944s
 ```
 
 
@@ -325,9 +325,9 @@ start
 99999989
 end
 
-real	0m33.521s
-user	0m32.219s
-sys	0m1.190s
+real	0m32.793s
+user	0m31.620s
+sys	0m1.073s
 ```
 
 
@@ -377,9 +377,9 @@ start
 99999989
 end
 
-real	0m4.734s
-user	0m4.576s
-sys	0m0.136s
+real	0m4.628s
+user	0m4.467s
+sys	0m0.133s
 ```
 
 Rubyの高速化テクはいろいろあるが、とりあえず各種メソッドによるループをwhileに変換するとかなり速くなる(ブロックはオーバーヘッドが大きい)。もっとも、while文を使うと「これRubyでやる意味ある?」という感じになるし、それなら他の言語を使った方がいい(ネイティブ拡張を書くという選択肢は一応ある)。何度も言うがRubyistのサブ言語としてCrystalマジでオススメ。
@@ -432,9 +432,9 @@ start
 99999989
 end
 
-real	0m6.596s
-user	0m5.946s
-sys	0m0.572s
+real	0m6.843s
+user	0m6.285s
+sys	0m0.508s
 ```
 
 
@@ -446,9 +446,9 @@ start
 99999989
 end
 
-real	0m1.978s
-user	0m1.666s
-sys	0m0.306s
+real	0m1.903s
+user	0m1.601s
+sys	0m0.288s
 ```
 
 
@@ -508,9 +508,9 @@ start
 99999989
 end
 
-real	0m0.871s
-user	0m0.788s
-sys	0m0.073s
+real	0m0.822s
+user	0m0.710s
+sys	0m0.106s
 ```
 
 
@@ -571,8 +571,8 @@ start
 99999989
 end
 
-real	0m0.779s
-user	0m0.731s
+real	0m0.752s
+user	0m0.710s
 sys	0m0.033s
 ```
 
@@ -635,9 +635,9 @@ start
 99999989
 start
 
-real	0m0.681s
-user	0m0.566s
-sys	0m0.105s
+real	0m0.644s
+user	0m0.530s
+sys	0m0.102s
 ```
 
   
@@ -704,9 +704,9 @@ start
 99999989
 end
 
-real	0m0.810s
-user	0m0.760s
-sys	0m0.040s
+real	0m0.877s
+user	0m0.825s
+sys	0m0.036s
 ```
 
 
@@ -718,7 +718,7 @@ const MAX: usize = 100000000;
 fn main() {
     println!("start");
 
-    let mut sieve = [0; MAX / 64 + 1];
+    let mut sieve = vec![0u64; MAX / 64 + 1];
     sieve[0] ^= 3;
     let sqrtmax = f32::sqrt(MAX as f32) as usize;
     for i in 2..=sqrtmax {
@@ -744,15 +744,15 @@ fn main() {
 
 result:
 ```
-$ rustc -O bit.rs
-$ time ./bit
+$ rustc -O bit_vec.rs
+$ time ./bit_vec
 start
-99999991
+99999989
 end
 
-real	0m0.311s
-user	0m0.295s
-sys	0m0.007s
+real	0m0.636s
+user	0m0.617s
+sys	0m0.013s
 ```
 
 
@@ -791,9 +791,9 @@ start
 99999989
 end
 
-real	0m0.898s
-user	0m0.848s
-sys	0m0.049s
+real	0m0.875s
+user	0m0.832s
+sys	0m0.040s
 ```
 
 
@@ -1028,9 +1028,9 @@ end
 count 5717621
 
 
-real	0m0.694s
-user	0m0.677s
-sys	0m0.013s
+real	0m0.657s
+user	0m0.647s
+sys	0m0.007s
 ```
 
 
@@ -1088,9 +1088,9 @@ start
 99999989
 end
 
-real	0m0.715s
-user	0m0.688s
-sys	0m0.026s
+real	0m0.772s
+user	0m0.745s
+sys	0m0.023s
 ```
 
 
@@ -1146,9 +1146,9 @@ start
 99999989
 end
 
-real	0m1.024s
-user	0m0.888s
-sys	0m0.158s
+real	0m0.958s
+user	0m0.828s
+sys	0m0.139s
 ```
 
 
@@ -1198,9 +1198,9 @@ start
 99999989
 end
 
-real	0m0.892s
-user	0m0.805s
-sys	0m0.043s
+real	0m0.918s
+user	0m0.854s
+sys	0m0.037s
 ```
 
 
@@ -1261,9 +1261,9 @@ start
 99999989
 end
 
-real	0m0.911s
+real	0m0.924s
 user	0m0.827s
-sys	0m0.040s
+sys	0m0.050s
 ```
 
 
@@ -1321,9 +1321,9 @@ start
 99999989
 end
 
-real	0m2.134s
-user	0m1.758s
-sys	0m0.365s
+real	0m2.104s
+user	0m1.747s
+sys	0m0.349s
 ```
 
 
@@ -1374,9 +1374,9 @@ start
 99999989
 end
 
-real	0m2.413s
-user	0m2.229s
-sys	0m0.143s
+real	0m2.505s
+user	0m2.275s
+sys	0m0.158s
 ```
 
 
@@ -1431,9 +1431,9 @@ start
 99999989
 end
 
-real	0m2.231s
-user	0m2.581s
-sys	0m0.196s
+real	0m2.255s
+user	0m2.428s
+sys	0m0.356s
 ```
 
 
@@ -1529,9 +1529,9 @@ start
 99999989
 end
 
-real	0m0.820s
-user	0m0.766s
-sys	0m0.043s
+real	0m0.933s
+user	0m0.845s
+sys	0m0.071s
 ```
 
 
@@ -1642,9 +1642,9 @@ start
 99999989
 end
 
-real	0m1.040s
-user	0m0.964s
-sys	0m0.049s
+real	0m0.905s
+user	0m0.863s
+sys	0m0.032s
 ```
 
 
@@ -1701,9 +1701,9 @@ start
 99999989
 end
 
-real	0m12.107s
-user	0m11.224s
-sys	0m0.841s
+real	0m9.871s
+user	0m9.095s
+sys	0m0.736s
 ```
 
 
@@ -1809,9 +1809,9 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m3.561s
-user	0m2.689s
-sys	0m0.839s
+real	0m3.443s
+user	0m2.690s
+sys	0m0.739s
 ```
 
 
@@ -1883,9 +1883,9 @@ $ time ./a.out
     99999989
  end
 
-real	0m1.359s
-user	0m14.766s
-sys	0m0.229s
+real	0m1.481s
+user	0m17.620s
+sys	0m0.149s
 ```
 
 
@@ -1901,68 +1901,68 @@ sys	0m0.229s
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust (bit operation) | 0.31 sec. |1.00x |
-| 2 | C++ | 0.68 sec. |2.19x |
-| 3 | Assembly | 0.69 sec. |2.23x |
-| 4 | Go | 0.72 sec. |2.30x |
-| 5 | C | 0.78 sec. |2.50x |
-| 6 | Rust | 0.81 sec. |2.60x |
-| 7 | Haskell (MVector) | 0.82 sec. |2.64x |
-| 8 | Julia | 0.87 sec. |2.80x |
-| 9 | C# | 0.89 sec. |2.87x |
-| 10 | Crystal | 0.90 sec. |2.89x |
-| 11 | VB.net | 0.91 sec. |2.93x |
-| 12 | Java | 1.02 sec. |3.29x |
-| 13 | JavaScript (TypedArray) | 1.04 sec. |3.34x |
-| 14 | Fortran (parallel) | 1.36 sec. |4.37x |
-| 15 | Python (numpy) | 1.80 sec. |5.79x |
-| 16 | LuaJIT | 1.98 sec. |6.36x |
-| 17 | OCaml | 2.13 sec. |6.86x |
-| 18 | Scala | 2.23 sec. |7.17x |
-| 19 | F# | 2.41 sec. |7.76x |
-| 20 | R | 3.56 sec. |11.45x |
-| 21 | Cython (numpy) | 3.86 sec. |12.41x |
-| 22 | PyPy | 4.03 sec. |12.95x |
-| 23 | Ruby (numo) | 4.73 sec. |15.22x |
-| 24 | Lua | 6.60 sec. |21.21x |
-| 25 | PHP | 12.11 sec. |38.93x |
-| 26 | Perl | 33.52 sec. |107.78x |
+| 1 | Rust (bit operation) | 0.64 sec. |1.00x |
+| 2 | C++ | 0.64 sec. |1.01x |
+| 3 | Assembly | 0.66 sec. |1.03x |
+| 4 | C | 0.75 sec. |1.18x |
+| 5 | Go | 0.77 sec. |1.21x |
+| 6 | Julia | 0.82 sec. |1.29x |
+| 7 | Crystal | 0.88 sec. |1.38x |
+| 8 | Rust | 0.88 sec. |1.38x |
+| 9 | JavaScript (TypedArray) | 0.90 sec. |1.42x |
+| 10 | C# | 0.92 sec. |1.44x |
+| 11 | VB.net | 0.92 sec. |1.45x |
+| 12 | Haskell (MVector) | 0.93 sec. |1.47x |
+| 13 | Java | 0.96 sec. |1.51x |
+| 14 | Fortran (parallel) | 1.48 sec. |2.33x |
+| 15 | LuaJIT | 1.90 sec. |2.99x |
+| 16 | Python (numpy) | 2.01 sec. |3.16x |
+| 17 | OCaml | 2.10 sec. |3.31x |
+| 18 | Scala | 2.26 sec. |3.55x |
+| 19 | F# | 2.50 sec. |3.94x |
+| 20 | R | 3.44 sec. |5.41x |
+| 21 | Cython (numpy) | 3.81 sec. |5.99x |
+| 22 | PyPy | 4.18 sec. |6.58x |
+| 23 | Ruby (numo) | 4.63 sec. |7.28x |
+| 24 | Lua | 6.84 sec. |10.76x |
+| 25 | PHP | 9.87 sec. |15.52x |
+| 26 | Perl | 32.79 sec. |51.56x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust (bit operation) | 0.30 sec. |1.00x |
-| 2 | C++ | 0.57 sec. |1.92x |
-| 3 | Assembly | 0.68 sec. |2.29x |
-| 4 | Go | 0.69 sec. |2.33x |
-| 5 | C | 0.73 sec. |2.48x |
-| 6 | Rust | 0.76 sec. |2.58x |
-| 7 | Haskell (MVector) | 0.77 sec. |2.60x |
-| 8 | Julia | 0.79 sec. |2.67x |
-| 9 | C# | 0.80 sec. |2.73x |
-| 10 | VB.net | 0.83 sec. |2.80x |
-| 11 | Crystal | 0.85 sec. |2.87x |
-| 12 | Java | 0.89 sec. |3.01x |
-| 13 | JavaScript (TypedArray) | 0.96 sec. |3.27x |
-| 14 | LuaJIT | 1.67 sec. |5.65x |
-| 15 | Python (numpy) | 1.71 sec. |5.79x |
-| 16 | OCaml | 1.76 sec. |5.96x |
-| 17 | F# | 2.23 sec. |7.56x |
-| 18 | Scala | 2.58 sec. |8.75x |
-| 19 | R | 2.69 sec. |9.12x |
-| 20 | PyPy | 3.42 sec. |11.59x |
-| 21 | Cython (numpy) | 3.92 sec. |13.29x |
-| 22 | Ruby (numo) | 4.58 sec. |15.51x |
-| 23 | Lua | 5.95 sec. |20.16x |
-| 24 | PHP | 11.22 sec. |38.05x |
-| 25 | Fortran (parallel) | 14.77 sec. |50.05x |
-| 26 | Perl | 32.22 sec. |109.22x |
+| 1 | C++ | 0.53 sec. |1.00x |
+| 2 | Rust (bit operation) | 0.62 sec. |1.16x |
+| 3 | Assembly | 0.65 sec. |1.22x |
+| 4 | C | 0.71 sec. |1.34x |
+| 5 | Julia | 0.71 sec. |1.34x |
+| 6 | Go | 0.74 sec. |1.41x |
+| 7 | Rust | 0.82 sec. |1.56x |
+| 8 | VB.net | 0.83 sec. |1.56x |
+| 9 | Java | 0.83 sec. |1.56x |
+| 10 | Crystal | 0.83 sec. |1.57x |
+| 11 | Haskell (MVector) | 0.84 sec. |1.59x |
+| 12 | C# | 0.85 sec. |1.61x |
+| 13 | JavaScript (TypedArray) | 0.86 sec. |1.63x |
+| 14 | LuaJIT | 1.60 sec. |3.02x |
+| 15 | OCaml | 1.75 sec. |3.30x |
+| 16 | Python (numpy) | 1.82 sec. |3.43x |
+| 17 | F# | 2.28 sec. |4.29x |
+| 18 | Scala | 2.43 sec. |4.58x |
+| 19 | R | 2.69 sec. |5.08x |
+| 20 | PyPy | 3.62 sec. |6.83x |
+| 21 | Cython (numpy) | 3.89 sec. |7.34x |
+| 22 | Ruby (numo) | 4.47 sec. |8.43x |
+| 23 | Lua | 6.28 sec. |11.86x |
+| 24 | PHP | 9.10 sec. |17.16x |
+| 25 | Fortran (parallel) | 17.62 sec. |33.25x |
+| 26 | Perl | 31.62 sec. |59.66x |
 
 
 ## <a name='anchor10'></a>貢献者一覧
 - メタリックはんぺん 
-  - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java
-  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, F#, OCaml, Java, Julia, Scala, perl, php, lua
+  - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java, OCaml, Scala, perl, php, lua, go
+  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, F#, OCaml, Java, Julia, Scala, perl, php, lua, go
   - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
 - あなばす
   - 説明: Julia, Lisp, R, MATLAB, Fortran
