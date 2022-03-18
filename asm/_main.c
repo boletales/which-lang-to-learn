@@ -6,7 +6,7 @@
 #define ull   unsigned long long
 
 const uint MAX = 100000000;
-uchar sieve[MAX+1];
+uchar sieve[MAX/8+1];
 uint  primes[MAX+1];
 
 int main(){
