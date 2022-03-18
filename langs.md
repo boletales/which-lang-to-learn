@@ -10,7 +10,8 @@
   - <a href='#anchor2-0'>Python</a>
   - <a href='#anchor2-1'>Perl</a>
   - <a href='#anchor2-2'>Ruby</a>
-  - <a href='#anchor2-3'>Julia</a>
+  - <a href='#anchor2-3'>Lua</a>
+  - <a href='#anchor2-4'>Julia</a>
 
 - <a href='#anchor3'>コンパイルして使うやつ</a>
   - <a href='#anchor3-0'>C</a>
@@ -18,6 +19,7 @@
   - <a href='#anchor3-2'>Rust</a>
   - <a href='#anchor3-3'>Crystal</a>
   - <a href='#anchor3-4'>Assembly</a>
+  - <a href='#anchor3-5'>go</a>
 
 - <a href='#anchor4'>クラスベースオブジェクト指向一味</a>
   - <a href='#anchor4-0'>Java</a>
@@ -190,9 +192,9 @@ start
 99999989
 end
 
-real	0m1.772s
-user	0m1.675s
-sys	0m1.153s
+real	0m1.801s
+user	0m1.709s
+sys	0m1.133s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -205,9 +207,9 @@ start
 99999989
 end
 
-real	0m4.081s
-user	0m3.446s
-sys	0m0.545s
+real	0m4.029s
+user	0m3.420s
+sys	0m0.575s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -270,9 +272,9 @@ start
 5761455
 end
 
-real	0m3.831s
-user	0m3.923s
-sys	0m0.944s
+real	0m3.860s
+user	0m3.921s
+sys	0m0.899s
 ```
 
 
@@ -304,7 +306,7 @@ my @primes;
 my $pcount = 0;
 for($i = 0; $i <= $max; $i++){
   if($sieve[$i]){
-    @primes[$pcount] = $i;
+    $primes[$pcount] = $i;
     $pcount++;
   }
 }
@@ -323,9 +325,9 @@ start
 99999989
 end
 
-real	0m33.246s
-user	0m32.045s
-sys	0m1.114s
+real	0m33.521s
+user	0m32.219s
+sys	0m1.190s
 ```
 
 
@@ -375,18 +377,86 @@ start
 99999989
 end
 
-real	0m4.834s
-user	0m4.594s
-sys	0m0.149s
+real	0m4.734s
+user	0m4.576s
+sys	0m0.136s
 ```
 
 Rubyの高速化テクはいろいろあるが、とりあえず各種メソッドによるループをwhileに変換するとかなり速くなる(ブロックはオーバーヘッドが大きい)。もっとも、while文を使うと「これRubyでやる意味ある?」という感じになるし、それなら他の言語を使った方がいい(ネイティブ拡張を書くという選択肢は一応ある)。何度も言うがRubyistのサブ言語としてCrystalマジでオススメ。
 
-### <a name='anchor2-3'></a>Julia
+### <a name='anchor2-3'></a>Lua
+- 高速なスクリプト言語
+- いいところ
+  - ↑3つと比べるとめっちゃ速い
+  - LuaJITを使うともっと速い、コンパイル言語下位勢と同等レベル
+  - いくつかのゲームでプレイヤーがプログラミングに使える言語として採用されているらしい
+
+code:
+```lua
+print("start");
+
+local max = 100000000
+local sqrtmax = math.sqrt(max)
+local sieve = {}
+for i=0, max do
+  sieve[i] = true
+end
+sieve[0] = 0
+sieve[1] = 0
+
+for i=2, sqrtmax do
+  if sieve[i] then
+    for j = i*i, max, i do
+      sieve[j] = false
+    end
+  end
+end
+local primes = {}
+local pcount = 0
+for i=2, max do
+  if sieve[i] then
+    primes[pcount] = i
+    pcount = pcount + 1
+  end
+end
+print(primes[pcount-1]);
+
+print("end");
+```
+
+result:
+```
+$ :
+$ time lua main.lua
+start
+99999989
+end
+
+real	0m6.596s
+user	0m5.946s
+sys	0m0.572s
+```
+
+
+result:
+```
+$ :
+$ time luajit main.lua
+start
+99999989
+end
+
+real	0m1.978s
+user	0m1.666s
+sys	0m0.306s
+```
+
+
+### <a name='anchor2-4'></a>Julia
 - FortranとmatlabとPythonの後釜をいっぺんに狙おうとしている言語
 - いいところ
+  - （スクリプト言語の中では）圧倒的に速い、コンパイル言語上位勢並に速い
   - 文法がシンプル
-  - 事前にコンパイルする必要がないが、JITのおかげで比較的速い（最速組には勝てない）
   - PyCallでpythonのライブラリが使える
   - 数式・行列が扱いやすい
   - numpyやmatplotlibがpythonよりだいぶ使いやすい
@@ -438,9 +508,9 @@ start
 99999989
 end
 
-real	0m0.840s
-user	0m0.761s
-sys	0m0.076s
+real	0m0.871s
+user	0m0.788s
+sys	0m0.073s
 ```
 
 
@@ -501,9 +571,9 @@ start
 99999989
 end
 
-real	0m0.769s
-user	0m0.726s
-sys	0m0.040s
+real	0m0.779s
+user	0m0.731s
+sys	0m0.033s
 ```
 
 
@@ -565,9 +635,9 @@ start
 99999989
 start
 
-real	0m0.672s
-user	0m0.560s
-sys	0m0.109s
+real	0m0.681s
+user	0m0.566s
+sys	0m0.105s
 ```
 
   
@@ -634,9 +704,9 @@ start
 99999989
 end
 
-real	0m0.786s
-user	0m0.736s
-sys	0m0.047s
+real	0m0.810s
+user	0m0.760s
+sys	0m0.040s
 ```
 
 
@@ -680,9 +750,9 @@ start
 99999991
 end
 
-real	0m0.307s
-user	0m0.287s
-sys	0m0.010s
+real	0m0.311s
+user	0m0.295s
+sys	0m0.007s
 ```
 
 
@@ -721,9 +791,9 @@ start
 99999989
 end
 
-real	0m0.883s
-user	0m0.826s
-sys	0m0.053s
+real	0m0.898s
+user	0m0.848s
+sys	0m0.049s
 ```
 
 
@@ -958,15 +1028,76 @@ end
 count 5717621
 
 
-real	0m0.664s
-user	0m0.652s
-sys	0m0.010s
+real	0m0.694s
+user	0m0.677s
+sys	0m0.013s
+```
+
+
+### <a name='anchor3-5'></a>go
+- 書きやすい高速コンパイル言語
+- いいところ
+  - 高速
+  - マルチスレッドに強いらしい
+  - サーバーとの通信が多い設計に向いているらしい
+
+code:
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func main() {
+	fmt.Printf("start\n")
+	const max = 100000000
+	var sqrtmax = int(math.Sqrt(max))
+	sieve := [max + 1]bool{}
+	for i := 0; i <= max; i++ {
+		sieve[i] = true
+	}
+	sieve[0] = false
+	sieve[1] = false
+	for i := 0; i <= sqrtmax; i++ {
+		if sieve[i] {
+			for j := i * i; j <= max; j += i {
+				sieve[j] = false
+			}
+		}
+	}
+	primes := [max + 1]int{}
+	var pcount = 0
+	for i := 0; i <= max; i++ {
+		if sieve[i] {
+			primes[pcount] = i
+			pcount++
+		}
+	}
+	fmt.Printf("%d\n", primes[pcount-1])
+	fmt.Printf("end\n")
+}
+```
+
+result:
+```
+$ go build main.go
+$ time ./main
+start
+99999989
+end
+
+real	0m0.715s
+user	0m0.688s
+sys	0m0.026s
 ```
 
 
 ## <a name='anchor4'></a>クラスベースオブジェクト指向一味
 
 ### <a name='anchor4-0'></a>Java
+- 30億のデバイスで動いているらしい
 - いいところ
   - コードの規模が大きくなることに大して耐性が強い
 - わるいところ
@@ -1015,9 +1146,9 @@ start
 99999989
 end
 
-real	0m1.001s
-user	0m0.875s
-sys	0m0.156s
+real	0m1.024s
+user	0m0.888s
+sys	0m0.158s
 ```
 
 
@@ -1067,9 +1198,9 @@ start
 99999989
 end
 
-real	0m0.991s
-user	0m0.903s
-sys	0m0.049s
+real	0m0.892s
+user	0m0.805s
+sys	0m0.043s
 ```
 
 
@@ -1130,9 +1261,9 @@ start
 99999989
 end
 
-real	0m0.900s
-user	0m0.793s
-sys	0m0.056s
+real	0m0.911s
+user	0m0.827s
+sys	0m0.040s
 ```
 
 
@@ -1190,9 +1321,9 @@ start
 99999989
 end
 
-real	0m2.186s
-user	0m1.784s
-sys	0m0.392s
+real	0m2.134s
+user	0m1.758s
+sys	0m0.365s
 ```
 
 
@@ -1243,9 +1374,9 @@ start
 99999989
 end
 
-real	0m2.418s
-user	0m2.239s
-sys	0m0.133s
+real	0m2.413s
+user	0m2.229s
+sys	0m0.143s
 ```
 
 
@@ -1300,9 +1431,9 @@ start
 99999989
 end
 
-real	0m2.249s
-user	0m2.519s
-sys	0m0.232s
+real	0m2.231s
+user	0m2.581s
+sys	0m0.196s
 ```
 
 
@@ -1398,9 +1529,9 @@ start
 99999989
 end
 
-real	0m0.791s
-user	0m0.741s
-sys	0m0.047s
+real	0m0.820s
+user	0m0.766s
+sys	0m0.043s
 ```
 
 
@@ -1511,21 +1642,70 @@ start
 99999989
 end
 
-real	0m0.910s
-user	0m0.845s
-sys	0m0.066s
+real	0m1.040s
+user	0m0.964s
+sys	0m0.049s
 ```
 
 
 ### <a name='anchor6-1'></a>PHP
 - Web屋さん専用のかんたんサーバーサイド言語
+- perl似
 - いいところ
   - 動的サイトを作りたいなら一番かんたん
   - HTMLを埋め込むだけなのでクライアントサイドの知識しかなくてもとっつきやすい
   - ホスティングしてくれるサービスが多い(スターサーバーとかエックスサーバーとか)
 - わるいところ
   - カオス
-{sample:php}
+
+code:
+```php
+<?php
+print "start\n";
+
+ini_set('memory_limit', '6G');
+
+$max = 100000000;
+$sqrtmax = sqrt($max);
+$sieve = array_fill(0, $max+1, true);
+$sieve[0] = 0;
+$sieve[1] = 0;
+for($i = 0; $i <= $sqrtmax; $i++){
+  if($sieve[$i]){
+    for($j = $i*$i; $j <= $max; $j += $i){
+      $sieve[$j] = 0;
+    }
+  }
+}
+
+$primes = [];
+$pcount = 0;
+for($i = 0; $i <= $max; $i++){
+  if($sieve[$i]){
+    $primes[$pcount] = $i;
+    $pcount++;
+  }
+}
+
+print($primes[$pcount-1]);
+print("\n");
+
+print("end\n");
+```
+
+result:
+```
+$ :
+$ time php main.php
+start
+99999989
+end
+
+real	0m12.107s
+user	0m11.224s
+sys	0m0.841s
+```
+
 
 ### <a name='anchor6-2'></a>WebAssembly
 - 直接は書かない
@@ -1629,9 +1809,9 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m3.682s
-user	0m2.724s
-sys	0m0.934s
+real	0m3.561s
+user	0m2.689s
+sys	0m0.839s
 ```
 
 
@@ -1703,9 +1883,9 @@ $ time ./a.out
     99999989
  end
 
-real	0m1.267s
-user	0m14.571s
-sys	0m0.189s
+real	0m1.359s
+user	0m14.766s
+sys	0m0.229s
 ```
 
 
@@ -1722,59 +1902,67 @@ sys	0m0.189s
 | rank | lang | time | ratio | 
 | - | - | - | - |
 | 1 | Rust (bit operation) | 0.31 sec. |1.00x |
-| 2 | Assembly | 0.66 sec. |2.16x |
-| 3 | C++ | 0.67 sec. |2.19x |
-| 4 | C | 0.77 sec. |2.50x |
-| 5 | Rust | 0.79 sec. |2.56x |
-| 6 | Haskell (MVector) | 0.79 sec. |2.58x |
-| 7 | Julia | 0.84 sec. |2.74x |
-| 8 | Crystal | 0.88 sec. |2.88x |
-| 9 | VB.net | 0.90 sec. |2.93x |
-| 10 | JavaScript (TypedArray) | 0.91 sec. |2.96x |
-| 11 | C# | 0.99 sec. |3.23x |
-| 12 | Java | 1.00 sec. |3.26x |
-| 13 | Fortran (parallel) | 1.27 sec. |4.13x |
-| 14 | Python (numpy) | 1.77 sec. |5.77x |
-| 15 | OCaml | 2.19 sec. |7.12x |
-| 16 | Scala | 2.25 sec. |7.33x |
-| 17 | F# | 2.42 sec. |7.88x |
-| 18 | R | 3.68 sec. |11.99x |
-| 19 | Cython (numpy) | 3.83 sec. |12.48x |
-| 20 | PyPy | 4.08 sec. |13.29x |
-| 21 | Ruby (numo) | 4.83 sec. |15.75x |
-| 22 | Perl | 33.25 sec. |108.29x |
+| 2 | C++ | 0.68 sec. |2.19x |
+| 3 | Assembly | 0.69 sec. |2.23x |
+| 4 | Go | 0.72 sec. |2.30x |
+| 5 | C | 0.78 sec. |2.50x |
+| 6 | Rust | 0.81 sec. |2.60x |
+| 7 | Haskell (MVector) | 0.82 sec. |2.64x |
+| 8 | Julia | 0.87 sec. |2.80x |
+| 9 | C# | 0.89 sec. |2.87x |
+| 10 | Crystal | 0.90 sec. |2.89x |
+| 11 | VB.net | 0.91 sec. |2.93x |
+| 12 | Java | 1.02 sec. |3.29x |
+| 13 | JavaScript (TypedArray) | 1.04 sec. |3.34x |
+| 14 | Fortran (parallel) | 1.36 sec. |4.37x |
+| 15 | Python (numpy) | 1.80 sec. |5.79x |
+| 16 | LuaJIT | 1.98 sec. |6.36x |
+| 17 | OCaml | 2.13 sec. |6.86x |
+| 18 | Scala | 2.23 sec. |7.17x |
+| 19 | F# | 2.41 sec. |7.76x |
+| 20 | R | 3.56 sec. |11.45x |
+| 21 | Cython (numpy) | 3.86 sec. |12.41x |
+| 22 | PyPy | 4.03 sec. |12.95x |
+| 23 | Ruby (numo) | 4.73 sec. |15.22x |
+| 24 | Lua | 6.60 sec. |21.21x |
+| 25 | PHP | 12.11 sec. |38.93x |
+| 26 | Perl | 33.52 sec. |107.78x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | Rust (bit operation) | 0.29 sec. |1.00x |
-| 2 | C++ | 0.56 sec. |1.95x |
-| 3 | Assembly | 0.65 sec. |2.27x |
-| 4 | C | 0.73 sec. |2.53x |
-| 5 | Rust | 0.74 sec. |2.56x |
-| 6 | Haskell (MVector) | 0.74 sec. |2.58x |
-| 7 | Julia | 0.76 sec. |2.65x |
-| 8 | VB.net | 0.79 sec. |2.76x |
-| 9 | Crystal | 0.83 sec. |2.88x |
-| 10 | JavaScript (TypedArray) | 0.84 sec. |2.94x |
-| 11 | Java | 0.88 sec. |3.05x |
-| 12 | C# | 0.90 sec. |3.15x |
-| 13 | Python (numpy) | 1.68 sec. |5.84x |
-| 14 | OCaml | 1.78 sec. |6.22x |
-| 15 | F# | 2.24 sec. |7.80x |
-| 16 | Scala | 2.52 sec. |8.78x |
-| 17 | R | 2.72 sec. |9.49x |
-| 18 | PyPy | 3.45 sec. |12.01x |
-| 19 | Cython (numpy) | 3.92 sec. |13.67x |
-| 20 | Ruby (numo) | 4.59 sec. |16.01x |
-| 21 | Fortran (parallel) | 14.57 sec. |50.77x |
-| 22 | Perl | 32.04 sec. |111.66x |
+| 1 | Rust (bit operation) | 0.30 sec. |1.00x |
+| 2 | C++ | 0.57 sec. |1.92x |
+| 3 | Assembly | 0.68 sec. |2.29x |
+| 4 | Go | 0.69 sec. |2.33x |
+| 5 | C | 0.73 sec. |2.48x |
+| 6 | Rust | 0.76 sec. |2.58x |
+| 7 | Haskell (MVector) | 0.77 sec. |2.60x |
+| 8 | Julia | 0.79 sec. |2.67x |
+| 9 | C# | 0.80 sec. |2.73x |
+| 10 | VB.net | 0.83 sec. |2.80x |
+| 11 | Crystal | 0.85 sec. |2.87x |
+| 12 | Java | 0.89 sec. |3.01x |
+| 13 | JavaScript (TypedArray) | 0.96 sec. |3.27x |
+| 14 | LuaJIT | 1.67 sec. |5.65x |
+| 15 | Python (numpy) | 1.71 sec. |5.79x |
+| 16 | OCaml | 1.76 sec. |5.96x |
+| 17 | F# | 2.23 sec. |7.56x |
+| 18 | Scala | 2.58 sec. |8.75x |
+| 19 | R | 2.69 sec. |9.12x |
+| 20 | PyPy | 3.42 sec. |11.59x |
+| 21 | Cython (numpy) | 3.92 sec. |13.29x |
+| 22 | Ruby (numo) | 4.58 sec. |15.51x |
+| 23 | Lua | 5.95 sec. |20.16x |
+| 24 | PHP | 11.22 sec. |38.05x |
+| 25 | Fortran (parallel) | 14.77 sec. |50.05x |
+| 26 | Perl | 32.22 sec. |109.22x |
 
 
 ## <a name='anchor10'></a>貢献者一覧
 - メタリックはんぺん 
   - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java
-  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, F#, OCaml, Java, Julia
+  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, F#, OCaml, Java, Julia, Scala, perl, php, lua
   - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
 - あなばす
   - 説明: Julia, Lisp, R, MATLAB, Fortran

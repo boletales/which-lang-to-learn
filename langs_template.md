@@ -259,9 +259,18 @@ sieveにbit演算を用いたら非常に高速になった
   - (C/C++などの) コンパイラはたまにいい感じのコードを吐いてくれないので、コンパイルされたものを見て、適宜手動でアセンブリ最適化するのが良い。
 {sample:asm}
 
+### go
+- 書きやすい高速コンパイル言語
+- いいところ
+  - 高速
+  - マルチスレッドに強いらしい
+  - サーバーとの通信が多い設計に向いているらしい
+{sample:go}
+
 ## クラスベースオブジェクト指向一味
 
 ### Java
+- 30億のデバイスで動いているらしい
 - いいところ
   - コードの規模が大きくなることに大して耐性が強い
 - わるいところ
@@ -503,8 +512,8 @@ TypedArray使ったら最速組と張り合える速さが出た
 
 ## 貢献者一覧
 - メタリックはんぺん 
-  - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java
-  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, F#, OCaml, Java, Julia
+  - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java, OCaml, Scala, perl, php, lua, go
+  - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, F#, OCaml, Java, Julia, Scala, perl, php, lua, go
   - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！
 - あなばす
   - 説明: Julia, Lisp, R, MATLAB, Fortran

@@ -24,3 +24,4 @@ pl    , pl   , Perl                    , main.pl       , :                      
 php   , php  , PHP                     , main.php      , :                                     , php main.php
 lua   , lua  , Lua                     , main.lua      , :                                     , lua main.lua
 luajit, lua  , LuaJIT                  , main.lua      , :                                     , luajit main.lua
+go    , go   , Go                      , main.go       , go build main.go                      , ./main
