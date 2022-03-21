@@ -39,10 +39,9 @@ main_run sid = do
     Nothing -> TIO.putStrLn $ "no settings named \"" <> sid <> "\""
     Just settings -> do
       TIO.putStrLn $ "~~ Start \"" <> settingsid (settings :: Settings) <> "\" ~~"
-      build <- pack <$> readCreateProcess ((shell $ unpack (buildcmd (settings :: Settings)) ++ " 2>&1") {cwd = Just $ unpack $ directory settings}) ""
-      TIO.putStrLn build
+      build <- pack <$> readCreateProcess ((shell $ unpack (buildcmd (settings :: Settings)) ++ " 1>&2") {cwd = Just $ unpack $ directory settings}) ""
 
-      let realcmd = "{ time " <> execcmd settings <> " 2>/dev/null; } 2>&1"
+      let realcmd = "time " <> execcmd settings <> " 1>&2"
       let cmd = "time " <> execcmd settings
       result <- pack <$> readCreateProcess ((shell $ unpack realcmd) {cwd = Just $ unpack $ directory settings}) ""
       TIO.putStrLn result
