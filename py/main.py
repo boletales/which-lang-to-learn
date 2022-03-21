@@ -21,5 +21,6 @@ for i in range(2,MAX+1):
         primes[pcount] = i
         pcount += 1
 
+print("found "+ str(pcount) + " primes")
 print(primes[pcount-1])
 print("end")

@@ -17,7 +17,8 @@ main :: IO ()
 main = do
   putStrLn "start"
   let ps = generatePrimes num
-  print $ V.last ps
+  putStrLn $ "found " <> (show (V.length ps)) <> " primes"
+  putStrLn $ show (V.last ps)
   putStrLn "end"
 
 generatePrimes :: Int -> V.Vector Int

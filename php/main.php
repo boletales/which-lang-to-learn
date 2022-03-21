@@ -25,7 +25,8 @@ for($i = 0; $i <= $max; $i++){
   }
 }
 
-print($primes[$pcount-1]);
-print("\n");
+print("found $pcount primes\n");
+
+print("{$primes[$pcount-1]}\n");
 
 print("end\n");

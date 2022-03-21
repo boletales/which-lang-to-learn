@@ -24,6 +24,7 @@ for i=2, max do
     pcount = pcount + 1
   end
 end
+print("found " .. tostring(pcount) .. " primes");
 print(primes[pcount-1]);
 
 print("end");

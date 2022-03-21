@@ -25,6 +25,7 @@ object prime {
       }
     }
 
+    println("found " + pcount.toString() + " primes")
     println(primes(pcount-1))
 
     println("end")

@@ -21,6 +21,7 @@ for(let i=2; i<=max; i++){
     }
 }
 
+console.log("found " + pcount + " primes");
 console.log(primes[pcount-1]);
 
 console.log("end")

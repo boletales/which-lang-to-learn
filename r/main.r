@@ -17,6 +17,7 @@ main <- function(){
     nums   <- 1:max
     primes <- nums[sieve[nums]]
     
+    print(paste("found", length(primes), "primes"))
     print(primes[length(primes)])
     
     print("end")

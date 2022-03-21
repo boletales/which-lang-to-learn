@@ -27,6 +27,7 @@ let main =
     end else ()
   done;
 
+  Printf.printf "found %d primes\n" (!pcount);
   Printf.printf "%d\n" primes.(!pcount - 1);;
 
   Printf.printf "end\n";;

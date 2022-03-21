@@ -21,6 +21,7 @@ fn main() {
             primes.push(i);
         }
     }
+    println!("found {} primes",primes.len());
     println!("{}", primes.last().unwrap());
     println!("end");
 }

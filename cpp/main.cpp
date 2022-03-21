@@ -26,6 +26,7 @@ int main(){
         }
     }
 
+    cout << "found " << pcount << " primes" << endl;
     cout << primes[pcount-1] << endl;
     
     cout << "start" << endl;

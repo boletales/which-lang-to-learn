@@ -12,7 +12,7 @@ program eratosthenes
     allocate(primes(pmax))
     primes=0
    
-    print *, "start"
+    print '(a)', "start"
     do i=2 , int(sqrt(real(pmax)))
         if(sieve(i))then
             !$omp parallel do
@@ -30,7 +30,8 @@ program eratosthenes
         end if
     end do
 
-    print *, primes(pcount-1)
+    print '(a,i0,a)', "found " , (pcount-1), " primes"
+    print '(i0)', primes(pcount-1)
 
-    print *, "end"
+    print '(a)', "end"
 end program eratosthenes

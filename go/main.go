@@ -30,6 +30,7 @@ func main() {
 			pcount++
 		}
 	}
+	fmt.Printf("found %d primes\n", pcount)
 	fmt.Printf("%d\n", primes[pcount-1])
 	fmt.Printf("end\n")
 }

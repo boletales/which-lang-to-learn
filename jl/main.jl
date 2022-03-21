@@ -16,6 +16,7 @@ function main()
 
     primes = [i for i in 1:MAX if sieve[i]] :: Vector{Int64}
     
+    println("found " * string(length(primes)) * " primes")
     println(primes[length(primes)])
     println("end")
 end

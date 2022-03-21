@@ -22,6 +22,7 @@ Module Program
             End If
         Next
  
+        Console.WriteLine("found {0} primes", pcount)
         Console.WriteLine(primes(pcount - 1))
  
         Console.WriteLine("end")

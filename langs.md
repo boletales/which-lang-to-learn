@@ -137,7 +137,6 @@
       - (静的型付けなら)関数を表す型が存在すること
     - 可能なら次のような特徴もほしい
       - 標準ライブラリに「関数を引数に取る関数」（高階関数）が多く含まれていること
-      - 標準ライブラリに「関数を引数に取る関数」（高階関数）が多く含まれていること
       - (静的型付けなら)型システムが強力であること。高階関数の型は往々にして複雑になるので
       - (静的型付けなら)型推論が強いこと。複雑な型を手書きしたくはないので
       - 「名前付き定数を束縛して式中で使う」みたいな文が用意されていること。ローカルconstでもいいけどスコープが広がって面倒なので
@@ -180,6 +179,7 @@ for i in range(2,int(math.sqrt(MAX))):
 
 nums   = np.arange(0,MAX+1)
 primes = nums[sieve[nums]]
+print("found "+ str(len(primes)) + " primes")
 print(primes[-1])
 print("end")
 ```
@@ -189,12 +189,13 @@ result:
 $ :
 $ time python main_nd.py
 start
+found 5761455 primes
 99999989
 end
 
-real	0m1.687s
-user	0m1.642s
-sys	0m1.119s
+real	0m1.614s
+user	0m1.586s
+sys	0m1.143s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -204,12 +205,13 @@ result:
 $ :
 $ time pypy main.py
 start
+found 5761455 primes
 99999989
 end
 
-real	0m3.745s
-user	0m3.236s
-sys	0m0.472s
+real	0m4.495s
+user	0m3.933s
+sys	0m0.535s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -219,8 +221,9 @@ code:
 import cylib
 
 print("start")
-primes = cylib.main()
-print(primes[-1])
+(primes,pcount) = cylib.main()
+print("found "+ str(pcount) + " primes")
+print(primes[pcount-1])
 print("end")
 ```
 
@@ -269,12 +272,13 @@ result:
 $ python setup.py build_ext --inplace
 $ time python cymain.py
 start
-5761455
+found 5761455 primes
+99999989
 end
 
-real	0m3.650s
-user	0m3.816s
-sys	0m0.919s
+real	0m3.470s
+user	0m3.598s
+sys	0m0.986s
 ```
 
 
@@ -311,8 +315,9 @@ for($i = 0; $i <= $max; $i++){
   }
 }
 
-print($primes[$pcount-1]);
-print("\n");
+print("found $pcount primes\n");
+
+print("$primes[$pcount-1]\n");
 
 print("end\n");
 ```
@@ -322,12 +327,13 @@ result:
 $ :
 $ time perl main.pl
 start
+found 5761455 primes
 99999989
 end
 
-real	0m32.899s
-user	0m31.702s
-sys	0m0.956s
+real	0m31.705s
+user	0m30.597s
+sys	0m1.044s
 ```
 
 
@@ -366,6 +372,7 @@ sieve[0] = sieve[1] = 0
 end
 
 primes = Numo::Int32.new(MAX + 1).seq(0, 1)[sieve[0..MAX]]
+puts "found #{primes.size} primes"
 puts primes[-1], "end"
 ```
 
@@ -374,11 +381,12 @@ result:
 $ bundle
 $ time bundle exec ruby main.rb
 start
+found 5761455 primes
 99999989
 end
 
-real	0m4.486s
-user	0m4.342s
+real	0m4.118s
+user	0m3.978s
 sys	0m0.126s
 ```
 
@@ -419,6 +427,7 @@ for i=2, max do
     pcount = pcount + 1
   end
 end
+print("found " .. tostring(pcount) .. " primes");
 print(primes[pcount-1]);
 
 print("end");
@@ -429,12 +438,13 @@ result:
 $ :
 $ time lua main.lua
 start
+found 5761455 primes
 99999989
 end
 
-real	0m6.886s
-user	0m6.293s
-sys	0m0.568s
+real	0m5.979s
+user	0m5.437s
+sys	0m0.525s
 ```
 
 
@@ -443,12 +453,13 @@ result:
 $ :
 $ time luajit main.lua
 start
+found 5761455 primes
 99999989
 end
 
-real	0m2.001s
-user	0m1.648s
-sys	0m0.330s
+real	0m1.807s
+user	0m1.559s
+sys	0m0.243s
 ```
 
 
@@ -494,6 +505,7 @@ function main()
 
     primes = [i for i in 1:MAX if sieve[i]] :: Vector{Int64}
     
+    println("found " * string(length(primes)) * " primes")
     println(primes[length(primes)])
     println("end")
 end
@@ -505,12 +517,13 @@ result:
 $ julia main.jl
 $ time julia main.jl
 start
+found 5761455 primes
 99999989
 end
 
-real	0m0.798s
-user	0m0.723s
-sys	0m0.073s
+real	0m0.760s
+user	0m0.699s
+sys	0m0.060s
 ```
 
 
@@ -582,8 +595,8 @@ int main(){
         if ((v & 0b01000000) == 0) primes[++pcount] = ii + 6;
         if ((v & 0b10000000) == 0) primes[++pcount] = ii + 7;
     }
+    printf("found %d primes\n", pcount);    // 5761454
     printf("%d\nend\n", primes[pcount]); // 99999989
-    // printf("count-1 %d\n\n", pcount);    // 5761454
 }
 ```
 
@@ -592,12 +605,13 @@ result:
 $ clang   main.c   -O3
 $ time ./a.out
 start
+found 5761454 primes
 99999989
 end
 
-real	0m0.486s
-user	0m0.463s
-sys	0m0.016s
+real	0m0.454s
+user	0m0.442s
+sys	0m0.010s
 ```
 
 
@@ -644,6 +658,7 @@ int main(){
         }
     }
 
+    cout << "found " << pcount << " primes" << endl;
     cout << primes[pcount-1] << endl;
     
     cout << "start" << endl;
@@ -656,12 +671,13 @@ result:
 $ clang++ main.cpp -O3
 $ time ./a.out
 start
+found 5761455 primes
 99999989
 start
 
-real	0m0.629s
-user	0m0.530s
-sys	0m0.092s
+real	0m0.603s
+user	0m0.499s
+sys	0m0.103s
 ```
 
   
@@ -715,6 +731,7 @@ fn main() {
             pcount += 1;
         }
     }
+    println!("found {} primes",pcount);
     println!("{}",primes[pcount-1]);
     println!("end");
 }
@@ -725,12 +742,13 @@ result:
 $ rustc -O main.rs
 $ time ./main
 start
+found 5761455 primes
 99999989
 end
 
-real	0m0.794s
-user	0m0.755s
-sys	0m0.026s
+real	0m0.728s
+user	0m0.690s
+sys	0m0.036s
 ```
 
 
@@ -761,6 +779,7 @@ fn main() {
             primes.push(i);
         }
     }
+    println!("found {} primes",primes.len());
     println!("{}", primes.last().unwrap());
     println!("end");
 }
@@ -771,11 +790,12 @@ result:
 $ rustc -O bit_vec.rs
 $ time ./bit_vec
 start
+found 5761455 primes
 99999989
 end
 
-real	0m0.545s
-user	0m0.526s
+real	0m0.532s
+user	0m0.514s
 sys	0m0.017s
 ```
 
@@ -804,6 +824,7 @@ sieve[0] = sieve[1] = false
 end
 
 primes = (1..MAX).select{ |i| sieve[i] }
+puts "found #{primes.size} primes"
 puts primes.last, "end"
 ```
 
@@ -812,12 +833,13 @@ result:
 $ crystal build --release main.cr
 $ time ./main
 start
+found 5761455 primes
 99999989
 end
 
-real	0m0.894s
-user	0m0.851s
-sys	0m0.043s
+real	0m0.850s
+user	0m0.806s
+sys	0m0.050s
 ```
 
 
@@ -1097,8 +1119,8 @@ end
 count_1 5761454
 
 
-real	0m0.530s
-user	0m0.517s
+real	0m0.493s
+user	0m0.482s
 sys	0m0.010s
 ```
 
@@ -1144,6 +1166,7 @@ func main() {
 			pcount++
 		}
 	}
+	fmt.Printf("found %d primes\n", pcount)
 	fmt.Printf("%d\n", primes[pcount-1])
 	fmt.Printf("end\n")
 }
@@ -1154,12 +1177,13 @@ result:
 $ go build main.go
 $ time ./main
 start
+found 5761455 primes
 99999989
 end
 
-real	0m0.720s
-user	0m0.698s
-sys	0m0.010s
+real	0m0.714s
+user	0m0.690s
+sys	0m0.026s
 ```
 
 
@@ -1200,6 +1224,7 @@ class Primes {
                 pcount += 1;
             }
         }
+        System.out.println("found " + String.valueOf(pcount) + " primes");
         System.out.println(primes[pcount-1]);
         
         System.out.println("end");
@@ -1212,12 +1237,13 @@ result:
 $ javac main.java
 $ time java Primes
 start
+found 5761455 primes
 99999989
 end
 
-real	0m0.962s
-user	0m0.845s
-sys	0m0.127s
+real	0m0.918s
+user	0m0.822s
+sys	0m0.143s
 ```
 
 
@@ -1255,6 +1281,7 @@ for(var i = 2; i <= max; i++){
     }
 }
 
+Console.WriteLine("found {0} primes", pcount);
 Console.WriteLine(primes[pcount - 1]);
 Console.WriteLine("end");
 ```
@@ -1264,12 +1291,13 @@ result:
 $ dotnet publish -c release -r linux-x64
 $ time ./bin/release/net6.0/linux-x64/cs
 start
+found 5761455 primes
 99999989
 end
 
-real	0m0.925s
-user	0m0.845s
-sys	0m0.037s
+real	0m0.808s
+user	0m0.733s
+sys	0m0.043s
 ```
 
 
@@ -1315,6 +1343,7 @@ Module Program
             End If
         Next
  
+        Console.WriteLine("found {0} primes", pcount)
         Console.WriteLine(primes(pcount - 1))
  
         Console.WriteLine("end")
@@ -1327,12 +1356,13 @@ result:
 $ dotnet publish -c release -r linux-x64
 $ time ./bin/release/net6.0/linux-x64/vb
 start
+found 5761455 primes
 99999989
 end
 
-real	0m0.893s
-user	0m0.826s
-sys	0m0.037s
+real	0m0.860s
+user	0m0.775s
+sys	0m0.040s
 ```
 
 
@@ -1377,6 +1407,7 @@ let main =
     end else ()
   done;
 
+  Printf.printf "found %d primes\n" (!pcount);
   Printf.printf "%d\n" primes.(!pcount - 1);;
 
   Printf.printf "end\n";;
@@ -1387,12 +1418,13 @@ result:
 $ ocamlopt main.ml -O3
 $ time ./a.out
 start
+found 5761455 primes
 99999989
 end
 
-real	0m2.023s
-user	0m1.708s
-sys	0m0.309s
+real	0m1.972s
+user	0m1.627s
+sys	0m0.339s
 ```
 
 
@@ -1430,6 +1462,7 @@ for i in 2 .. max do
     pcount <- pcount+1
     ()
 
+printfn "found %d primes" pcount
 printfn "%d" primes[pcount-1]
 
 printfn "end"
@@ -1440,12 +1473,13 @@ result:
 $ dotnet publish -c release -r linux-x64
 $ time ./bin/release/net6.0/linux-x64/fs
 start
+found 5761455 primes
 99999989
 end
 
-real	0m2.464s
-user	0m2.301s
-sys	0m0.119s
+real	0m2.369s
+user	0m2.137s
+sys	0m0.170s
 ```
 
 
@@ -1485,6 +1519,7 @@ object prime {
       }
     }
 
+    println("found " + pcount.toString() + " primes")
     println(primes(pcount-1))
 
     println("end")
@@ -1497,12 +1532,13 @@ result:
 $ scalac main.scala
 $ time scala prime -J-Xmx1g
 start
+found 5761455 primes
 99999989
 end
 
-real	0m2.145s
-user	0m2.497s
-sys	0m0.206s
+real	0m2.021s
+user	0m2.406s
+sys	0m0.212s
 ```
 
 
@@ -1555,7 +1591,8 @@ main :: IO ()
 main = do
   putStrLn "start"
   let ps = generatePrimes num
-  print $ V.last ps
+  putStrLn $ "found " <> (show (V.length ps)) <> " primes"
+  putStrLn $ show (V.last ps)
   putStrLn "end"
 
 generatePrimes :: Int -> V.Vector Int
@@ -1595,12 +1632,13 @@ result:
 $ stack install --local-bin-path ./
 $ time ./hs-exe
 start
+found 5761455 primes
 99999989
 end
 
-real	0m0.788s
-user	0m0.749s
-sys	0m0.033s
+real	0m0.748s
+user	0m0.708s
+sys	0m0.037s
 ```
 
 
@@ -1698,6 +1736,7 @@ for(let i=2; i<=max; i++){
     }
 }
 
+console.log("found " + pcount + " primes");
 console.log(primes[pcount-1]);
 
 console.log("end")
@@ -1708,12 +1747,13 @@ result:
 $ :
 $ time node main.js
 start
+found 5761455 primes
 99999989
 end
 
-real	0m0.907s
-user	0m0.850s
-sys	0m0.050s
+real	0m0.841s
+user	0m0.824s
+sys	0m0.020s
 ```
 
 
@@ -1756,8 +1796,9 @@ for($i = 0; $i <= $max; $i++){
   }
 }
 
-print($primes[$pcount-1]);
-print("\n");
+print("found $pcount primes\n");
+
+print("{$primes[$pcount-1]}\n");
 
 print("end\n");
 ```
@@ -1767,12 +1808,13 @@ result:
 $ :
 $ time php main.php
 start
+found 5761455 primes
 99999989
 end
 
-real	0m11.718s
-user	0m10.834s
-sys	0m0.843s
+real	0m11.587s
+user	0m10.838s
+sys	0m0.722s
 ```
 
 
@@ -1862,6 +1904,7 @@ main <- function(){
     nums   <- 1:max
     primes <- nums[sieve[nums]]
     
+    print(paste("found", length(primes), "primes"))
     print(primes[length(primes)])
     
     print("end")
@@ -1875,12 +1918,13 @@ result:
 $ :
 $ time Rscript main.r
 [1] "start"
+[1] "found 5761455 primes"
 [1] 99999989
 [1] "end"
 
-real	0m3.193s
-user	0m2.557s
-sys	0m0.628s
+real	0m3.180s
+user	0m2.484s
+sys	0m0.690s
 ```
 
 
@@ -1920,7 +1964,7 @@ program eratosthenes
     allocate(primes(pmax))
     primes=0
    
-    print *, "start"
+    print '(a)', "start"
     do i=2 , int(sqrt(real(pmax)))
         if(sieve(i))then
             !$omp parallel do
@@ -1938,9 +1982,10 @@ program eratosthenes
         end if
     end do
 
-    print *, primes(pcount-1)
+    print '(a,i0,a)', "found " , (pcount-1), " primes"
+    print '(i0)', primes(pcount-1)
 
-    print *, "end"
+    print '(a)', "end"
 end program eratosthenes
 ```
 
@@ -1948,13 +1993,14 @@ result:
 ```
 $ gfortran -fopenmp -Ofast main.f95
 $ time ./a.out
- start
-    99999989
- end
+start
+found 5761455 primes
+99999989
+end
 
-real	0m0.877s
-user	0m9.500s
-sys	0m0.191s
+real	0m0.882s
+user	0m10.518s
+sys	0m0.109s
 ```
 
 
@@ -1970,62 +2016,62 @@ sys	0m0.191s
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | C | 0.49 sec. |1.00x |
-| 2 | Assembly | 0.53 sec. |1.09x |
-| 3 | Rust (bit operation) | 0.54 sec. |1.12x |
-| 4 | C++ | 0.63 sec. |1.29x |
-| 5 | Go | 0.72 sec. |1.48x |
-| 6 | Haskell (MVector) | 0.79 sec. |1.62x |
-| 7 | Rust | 0.79 sec. |1.63x |
-| 8 | Julia | 0.80 sec. |1.64x |
-| 9 | Fortran (parallel) | 0.88 sec. |1.80x |
-| 10 | VB.net | 0.89 sec. |1.84x |
-| 11 | Crystal | 0.89 sec. |1.84x |
-| 12 | JavaScript (TypedArray) | 0.91 sec. |1.87x |
-| 13 | C# | 0.92 sec. |1.90x |
-| 14 | Java | 0.96 sec. |1.98x |
-| 15 | Python (numpy) | 1.69 sec. |3.47x |
-| 16 | LuaJIT | 2.00 sec. |4.12x |
-| 17 | OCaml | 2.02 sec. |4.16x |
-| 18 | Scala | 2.14 sec. |4.41x |
-| 19 | F# | 2.46 sec. |5.07x |
-| 20 | R | 3.19 sec. |6.57x |
-| 21 | Cython (numpy) | 3.65 sec. |7.51x |
-| 22 | PyPy | 3.74 sec. |7.71x |
-| 23 | Ruby (numo) | 4.49 sec. |9.23x |
-| 24 | Lua | 6.89 sec. |14.17x |
-| 25 | PHP | 11.72 sec. |24.11x |
-| 26 | Perl | 32.90 sec. |67.69x |
+| 1 | C | 0.45 sec. |1.00x |
+| 2 | Assembly | 0.49 sec. |1.09x |
+| 3 | Rust (bit operation) | 0.53 sec. |1.17x |
+| 4 | C++ | 0.60 sec. |1.33x |
+| 5 | Go | 0.71 sec. |1.57x |
+| 6 | Rust | 0.73 sec. |1.60x |
+| 7 | Haskell (MVector) | 0.75 sec. |1.65x |
+| 8 | Julia | 0.76 sec. |1.67x |
+| 9 | C# | 0.81 sec. |1.78x |
+| 10 | JavaScript (TypedArray) | 0.84 sec. |1.85x |
+| 11 | Crystal | 0.85 sec. |1.87x |
+| 12 | VB.net | 0.86 sec. |1.89x |
+| 13 | Fortran (parallel) | 0.88 sec. |1.94x |
+| 14 | Java | 0.92 sec. |2.02x |
+| 15 | Python (numpy) | 1.61 sec. |3.56x |
+| 16 | LuaJIT | 1.81 sec. |3.98x |
+| 17 | OCaml | 1.97 sec. |4.34x |
+| 18 | Scala | 2.02 sec. |4.45x |
+| 19 | F# | 2.37 sec. |5.22x |
+| 20 | R | 3.18 sec. |7.00x |
+| 21 | Cython (numpy) | 3.47 sec. |7.64x |
+| 22 | Ruby (numo) | 4.12 sec. |9.07x |
+| 23 | PyPy | 4.50 sec. |9.90x |
+| 24 | Lua | 5.98 sec. |13.17x |
+| 25 | PHP | 11.59 sec. |25.52x |
+| 26 | Perl | 31.70 sec. |69.83x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | C | 0.46 sec. |1.00x |
-| 2 | Assembly | 0.52 sec. |1.12x |
-| 3 | Rust (bit operation) | 0.53 sec. |1.14x |
-| 4 | C++ | 0.53 sec. |1.14x |
-| 5 | Go | 0.70 sec. |1.51x |
-| 6 | Julia | 0.72 sec. |1.56x |
-| 7 | Haskell (MVector) | 0.75 sec. |1.62x |
-| 8 | Rust | 0.76 sec. |1.63x |
-| 9 | VB.net | 0.83 sec. |1.78x |
-| 10 | C# | 0.84 sec. |1.83x |
-| 11 | Java | 0.84 sec. |1.83x |
-| 12 | JavaScript (TypedArray) | 0.85 sec. |1.84x |
-| 13 | Crystal | 0.85 sec. |1.84x |
-| 14 | Python (numpy) | 1.64 sec. |3.55x |
-| 15 | LuaJIT | 1.65 sec. |3.56x |
-| 16 | OCaml | 1.71 sec. |3.69x |
-| 17 | F# | 2.30 sec. |4.97x |
-| 18 | Scala | 2.50 sec. |5.39x |
-| 19 | R | 2.56 sec. |5.52x |
-| 20 | PyPy | 3.24 sec. |6.99x |
-| 21 | Cython (numpy) | 3.82 sec. |8.24x |
-| 22 | Ruby (numo) | 4.34 sec. |9.38x |
-| 23 | Lua | 6.29 sec. |13.59x |
-| 24 | Fortran (parallel) | 9.50 sec. |20.52x |
-| 25 | PHP | 10.83 sec. |23.40x |
-| 26 | Perl | 31.70 sec. |68.47x |
+| 1 | C | 0.44 sec. |1.00x |
+| 2 | Assembly | 0.48 sec. |1.09x |
+| 3 | C++ | 0.50 sec. |1.13x |
+| 4 | Rust (bit operation) | 0.51 sec. |1.16x |
+| 5 | Rust | 0.69 sec. |1.56x |
+| 6 | Go | 0.69 sec. |1.56x |
+| 7 | Julia | 0.70 sec. |1.58x |
+| 8 | Haskell (MVector) | 0.71 sec. |1.60x |
+| 9 | C# | 0.73 sec. |1.66x |
+| 10 | VB.net | 0.78 sec. |1.75x |
+| 11 | Crystal | 0.81 sec. |1.82x |
+| 12 | Java | 0.82 sec. |1.86x |
+| 13 | JavaScript (TypedArray) | 0.82 sec. |1.86x |
+| 14 | LuaJIT | 1.56 sec. |3.53x |
+| 15 | Python (numpy) | 1.59 sec. |3.59x |
+| 16 | OCaml | 1.63 sec. |3.68x |
+| 17 | F# | 2.14 sec. |4.83x |
+| 18 | Scala | 2.41 sec. |5.44x |
+| 19 | R | 2.48 sec. |5.62x |
+| 20 | Cython (numpy) | 3.60 sec. |8.14x |
+| 21 | PyPy | 3.93 sec. |8.90x |
+| 22 | Ruby (numo) | 3.98 sec. |9.00x |
+| 23 | Lua | 5.44 sec. |12.30x |
+| 24 | Fortran (parallel) | 10.52 sec. |23.80x |
+| 25 | PHP | 10.84 sec. |24.52x |
+| 26 | Perl | 30.60 sec. |69.22x |
 
 
 ## <a name='anchor10'></a>貢献者一覧

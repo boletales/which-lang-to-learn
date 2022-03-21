@@ -15,5 +15,6 @@ for i in range(2,int(math.sqrt(MAX))):
 
 nums   = np.arange(0,MAX+1)
 primes = nums[sieve[nums]]
+print("found "+ str(len(primes)) + " primes")
 print(primes[-1])
 print("end")

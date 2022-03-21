@@ -22,6 +22,7 @@ fn main() {
             pcount += 1;
         }
     }
+    println!("found {} primes",pcount);
     println!("{}",primes[pcount-1]);
     println!("end");
 }

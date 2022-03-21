@@ -9,4 +9,5 @@ sieve[0] = sieve[1] = false
 end
 
 primes = (1..MAX).select{ |i| sieve[i] }
+puts "found #{primes.size} primes"
 puts primes.last, "end"

@@ -1,6 +1,7 @@
 import cylib
 
 print("start")
-primes = cylib.main()
-print(primes[-1])
+(primes,pcount) = cylib.main()
+print("found "+ str(pcount) + " primes")
+print(primes[pcount-1])
 print("end")

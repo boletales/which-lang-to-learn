@@ -20,6 +20,7 @@ for i in 2 .. max do
     pcount <- pcount+1
     ()
 
+printfn "found %d primes" pcount
 printfn "%d" primes[pcount-1]
 
 printfn "end"

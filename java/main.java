@@ -21,6 +21,7 @@ class Primes {
                 pcount += 1;
             }
         }
+        System.out.println("found " + String.valueOf(pcount) + " primes");
         System.out.println(primes[pcount-1]);
         
         System.out.println("end");

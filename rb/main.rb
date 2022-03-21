@@ -11,4 +11,5 @@ sieve[0] = sieve[1] = 0
 end
 
 primes = Numo::Int32.new(MAX + 1).seq(0, 1)[sieve[0..MAX]]
+puts "found #{primes.size} primes"
 puts primes[-1], "end"

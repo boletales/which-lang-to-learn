@@ -19,5 +19,6 @@ for(var i = 2; i <= max; i++){
     }
 }
 
+Console.WriteLine("found {0} primes", pcount);
 Console.WriteLine(primes[pcount - 1]);
 Console.WriteLine("end");
