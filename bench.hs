@@ -4,9 +4,11 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TupleSections #-}
 {-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE LambdaCase #-}
 
 import Data.Maybe
 import Data.Either
+import Data.Functor
 import Data.Bifunctor
 import System.Process
 import System.Environment
@@ -26,6 +28,28 @@ import Data.Time (parseTime)
 
 main :: IO ()
 main = do
+  getArgs >>= \case
+    "run":sid:_ -> main_run (pack sid)
+    _           -> main_bench
+
+main_run :: Text -> IO ()
+main_run sid = do
+  settingsData <- readFile "settings.csv" <&> (pack >>> readSettings)
+  case find (settingsid >>> (==sid)) (reverse settingsData) of
+    Nothing -> TIO.putStrLn $ "no settings named \"" <> sid <> "\""
+    Just settings -> do
+      TIO.putStrLn $ "~~ Start \"" <> settingsid (settings :: Settings) <> "\" ~~"
+      build <- pack <$> readCreateProcess ((shell $ unpack (buildcmd (settings :: Settings)) ++ " 2>&1") {cwd = Just $ unpack $ directory settings}) ""
+      TIO.putStrLn build
+
+      let realcmd = "{ time " <> execcmd settings <> " 2>/dev/null; } 2>&1"
+      let cmd = "time " <> execcmd settings
+      result <- pack <$> readCreateProcess ((shell $ unpack realcmd) {cwd = Just $ unpack $ directory settings}) ""
+      TIO.putStrLn result
+      TIO.putStrLn $ "~~ End \"" <> settingsid settings <> "\" ~~"
+  
+main_bench :: IO ()
+main_bench = do
   files   <- readFile "files.csv"    >>= (pack >>> readFileSettings  >>> traverse getSource >>> fmap rights)
   results <- readFile "settings.csv" >>= (pack >>> readSettings      >>> traverse runBench  >>> fmap rights)
   TIO.readFile "langs_template.md" >>= (embed files results >>> TIO.writeFile "langs.md")
