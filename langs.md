@@ -193,9 +193,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m1.614s
-user	0m1.586s
-sys	0m1.143s
+real	0m1.634s
+user	0m1.560s
+sys	0m1.158s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -209,9 +209,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m4.495s
-user	0m3.933s
-sys	0m0.535s
+real	0m3.642s
+user	0m3.152s
+sys	0m0.420s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -276,9 +276,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m3.470s
-user	0m3.598s
-sys	0m0.986s
+real	0m3.840s
+user	0m3.945s
+sys	0m1.000s
 ```
 
 
@@ -331,9 +331,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m31.705s
-user	0m30.597s
-sys	0m1.044s
+real	0m31.566s
+user	0m30.618s
+sys	0m0.854s
 ```
 
 
@@ -385,9 +385,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m4.118s
-user	0m3.978s
-sys	0m0.126s
+real	0m4.028s
+user	0m3.914s
+sys	0m0.096s
 ```
 
 Rubyの高速化テクはいろいろあるが、とりあえず各種メソッドによるループをwhileに変換するとかなり速くなる(ブロックはオーバーヘッドが大きい)。もっとも、while文を使うと「これRubyでやる意味ある?」という感じになるし、それなら他の言語を使った方がいい(ネイティブ拡張を書くという選択肢は一応ある)。何度も言うがRubyistのサブ言語としてCrystalマジでオススメ。
@@ -442,9 +442,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m5.979s
-user	0m5.437s
-sys	0m0.525s
+real	0m5.731s
+user	0m5.318s
+sys	0m0.392s
 ```
 
 
@@ -457,9 +457,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m1.807s
-user	0m1.559s
-sys	0m0.243s
+real	0m1.697s
+user	0m1.497s
+sys	0m0.192s
 ```
 
 
@@ -521,9 +521,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.760s
-user	0m0.699s
-sys	0m0.060s
+real	0m0.738s
+user	0m0.686s
+sys	0m0.050s
 ```
 
 
@@ -609,9 +609,9 @@ found 5761454 primes
 99999989
 end
 
-real	0m0.454s
-user	0m0.442s
-sys	0m0.010s
+real	0m0.443s
+user	0m0.438s
+sys	0m0.003s
 ```
 
 
@@ -675,9 +675,9 @@ found 5761455 primes
 99999989
 start
 
-real	0m0.603s
-user	0m0.499s
-sys	0m0.103s
+real	0m0.582s
+user	0m0.504s
+sys	0m0.076s
 ```
 
   
@@ -746,9 +746,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.728s
-user	0m0.690s
-sys	0m0.036s
+real	0m0.708s
+user	0m0.675s
+sys	0m0.030s
 ```
 
 
@@ -794,9 +794,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.532s
-user	0m0.514s
-sys	0m0.017s
+real	0m0.518s
+user	0m0.506s
+sys	0m0.010s
 ```
 
 
@@ -837,9 +837,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.850s
-user	0m0.806s
-sys	0m0.050s
+real	0m0.834s
+user	0m0.785s
+sys	0m0.053s
 ```
 
 
@@ -1119,18 +1119,22 @@ end
 count_1 5761454
 
 
-real	0m0.493s
-user	0m0.482s
-sys	0m0.010s
+real	0m0.478s
+user	0m0.469s
+sys	0m0.007s
 ```
 
 
 ### <a name='anchor3-5'></a>go
 - 書きやすい高速コンパイル言語
 - いいところ
-  - 高速
-  - マルチスレッドに強いらしい
-  - サーバーとの通信が多い設計に向いているらしい
+  - コンパイルが高速
+  - 複雑な並列処理・非同期処理を記述しやすい。(ブロックチェーンの通信ノードの実装にも使われている。)
+  - (コンパイル言語の割には)文法が比較的単純で習得しやすい。
+- わるいところ
+  - 高度な機能が少ない。(例:継承、try catchのような例外処理、Genericsは最近やっと導入)
+  - ガベージコレクションに依存している。(これがデメリットかは諸説あり)
+  - wasmに変換することはできるが、rustなどに比べサイズが大きくなる。
 
 code:
 ```go
@@ -1181,9 +1185,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.714s
-user	0m0.690s
-sys	0m0.026s
+real	0m0.717s
+user	0m0.697s
+sys	0m0.020s
 ```
 
 
@@ -1241,9 +1245,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.918s
-user	0m0.822s
-sys	0m0.143s
+real	0m0.975s
+user	0m0.847s
+sys	0m0.176s
 ```
 
 
@@ -1295,9 +1299,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.808s
-user	0m0.733s
-sys	0m0.043s
+real	0m0.823s
+user	0m0.729s
+sys	0m0.039s
 ```
 
 
@@ -1360,9 +1364,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.860s
-user	0m0.775s
-sys	0m0.040s
+real	0m0.845s
+user	0m0.763s
+sys	0m0.030s
 ```
 
 
@@ -1422,9 +1426,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m1.972s
-user	0m1.627s
-sys	0m0.339s
+real	0m1.883s
+user	0m1.626s
+sys	0m0.249s
 ```
 
 
@@ -1477,9 +1481,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m2.369s
-user	0m2.137s
-sys	0m0.170s
+real	0m2.318s
+user	0m2.149s
+sys	0m0.093s
 ```
 
 
@@ -1536,9 +1540,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m2.021s
-user	0m2.406s
-sys	0m0.212s
+real	0m2.013s
+user	0m2.431s
+sys	0m0.155s
 ```
 
 
@@ -1636,9 +1640,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.748s
-user	0m0.708s
-sys	0m0.037s
+real	0m0.725s
+user	0m0.692s
+sys	0m0.030s
 ```
 
 
@@ -1751,8 +1755,8 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.841s
-user	0m0.824s
+real	0m0.850s
+user	0m0.814s
 sys	0m0.020s
 ```
 
@@ -1812,9 +1816,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m11.587s
-user	0m10.838s
-sys	0m0.722s
+real	0m11.160s
+user	0m10.502s
+sys	0m0.611s
 ```
 
 
@@ -1922,9 +1926,9 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m3.180s
-user	0m2.484s
-sys	0m0.690s
+real	0m2.994s
+user	0m2.362s
+sys	0m0.603s
 ```
 
 
@@ -1998,9 +2002,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.882s
-user	0m10.518s
-sys	0m0.109s
+real	0m0.753s
+user	0m9.080s
+sys	0m0.076s
 ```
 
 
@@ -2016,62 +2020,62 @@ sys	0m0.109s
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | C | 0.45 sec. |1.00x |
-| 2 | Assembly | 0.49 sec. |1.09x |
-| 3 | Rust (bit operation) | 0.53 sec. |1.17x |
-| 4 | C++ | 0.60 sec. |1.33x |
-| 5 | Go | 0.71 sec. |1.57x |
-| 6 | Rust | 0.73 sec. |1.60x |
-| 7 | Haskell (MVector) | 0.75 sec. |1.65x |
-| 8 | Julia | 0.76 sec. |1.67x |
-| 9 | C# | 0.81 sec. |1.78x |
-| 10 | JavaScript (TypedArray) | 0.84 sec. |1.85x |
-| 11 | Crystal | 0.85 sec. |1.87x |
-| 12 | VB.net | 0.86 sec. |1.89x |
-| 13 | Fortran (parallel) | 0.88 sec. |1.94x |
-| 14 | Java | 0.92 sec. |2.02x |
-| 15 | Python (numpy) | 1.61 sec. |3.56x |
-| 16 | LuaJIT | 1.81 sec. |3.98x |
-| 17 | OCaml | 1.97 sec. |4.34x |
-| 18 | Scala | 2.02 sec. |4.45x |
-| 19 | F# | 2.37 sec. |5.22x |
-| 20 | R | 3.18 sec. |7.00x |
-| 21 | Cython (numpy) | 3.47 sec. |7.64x |
-| 22 | Ruby (numo) | 4.12 sec. |9.07x |
-| 23 | PyPy | 4.50 sec. |9.90x |
-| 24 | Lua | 5.98 sec. |13.17x |
-| 25 | PHP | 11.59 sec. |25.52x |
-| 26 | Perl | 31.70 sec. |69.83x |
+| 1 | C | 0.44 sec. |1.00x |
+| 2 | Assembly | 0.48 sec. |1.08x |
+| 3 | Rust (bit operation) | 0.52 sec. |1.17x |
+| 4 | C++ | 0.58 sec. |1.31x |
+| 5 | Rust | 0.71 sec. |1.60x |
+| 6 | Go | 0.72 sec. |1.62x |
+| 7 | Haskell (MVector) | 0.72 sec. |1.64x |
+| 8 | Julia | 0.74 sec. |1.67x |
+| 9 | Fortran (parallel) | 0.75 sec. |1.70x |
+| 10 | C# | 0.82 sec. |1.86x |
+| 11 | Crystal | 0.83 sec. |1.88x |
+| 12 | VB.net | 0.84 sec. |1.91x |
+| 13 | JavaScript (TypedArray) | 0.85 sec. |1.92x |
+| 14 | Java | 0.98 sec. |2.20x |
+| 15 | Python (numpy) | 1.63 sec. |3.69x |
+| 16 | LuaJIT | 1.70 sec. |3.83x |
+| 17 | OCaml | 1.88 sec. |4.25x |
+| 18 | Scala | 2.01 sec. |4.54x |
+| 19 | F# | 2.32 sec. |5.23x |
+| 20 | R | 2.99 sec. |6.76x |
+| 21 | PyPy | 3.64 sec. |8.22x |
+| 22 | Cython (numpy) | 3.84 sec. |8.67x |
+| 23 | Ruby (numo) | 4.03 sec. |9.09x |
+| 24 | Lua | 5.73 sec. |12.94x |
+| 25 | PHP | 11.16 sec. |25.19x |
+| 26 | Perl | 31.57 sec. |71.26x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
 | 1 | C | 0.44 sec. |1.00x |
-| 2 | Assembly | 0.48 sec. |1.09x |
-| 3 | C++ | 0.50 sec. |1.13x |
+| 2 | Assembly | 0.47 sec. |1.07x |
+| 3 | C++ | 0.50 sec. |1.15x |
 | 4 | Rust (bit operation) | 0.51 sec. |1.16x |
-| 5 | Rust | 0.69 sec. |1.56x |
-| 6 | Go | 0.69 sec. |1.56x |
-| 7 | Julia | 0.70 sec. |1.58x |
-| 8 | Haskell (MVector) | 0.71 sec. |1.60x |
+| 5 | Rust | 0.68 sec. |1.54x |
+| 6 | Julia | 0.69 sec. |1.57x |
+| 7 | Haskell (MVector) | 0.69 sec. |1.58x |
+| 8 | Go | 0.70 sec. |1.59x |
 | 9 | C# | 0.73 sec. |1.66x |
-| 10 | VB.net | 0.78 sec. |1.75x |
-| 11 | Crystal | 0.81 sec. |1.82x |
-| 12 | Java | 0.82 sec. |1.86x |
-| 13 | JavaScript (TypedArray) | 0.82 sec. |1.86x |
-| 14 | LuaJIT | 1.56 sec. |3.53x |
-| 15 | Python (numpy) | 1.59 sec. |3.59x |
-| 16 | OCaml | 1.63 sec. |3.68x |
-| 17 | F# | 2.14 sec. |4.83x |
-| 18 | Scala | 2.41 sec. |5.44x |
-| 19 | R | 2.48 sec. |5.62x |
-| 20 | Cython (numpy) | 3.60 sec. |8.14x |
-| 21 | PyPy | 3.93 sec. |8.90x |
-| 22 | Ruby (numo) | 3.98 sec. |9.00x |
-| 23 | Lua | 5.44 sec. |12.30x |
-| 24 | Fortran (parallel) | 10.52 sec. |23.80x |
-| 25 | PHP | 10.84 sec. |24.52x |
-| 26 | Perl | 30.60 sec. |69.22x |
+| 10 | VB.net | 0.76 sec. |1.74x |
+| 11 | Crystal | 0.78 sec. |1.79x |
+| 12 | JavaScript (TypedArray) | 0.81 sec. |1.86x |
+| 13 | Java | 0.85 sec. |1.93x |
+| 14 | LuaJIT | 1.50 sec. |3.42x |
+| 15 | Python (numpy) | 1.56 sec. |3.56x |
+| 16 | OCaml | 1.63 sec. |3.71x |
+| 17 | F# | 2.15 sec. |4.91x |
+| 18 | R | 2.36 sec. |5.39x |
+| 19 | Scala | 2.43 sec. |5.55x |
+| 20 | PyPy | 3.15 sec. |7.20x |
+| 21 | Ruby (numo) | 3.91 sec. |8.94x |
+| 22 | Cython (numpy) | 3.94 sec. |9.01x |
+| 23 | Lua | 5.32 sec. |12.14x |
+| 24 | Fortran (parallel) | 9.08 sec. |20.73x |
+| 25 | PHP | 10.50 sec. |23.98x |
+| 26 | Perl | 30.62 sec. |69.90x |
 
 
 ## <a name='anchor10'></a>貢献者一覧
@@ -2100,4 +2104,6 @@ CPU時間：
 - femshima(Nanigashi)
   - サンプル: C
   - 一言: いつか組み込みのasmを書けるようになりたい(願望)
+- そらすえ
+  - 説明: Go
   
