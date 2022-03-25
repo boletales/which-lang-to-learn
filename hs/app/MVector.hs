@@ -1,14 +1,11 @@
 module MVector where
 
-import Lib
 import qualified Data.Vector.Unboxed as V
 import qualified Data.Vector.Unboxed.Mutable as MV
-import Data.Foldable
 import Control.Monad
 import Control.Monad.ST
 import Data.STRef
 import Control.Loop
-import GHC.Float
 
 num :: Int
 num = 100000000
@@ -28,7 +25,7 @@ generatePrimes max =
           MV.write msieve 0 False
           MV.write msieve 1 False
           
-          numLoop 2 (double2Int $ sqrt $ fromIntegral max) $ \i -> do
+          numLoop 2 (floor $ sqrt $ fromIntegral max) $ \i -> do
             isprime <- MV.unsafeRead msieve i
             when isprime (numLoop i (max `div` i) (\j -> MV.unsafeWrite msieve (i*j) False))
           
@@ -49,5 +46,4 @@ generatePrimes max =
             ) 0 [2..max]
           V.unsafeFreeze $ MV.unsafeSlice 0 pcount mprimes
         )
-  --in V.filter (V.unsafeIndex sieve) (V.generate (max+1) id)
   in primes

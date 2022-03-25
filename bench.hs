@@ -5,6 +5,8 @@
 {-# LANGUAGE TupleSections #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE LambdaCase #-}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use camelCase" #-}
 
 import Data.Maybe
 import Data.Either
@@ -16,7 +18,7 @@ import System.Directory
 import Control.Exception
 import Control.Monad
 import Data.Char
-import Data.Text as T (Text, pack, unpack, replace, splitOn, strip, intercalate, breakOn, tail, breakOnEnd, unsnoc, breakOnAll, drop)
+import Data.Text as T (Text, pack, unpack, replace, splitOn, strip, intercalate, breakOn, tail, breakOnEnd, unsnoc, breakOnAll, drop, uncons)
 import qualified Data.Text.IO as TIO
 import Text.Read
 import Text.Printf
@@ -28,9 +30,9 @@ import Data.Time (parseTime)
 
 main :: IO ()
 main = do
-  getArgs >>= \case
-    "run":sid:_ -> main_run (pack sid)
-    _           -> main_bench
+  getArgs >>= (fmap pack >>> \case
+    "run":sid:_ -> main_run sid
+    args        -> main_bench args)
 
 main_run :: Text -> IO ()
 main_run sid = do
@@ -47,10 +49,11 @@ main_run sid = do
       TIO.putStrLn result
       TIO.putStrLn $ "~~ End \"" <> settingsid settings <> "\" ~~"
   
-main_bench :: IO ()
-main_bench = do
-  files   <- readFile "files.csv"    >>= (pack >>> readFileSettings  >>> traverse getSource >>> fmap rights)
-  results <- readFile "settings.csv" >>= (pack >>> readSettings      >>> traverse runBench  >>> fmap rights)
+main_bench :: [Text] -> IO ()
+main_bench args = do
+  let fullbench = elem "--full" args || elem "-f" args
+  files   <- readFile "files.csv"    >>= (pack >>> readFileSettings >>> traverse getSource >>> fmap rights)
+  results <- readFile "settings.csv" >>= (pack >>> readSettings >>> L.filter (\s -> not (optional s) || fullbench) >>> traverse runBench  >>> fmap rights)
   TIO.readFile "langs_template.md" >>= (embed files results >>> TIO.writeFile "langs.md")
 
 
@@ -60,7 +63,8 @@ data Settings = Settings {
     langname   :: Text,
     sourcepath :: Text,
     buildcmd   :: Text,
-    execcmd    :: Text
+    execcmd    :: Text,
+    optional   :: Bool
   } deriving Show
 
 data BenchResult = BenchResult {
@@ -87,8 +91,11 @@ readSettings str = catMaybes $ lineToSettings <$> Prelude.tail (splitOn "\n" str
   where
     lineToSettings line =
       case strip <$> splitOn "," line of
-        sid:dir:nam:src:bld:exe:_ -> Just $ Settings sid dir nam src bld exe
-        _                     -> Nothing
+        sid:dir:nam:src:bld:exe:_ ->
+            case T.uncons sid of
+                Just ('!', sid') -> Just $ Settings sid' dir nam src bld exe True
+                _                -> Just $ Settings sid  dir nam src bld exe False
+        _                         -> Nothing
 
 readFileSettings :: Text -> [SourceFile]
 readFileSettings str = catMaybes $ lineToSettings <$> Prelude.tail (splitOn "\n" str)

@@ -51,6 +51,6 @@ int main(){
         if ((v & 0b01000000) == 0) primes[++pcount] = ii + 6;
         if ((v & 0b10000000) == 0) primes[++pcount] = ii + 7;
     }
-    printf("found %d primes\n", pcount);    // 5761454
+    printf("found %d primes\n", pcount+1);    // 5761455
     printf("%d\nend\n", primes[pcount]); // 99999989
 }

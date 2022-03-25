@@ -5,9 +5,11 @@ rs    , rs   , Rust                    , main.rs       , rustc -O main.rs       
 rs-b  , rs   , Rust (bit operation)    , bit_vec.rs    , rustc -O bit_vec.rs                   , ./bit_vec
 hs    , hs   , Haskell (MVector)       , app/MVector.hs, stack install --local-bin-path ./     , ./hs-exe
 py    , py   , Python (numpy)          , main_nd.py    , :                                     , python main_nd.py
+!py-n , py   , Python                  , main.py       , :                                     , python main.py
 pypy  , py   , PyPy                    , main.py       , :                                     , pypy main.py
 cy    , py   , Cython (numpy)          , cylib.pyx     , python setup.py build_ext --inplace   , python cymain.py
 rb    , rb   , Ruby (numo)             , main.rb       , bundle                                , bundle exec ruby main.rb
+!rb-n , rb   , Ruby                    , main2.rb      , bundle                                , bundle exec ruby main2.rb
 jl    , jl   , Julia                   , main.jl       , julia main.jl                         , julia main.jl
 js    , js   , JavaScript (TypedArray) , main.js       , :                                     , node main.js
 f95   , f95  , Fortran (parallel)      , main.f95      , gfortran -fopenmp -Ofast main.f95     , ./a.out
@@ -20,8 +22,8 @@ java  , java , Java                    , main.java     , javac main.java        
 cr    , cr   , Crystal                 , main.cr       , crystal build --release main.cr       , ./main
 ocaml , ocaml, OCaml                   , main.ml       , ocamlopt main.ml -O3                  , ./a.out
 scala , scala, Scala                   , main.scala    , scalac main.scala                     , scala prime -J-Xmx1g
-pl    , pl   , Perl                    , main.pl       , :                                     , perl main.pl
-php   , php  , PHP                     , main.php      , :                                     , php main.php
+!pl   , pl   , Perl                    , main.pl       , :                                     , perl main.pl
+!php  , php  , PHP                     , main.php      , :                                     , php main.php
 lua   , lua  , Lua                     , main.lua      , :                                     , lua main.lua
 luajit, lua  , LuaJIT                  , main.lua      , :                                     , luajit main.lua
 go    , go   , Go                      , main.go       , go build main.go                      , ./main
