@@ -14,15 +14,13 @@ fn main() {
         }
     }
 
-    let mut primes = vec![0; MAX+1];
-    let mut pcount = 0;
+    let mut primes = Vec::new();
     for i in 2..=MAX {
         if sieve[i] {
-            primes[pcount] = i;
-            pcount += 1;
+            primes.push(i);
         }
     }
-    println!("found {} primes",pcount);
-    println!("{}",primes[pcount-1]);
+    println!("found {} primes",primes.len());
+    println!("{}",primes[primes.len()-1]);
     println!("end");
 }
