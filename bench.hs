@@ -43,7 +43,7 @@ main_run sid = do
       TIO.putStrLn $ "~~ Start \"" <> settingsid (settings :: Settings) <> "\" ~~"
       build <- pack <$> readCreateProcess ((shell $ unpack (buildcmd (settings :: Settings)) ++ " 1>&2") {cwd = Just $ unpack $ directory settings}) ""
 
-      let realcmd = "time " <> execcmd settings <> " 1>&2"
+      let realcmd = "/bin/bash -c \"" <> "time " <> execcmd settings <> " 1>&2" <> "\""
       let cmd = "time " <> execcmd settings
       result <- pack <$> readCreateProcess ((shell $ unpack realcmd) {cwd = Just $ unpack $ directory settings}) ""
       TIO.putStrLn result
@@ -52,10 +52,12 @@ main_run sid = do
 main_bench :: [Text] -> IO ()
 main_bench args = do
   let fullbench = elem "--full" args || elem "-f" args
+  let nomd = elem "--no-md" args || elem "-n" args
   files   <- readFile "files.csv"    >>= (pack >>> readFileSettings >>> traverse getSource >>> fmap rights)
   results <- readFile "settings.csv" >>= (pack >>> readSettings >>> L.filter (\s -> not (optional s) || fullbench) >>> traverse runBench  >>> fmap rights)
-  TIO.readFile "langs_template.md" >>= (embed files results >>> TIO.writeFile "langs.md")
-
+  unless nomd $ TIO.readFile "langs_template.md" >>= (embed files results >>> TIO.writeFile "langs.md")
+  TIO.putStrLn "~~~~~~~~"
+  TIO.putStrLn $ rankingStr results
 
 data Settings = Settings {
     settingsid :: Text,
@@ -120,7 +122,7 @@ runBench settings = do
       build <- pack <$> readCreateProcess ((shell $ unpack (buildcmd (settings :: Settings)) ++ " 2>&1") {cwd = Just $ unpack $ directory settings}) ""
       TIO.putStrLn build
 
-      let realcmd = "{ time " <> execcmd settings <> " 2>/dev/null; } 2>&1"
+      let realcmd = "/bin/bash -c \"" <> "{ time " <> execcmd settings <> " 2>/dev/null; } 2>&1" <> "\""
       let cmd = "time " <> execcmd settings
       result <- pack <$> readCreateProcess ((shell $ unpack realcmd) {cwd = Just $ unpack $ directory settings}) ""
       TIO.putStrLn result
@@ -216,10 +218,13 @@ embedResult files results =
           ) t
     )) results >>>
     replace "{ranking}" (
-          let sortedByReal = (L.map (\res -> ((settings >>> langname) res, (timeresult >>> \(r,u,s) -> r) res)) >>> sortOn snd) results
-              sortedByUser = (L.map (\res -> ((settings >>> langname) res, (timeresult >>> \(r,u,s) -> u) res)) >>> sortOn snd) results
-              tocol fastest rank (lang, time) = "| " <> tshow (rank+1) <> " | " <> lang <> " | " <> numToText2 time <> " sec. |" <> numToText2 (time/fastest) <> "x |\n"
-              header = "| rank | lang | time | ratio | \n| - | - | - | - |\n"
-          in "実行時間：\n" <> (header <> T.intercalate "" (mapWithIndex (tocol $ snd $ head sortedByReal) sortedByReal)) <> "\n" <>
-             "CPU時間：\n" <> (header <> T.intercalate "" (mapWithIndex (tocol $ snd $ head sortedByUser) sortedByUser))
+            rankingStr results
         )
+
+rankingStr results =
+  let sortedByReal = (L.map (\res -> ((settings >>> langname) res, (timeresult >>> \(r,u,s) -> r) res)) >>> sortOn snd) results
+      sortedByUser = (L.map (\res -> ((settings >>> langname) res, (timeresult >>> \(r,u,s) -> u) res)) >>> sortOn snd) results
+      tocol fastest rank (lang, time) = "| " <> tshow (rank+1) <> " | " <> lang <> " | " <> numToText2 time <> " sec. |" <> numToText2 (time/fastest) <> "x |\n"
+      header = "| rank | lang | time | ratio | \n| - | - | - | - |\n"
+  in "実行時間：\n" <> (header <> T.intercalate "" (mapWithIndex (tocol $ snd $ head sortedByReal) sortedByReal)) <> "\n" <>
+     "CPU時間：\n" <> (header <> T.intercalate "" (mapWithIndex (tocol $ snd $ head sortedByUser) sortedByUser))

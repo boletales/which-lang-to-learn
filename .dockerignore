@@ -1,0 +1,12 @@
+*.out
+*.class
+*.cmi
+*.cmx
+*.o
+*/bin/*
+*/obj/*
+*/target/*
+*/main
+*/bit
+*/bit_vec
+.vscode
