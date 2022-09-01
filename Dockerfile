@@ -15,18 +15,11 @@ RUN apt-get update && apt-get install -y curl\
       lldb\
       lld\
       gfortran\
-      python3\
-      php\
-      ruby\
-      perl\
-      nodejs\
-      r-base\
       dotnet-sdk-6.0\
       default-jre\
       default-jdk\
       ocaml\
       scala\
-      lua5.3\
       libgmp-dev\
     && curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ashwanthkumar/install-golang/master/install.sh | sh -s \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
@@ -36,14 +29,16 @@ WORKDIR /root/src
 RUN cp /root/src/.bashrc /root/.bashrc\
     && cp /root/.bashrc /root/.bashprofile\
     && chsh -s /bin/bash
-RUN git clean -xdf\
+ENV LANG C.UTF-8
+RUN git clean -Xdf\
     && . /root/.ghcup/env\
     && . /root/.cargo/env\
     && ghc bench.hs\
-    && ./bench --no-md --no-build\
+    && ./bench --no-md\
     && rm .gitignore\
     && mv .gitignore_bin .gitignore\
-    && git clean -xdf
+    && git clean -Xdf\
+    && rm -rf .git
 
 FROM ubuntu AS bench
 ENV DEBIAN_FRONTEND=noninteractive
@@ -63,11 +58,10 @@ RUN apt-get update && apt-get install -y curl\
       r-base\
       default-jre\
       lua5.3\
-      libgmp-dev\
+      scala\
+      libgmp-dev
 COPY --from=builder /root/src /root/src
 WORKDIR /root/src
-RUN cp /root/src/.bashrc /root/.bashrc\
-    && cp /root/.bashrc /root/.bashprofile\
-    && chsh -s /bin/bash
-
+RUN chsh -s /bin/bash
+ENV LANG C.UTF-8
 CMD ["./bench", "--no-md", "--no-build"]

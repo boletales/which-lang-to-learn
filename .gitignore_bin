@@ -4,4 +4,6 @@
 */bin/*
 */obj/*
 */target/*
+*/.stack-work/
+*/*~
 .vscode
