@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y curl\
       ocaml\
       scala\
       libgmp-dev\
+    && apt-get clean\
     && curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ashwanthkumar/install-golang/master/install.sh | sh -s \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
@@ -59,7 +60,7 @@ RUN apt-get update && apt-get install -y curl\
       default-jre\
       lua5.3\
       scala\
-      libgmp-dev
+    && apt-get clean
 COPY --from=builder /root/src /root/src
 WORKDIR /root/src
 RUN chsh -s /bin/bash
