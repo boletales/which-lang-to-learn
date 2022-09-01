@@ -53,8 +53,9 @@ main_bench :: [Text] -> IO ()
 main_bench args = do
   let fullbench = elem "--full" args || elem "-f" args
   let nomd = elem "--no-md" args || elem "-n" args
+  let nobuild = elem "--no-build" args || elem "-n" args
   files   <- readFile "files.csv"    >>= (pack >>> readFileSettings >>> traverse getSource >>> fmap rights)
-  results <- readFile "settings.csv" >>= (pack >>> readSettings >>> L.filter (\s -> not (optional s) || fullbench) >>> traverse runBench  >>> fmap rights)
+  results <- readFile "settings.csv" >>= (pack >>> readSettings >>> L.filter (\s -> not (optional s) || fullbench) >>> traverse (runBench nobuild)  >>> fmap rights)
   unless nomd $ TIO.readFile "langs_template.md" >>= (embed files results >>> TIO.writeFile "langs.md")
   TIO.putStrLn "~~~~~~~~"
   TIO.putStrLn $ rankingStr results
@@ -113,14 +114,20 @@ getSource sf =
       (pack >>> (sf,) >>> Right) <$> readCreateProcess (proc "cat" [unpack $ filepath sf]) ""
     )
 
-runBench :: Settings -> IO (Either Text BenchResult)
-runBench settings = do
+runBench :: Bool -> Settings -> IO (Either Text BenchResult)
+runBench nobuild settings = do
   handle (\(e :: SomeException) -> (tshow >>> Left >>> pure) e) (do
       source <- pack <$> readCreateProcess ((proc "cat" [unpack $ sourcepath settings]) {cwd = Just $ unpack $ directory settings}) ""
 
       TIO.putStrLn $ "~~ Start \"" <> settingsid settings <> "\" ~~"
-      build <- pack <$> readCreateProcess ((shell $ unpack (buildcmd (settings :: Settings)) ++ " 2>&1") {cwd = Just $ unpack $ directory settings}) ""
-      TIO.putStrLn build
+      build <- 
+        if nobuild
+          then pure ""
+          else (do
+            build <- pack <$> readCreateProcess ((shell $ unpack (buildcmd (settings :: Settings)) ++ " 2>&1") {cwd = Just $ unpack $ directory settings}) ""
+            TIO.putStrLn build
+            pure build
+          )
 
       let realcmd = "/bin/bash -c \"" <> "{ time " <> execcmd settings <> " 2>/dev/null; } 2>&1" <> "\""
       let cmd = "time " <> execcmd settings
