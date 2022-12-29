@@ -26,7 +26,6 @@ import Data.Map
 import Data.List as L
 import Data.Monoid
 import Control.Category
-import Data.Time (parseTime)
 
 main :: IO ()
 main = do

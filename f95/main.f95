@@ -2,6 +2,7 @@ program eratosthenes
     implicit none
     
     integer,parameter :: pmax = 100000000
+    integer :: l
     integer :: i
     integer :: j
     integer :: pcount = 1
@@ -13,14 +14,16 @@ program eratosthenes
     primes=0
    
     print '(a)', "start"
-    do i=2 , int(sqrt(real(pmax)))
-        if(sieve(i))then
-            !$omp parallel do
-            do j = i , pmax/i
-                sieve(j*i) = .false.
-            end do
-            !$omp end parallel do
-        end if
+    do l=1 , int(log(sqrt(real(pmax)))/log(2.0)+1)
+        !$omp parallel do
+        do i=lshift(1, l) , min(lshift(2, l), int(sqrt(real(pmax))))
+            if(sieve(i))then
+                do j = i , pmax/i
+                    sieve(j*i) = .false.
+                end do
+            end if
+        end do
+        !$omp end parallel do
     end do
 
     do i=2 , pmax

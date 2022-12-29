@@ -4,7 +4,9 @@ cpp   , cpp  , C++                     , main.cpp      , clang++ main.cpp -O3   
 rs    , rs   , Rust                    , main.rs       , rustc -O main.rs                      , ./main
 rs-b  , rs   , Rust (bit operation)    , bit_vec.rs    , rustc -O bit_vec.rs                   , ./bit_vec
 hs    , hs   , Haskell (MVector)       , app/MVector.hs, stack install --local-bin-path ./     , ./hs-exe
+hs-a  , hs   , Haskell (Async)         , app/Async.hs  , stack install --local-bin-path ./     , ./hs-a-exe
 py    , py   , Python (numpy)          , main_nd.py    , :                                     , python main_nd.py
+numba , py   , Python (numba)          , main.py       , :                                     , python main_numba.py
 !py-n , py   , Python                  , main.py       , :                                     , python main.py
 pypy  , py   , PyPy                    , main.py       , :                                     , pypy main.py
 cy    , py   , Cython (numpy)          , cylib.pyx     , python setup.py build_ext --inplace   , python cymain.py

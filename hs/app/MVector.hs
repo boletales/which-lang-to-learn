@@ -34,8 +34,8 @@ generatePrimes max =
 
       primes = runST (do
           mprimes <- MV.unsafeNew (max+1)
-            
-          pcount <- foldM (\pcount i -> do
+          
+          pcount <- numLoopState 2 max 0 (\pcount i -> do
             let isprime = V.unsafeIndex sieve i
             if isprime
             then (do
@@ -43,7 +43,7 @@ generatePrimes max =
               pure (pcount+1)
               )
             else pure pcount
-            ) 0 [2..max]
+            )
           V.unsafeFreeze $ MV.unsafeSlice 0 pcount mprimes
         )
   in primes

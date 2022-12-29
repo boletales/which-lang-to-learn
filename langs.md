@@ -193,9 +193,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m1.632s
-user	0m1.556s
-sys	0m1.156s
+real	0m1.622s
+user	0m1.493s
+sys	0m1.250s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -209,9 +209,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m4.184s
-user	0m3.774s
-sys	0m0.382s
+real	0m4.192s
+user	0m3.740s
+sys	0m0.437s
 ```
 
 Cythonで重い部分をCに変換しても速くなる
@@ -276,9 +276,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m3.445s
-user	0m3.536s
-sys	0m1.024s
+real	0m3.428s
+user	0m3.494s
+sys	0m1.059s
 ```
 
 
@@ -331,9 +331,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m31.529s
-user	0m30.546s
-sys	0m0.914s
+real	0m35.968s
+user	0m34.944s
+sys	0m1.020s
 ```
 
 
@@ -385,9 +385,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m3.942s
-user	0m3.818s
-sys	0m0.113s
+real	0m4.124s
+user	0m3.977s
+sys	0m0.147s
 ```
 
 Rubyの高速化テクはいろいろあるが、とりあえず各種メソッドによるループをwhileに変換するとかなり速くなる(ブロックはオーバーヘッドが大きい)。もっとも、while文を使うと「これRubyでやる意味ある?」という感じになるし、それなら他の言語を使った方がいい(ネイティブ拡張を書くという選択肢は一応ある)。何度も言うがRubyistのサブ言語としてCrystalマジでオススメ。
@@ -442,9 +442,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m5.713s
-user	0m5.311s
-sys	0m0.385s
+real	0m5.638s
+user	0m5.168s
+sys	0m0.470s
 ```
 
 
@@ -457,9 +457,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m1.697s
-user	0m1.509s
-sys	0m0.183s
+real	0m1.758s
+user	0m1.541s
+sys	0m0.217s
 ```
 
 
@@ -521,9 +521,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.756s
-user	0m0.678s
-sys	0m0.077s
+real	0m0.781s
+user	0m0.709s
+sys	0m0.073s
 ```
 
 
@@ -609,9 +609,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.444s
-user	0m0.439s
-sys	0m0.003s
+real	0m0.457s
+user	0m0.444s
+sys	0m0.013s
 ```
 
 
@@ -675,9 +675,9 @@ found 5761455 primes
 99999989
 start
 
-real	0m0.581s
-user	0m0.503s
-sys	0m0.077s
+real	0m0.606s
+user	0m0.513s
+sys	0m0.093s
 ```
 
   
@@ -723,16 +723,14 @@ fn main() {
         }
     }
 
-    let mut primes = vec![0; MAX+1];
-    let mut pcount = 0;
+    let mut primes = Vec::new();
     for i in 2..=MAX {
         if sieve[i] {
-            primes[pcount] = i;
-            pcount += 1;
+            primes.push(i);
         }
     }
-    println!("found {} primes",pcount);
-    println!("{}",primes[pcount-1]);
+    println!("found {} primes",primes.len());
+    println!("{}",primes[primes.len()-1]);
     println!("end");
 }
 ```
@@ -746,9 +744,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.715s
-user	0m0.685s
-sys	0m0.027s
+real	0m0.749s
+user	0m0.719s
+sys	0m0.030s
 ```
 
 
@@ -794,9 +792,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.521s
+real	0m0.527s
 user	0m0.516s
-sys	0m0.003s
+sys	0m0.010s
 ```
 
 
@@ -837,9 +835,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.841s
-user	0m0.807s
-sys	0m0.040s
+real	0m0.832s
+user	0m0.778s
+sys	0m0.053s
 ```
 
 
@@ -1119,9 +1117,9 @@ end
 count_1 5761454
 
 
-real	0m0.488s
-user	0m0.483s
-sys	0m0.003s
+real	0m0.497s
+user	0m0.487s
+sys	0m0.010s
 ```
 
 
@@ -1185,9 +1183,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.713s
-user	0m0.699s
-sys	0m0.017s
+real	0m0.720s
+user	0m0.706s
+sys	0m0.020s
 ```
 
 
@@ -1245,9 +1243,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.938s
-user	0m0.867s
-sys	0m0.106s
+real	0m0.919s
+user	0m0.839s
+sys	0m0.138s
 ```
 
 
@@ -1299,9 +1297,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.787s
-user	0m0.735s
-sys	0m0.023s
+real	0m0.824s
+user	0m0.746s
+sys	0m0.040s
 ```
 
 
@@ -1364,9 +1362,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.839s
-user	0m0.772s
-sys	0m0.034s
+real	0m0.869s
+user	0m0.785s
+sys	0m0.047s
 ```
 
 
@@ -1426,9 +1424,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m1.845s
-user	0m1.547s
-sys	0m0.293s
+real	0m1.810s
+user	0m1.492s
+sys	0m0.317s
 ```
 
 
@@ -1481,9 +1479,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m2.310s
-user	0m2.151s
-sys	0m0.100s
+real	0m2.302s
+user	0m2.114s
+sys	0m0.137s
 ```
 
 
@@ -1540,9 +1538,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m2.002s
-user	0m2.453s
-sys	0m0.187s
+real	0m2.029s
+user	0m2.419s
+sys	0m0.289s
 ```
 
 
@@ -1612,8 +1610,8 @@ generatePrimes max =
 
       primes = runST (do
           mprimes <- MV.unsafeNew (max+1)
-            
-          pcount <- foldM (\pcount i -> do
+          
+          pcount <- numLoopState 2 max 0 (\pcount i -> do
             let isprime = V.unsafeIndex sieve i
             if isprime
             then (do
@@ -1621,7 +1619,7 @@ generatePrimes max =
               pure (pcount+1)
               )
             else pure pcount
-            ) 0 [2..max]
+            )
           V.unsafeFreeze $ MV.unsafeSlice 0 pcount mprimes
         )
   in primes
@@ -1636,9 +1634,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.747s
-user	0m0.708s
-sys	0m0.037s
+real	0m0.759s
+user	0m0.714s
+sys	0m0.040s
 ```
 
 
@@ -1751,8 +1749,8 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.836s
-user	0m0.801s
+real	0m0.854s
+user	0m0.822s
 sys	0m0.037s
 ```
 
@@ -1812,9 +1810,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m11.104s
-user	0m10.481s
-sys	0m0.598s
+real	0m11.115s
+user	0m10.429s
+sys	0m0.660s
 ```
 
 
@@ -1922,9 +1920,9 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m2.977s
-user	0m2.477s
-sys	0m0.494s
+real	0m3.081s
+user	0m2.533s
+sys	0m0.550s
 ```
 
 
@@ -1954,6 +1952,7 @@ program eratosthenes
     implicit none
     
     integer,parameter :: pmax = 100000000
+    integer :: l
     integer :: i
     integer :: j
     integer :: pcount = 1
@@ -1965,14 +1964,16 @@ program eratosthenes
     primes=0
    
     print '(a)', "start"
-    do i=2 , int(sqrt(real(pmax)))
-        if(sieve(i))then
-            !$omp parallel do
-            do j = i , pmax/i
-                sieve(j*i) = .false.
-            end do
-            !$omp end parallel do
-        end if
+    do l=1 , int(log(sqrt(real(pmax)))/log(2.0)+1)
+        !$omp parallel do
+        do i=lshift(1, l) , min(lshift(2, l), int(sqrt(real(pmax))))
+            if(sieve(i))then
+                do j = i , pmax/i
+                    sieve(j*i) = .false.
+                end do
+            end if
+        end do
+        !$omp end parallel do
     end do
 
     do i=2 , pmax
@@ -1998,9 +1999,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.739s
-user	0m8.909s
-sys	0m0.093s
+real	0m0.927s
+user	0m5.398s
+sys	0m0.097s
 ```
 
 
@@ -2016,66 +2017,70 @@ sys	0m0.093s
 実行時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
-| 1 | C | 0.44 sec. |1.00x |
-| 2 | Assembly | 0.49 sec. |1.10x |
-| 3 | Rust (bit operation) | 0.52 sec. |1.17x |
-| 4 | C++ | 0.58 sec. |1.31x |
-| 5 | Go | 0.71 sec. |1.61x |
-| 6 | Rust | 0.72 sec. |1.61x |
-| 7 | Fortran (parallel) | 0.74 sec. |1.66x |
-| 8 | Haskell (MVector) | 0.75 sec. |1.68x |
-| 9 | Julia | 0.76 sec. |1.70x |
-| 10 | C# | 0.79 sec. |1.77x |
-| 11 | JavaScript (TypedArray) | 0.84 sec. |1.88x |
-| 12 | VB.net | 0.84 sec. |1.89x |
-| 13 | Crystal | 0.84 sec. |1.89x |
-| 14 | Java | 0.94 sec. |2.11x |
-| 15 | Python (numpy) | 1.63 sec. |3.68x |
-| 16 | LuaJIT | 1.70 sec. |3.82x |
-| 17 | OCaml | 1.84 sec. |4.16x |
-| 18 | Scala | 2.00 sec. |4.51x |
-| 19 | F# | 2.31 sec. |5.20x |
-| 20 | R | 2.98 sec. |6.70x |
-| 21 | Cython (numpy) | 3.44 sec. |7.76x |
-| 22 | Ruby (numo) | 3.94 sec. |8.88x |
-| 23 | PyPy | 4.18 sec. |9.42x |
-| 24 | Lua | 5.71 sec. |12.87x |
-| 25 | PHP | 11.10 sec. |25.01x |
-| 26 | Ruby | 19.54 sec. |44.02x |
-| 27 | Python | 26.19 sec. |58.99x |
-| 28 | Perl | 31.53 sec. |71.01x |
+| 1 | C | 0.46 sec. |1.00x |
+| 2 | Assembly | 0.50 sec. |1.09x |
+| 3 | Rust (bit operation) | 0.53 sec. |1.15x |
+| 4 | C++ | 0.61 sec. |1.33x |
+| 5 | Haskell (Async) | 0.61 sec. |1.33x |
+| 6 | Go | 0.72 sec. |1.58x |
+| 7 | Rust | 0.75 sec. |1.64x |
+| 8 | Haskell (MVector) | 0.76 sec. |1.66x |
+| 9 | Julia | 0.78 sec. |1.71x |
+| 10 | C# | 0.82 sec. |1.80x |
+| 11 | Crystal | 0.83 sec. |1.82x |
+| 12 | JavaScript (TypedArray) | 0.85 sec. |1.87x |
+| 13 | VB.net | 0.87 sec. |1.90x |
+| 14 | Java | 0.92 sec. |2.01x |
+| 15 | Fortran (parallel) | 0.93 sec. |2.03x |
+| 16 | Python (numba) | 1.22 sec. |2.66x |
+| 17 | Python (numpy) | 1.62 sec. |3.55x |
+| 18 | LuaJIT | 1.76 sec. |3.85x |
+| 19 | OCaml | 1.81 sec. |3.96x |
+| 20 | Scala | 2.03 sec. |4.44x |
+| 21 | F# | 2.30 sec. |5.04x |
+| 22 | R | 3.08 sec. |6.74x |
+| 23 | Cython (numpy) | 3.43 sec. |7.50x |
+| 24 | Ruby (numo) | 4.12 sec. |9.02x |
+| 25 | PyPy | 4.19 sec. |9.17x |
+| 26 | Lua | 5.64 sec. |12.34x |
+| 27 | PHP | 11.12 sec. |24.32x |
+| 28 | Ruby | 21.44 sec. |46.91x |
+| 29 | Python | 21.57 sec. |47.21x |
+| 30 | Perl | 35.97 sec. |78.70x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
 | 1 | C | 0.44 sec. |1.00x |
-| 2 | Assembly | 0.48 sec. |1.10x |
-| 3 | C++ | 0.50 sec. |1.15x |
-| 4 | Rust (bit operation) | 0.52 sec. |1.18x |
-| 5 | Julia | 0.68 sec. |1.54x |
-| 6 | Rust | 0.68 sec. |1.56x |
-| 7 | Go | 0.70 sec. |1.59x |
-| 8 | Haskell (MVector) | 0.71 sec. |1.61x |
-| 9 | C# | 0.74 sec. |1.67x |
-| 10 | VB.net | 0.77 sec. |1.76x |
-| 11 | JavaScript (TypedArray) | 0.80 sec. |1.82x |
-| 12 | Crystal | 0.81 sec. |1.84x |
-| 13 | Java | 0.87 sec. |1.97x |
-| 14 | LuaJIT | 1.51 sec. |3.44x |
-| 15 | OCaml | 1.55 sec. |3.52x |
-| 16 | Python (numpy) | 1.56 sec. |3.54x |
-| 17 | F# | 2.15 sec. |4.90x |
-| 18 | Scala | 2.45 sec. |5.59x |
-| 19 | R | 2.48 sec. |5.64x |
-| 20 | Cython (numpy) | 3.54 sec. |8.05x |
-| 21 | PyPy | 3.77 sec. |8.60x |
-| 22 | Ruby (numo) | 3.82 sec. |8.70x |
-| 23 | Lua | 5.31 sec. |12.10x |
-| 24 | Fortran (parallel) | 8.91 sec. |20.29x |
-| 25 | PHP | 10.48 sec. |23.87x |
-| 26 | Ruby | 19.33 sec. |44.04x |
-| 27 | Python | 25.88 sec. |58.96x |
-| 28 | Perl | 30.55 sec. |69.58x |
+| 2 | Assembly | 0.49 sec. |1.10x |
+| 3 | C++ | 0.51 sec. |1.16x |
+| 4 | Rust (bit operation) | 0.52 sec. |1.16x |
+| 5 | Go | 0.71 sec. |1.59x |
+| 6 | Julia | 0.71 sec. |1.60x |
+| 7 | Haskell (MVector) | 0.71 sec. |1.61x |
+| 8 | Rust | 0.72 sec. |1.62x |
+| 9 | C# | 0.75 sec. |1.68x |
+| 10 | Crystal | 0.78 sec. |1.75x |
+| 11 | VB.net | 0.78 sec. |1.77x |
+| 12 | JavaScript (TypedArray) | 0.82 sec. |1.85x |
+| 13 | Java | 0.84 sec. |1.89x |
+| 14 | OCaml | 1.49 sec. |3.36x |
+| 15 | Python (numpy) | 1.49 sec. |3.36x |
+| 16 | LuaJIT | 1.54 sec. |3.47x |
+| 17 | Haskell (Async) | 2.00 sec. |4.51x |
+| 18 | F# | 2.11 sec. |4.76x |
+| 19 | Scala | 2.42 sec. |5.45x |
+| 20 | R | 2.53 sec. |5.70x |
+| 21 | Python (numba) | 3.49 sec. |7.86x |
+| 22 | Cython (numpy) | 3.49 sec. |7.87x |
+| 23 | PyPy | 3.74 sec. |8.42x |
+| 24 | Ruby (numo) | 3.98 sec. |8.96x |
+| 25 | Lua | 5.17 sec. |11.64x |
+| 26 | Fortran (parallel) | 5.40 sec. |12.16x |
+| 27 | PHP | 10.43 sec. |23.49x |
+| 28 | Python | 21.22 sec. |47.79x |
+| 29 | Ruby | 21.24 sec. |47.83x |
+| 30 | Perl | 34.94 sec. |78.70x |
 
 
 ## <a name='anchor10'></a>貢献者一覧

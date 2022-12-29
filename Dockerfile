@@ -39,6 +39,7 @@ RUN git init\
     && ./bench --no-md\
     && rm .gitignore\
     && mv .gitignore_bin .gitignore\
+    && git add -A\
     && git clean -Xdf\
     && rm -rf .git
 
