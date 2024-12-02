@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.0.
+-- This file has been generated from package.yaml by hpack version 0.37.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -48,7 +48,7 @@ executable hs-a-exe
       Paths_hs
   hs-source-dirs:
       app
-  ghc-options: -main-is Async -threaded -rtsopts -fllvm "-with-rtsopts=-N12"
+  ghc-options: -main-is Async -threaded -rtsopts "-with-rtsopts=-N12"
   build-depends:
       async
     , base >=4.7 && <5
@@ -68,7 +68,7 @@ executable hs-exe
       Paths_hs
   hs-source-dirs:
       app
-  ghc-options: -main-is MVector -threaded -rtsopts -fllvm
+  ghc-options: -main-is MVector -threaded -rtsopts
   build-depends:
       async
     , base >=4.7 && <5

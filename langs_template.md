@@ -514,7 +514,7 @@ TypedArray使ったら最速組と張り合える速さが出た
 {ranking}
 
 ## 貢献者一覧
-- メタリックはんぺん 
+- boletales 
   - 説明: C, C++, Rust, Python, Haskell, Fortran, JS, PHP, VB.net, C#, Java, OCaml, Scala, perl, php, lua, go
   - サンプル: C, C++, Rust, Python, Haskell, Fortran, JS, R, VB.net, C#, F#, OCaml, Java, Julia, Scala, perl, php, lua, go
   - 一言: Haskellはいい言語ですよ、やれ！お前も蓮沼に落ちろ！！！

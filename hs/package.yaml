@@ -38,7 +38,6 @@ executables:
     - -main-is MVector
     - -threaded
     - -rtsopts
-    - -fllvm
     dependencies:
     - hs
 
@@ -69,7 +68,6 @@ executables:
     - -main-is Async
     - -threaded
     - -rtsopts
-    - -fllvm
     - '"-with-rtsopts=-N12"'
     dependencies:
     - hs

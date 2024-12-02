@@ -72,9 +72,9 @@ data Settings = Settings {
 data BenchResult = BenchResult {
     settings    :: Settings,
     sourcestr   :: Text,
-    buildcmd    :: Text,
+    buildcmdlog :: Text,
     buildresult :: Text,
-    benchcmd    :: Text,
+    benchcmdlog :: Text,
     benchresult :: Text,
     timeresult  :: (Double, Double, Double)
   } deriving Show
@@ -139,9 +139,9 @@ runBench nobuild settings = do
       pure $ Right $ BenchResult {
           settings    = settings,
           sourcestr   = source,
-          buildcmd    = buildcmd (settings :: Settings),
+          buildcmdlog = buildcmd (settings :: Settings),
           buildresult = build,
-          benchcmd    = cmd,
+          benchcmdlog = cmd,
           benchresult = result,
           timeresult  = timeresult
         }
@@ -216,8 +216,8 @@ embedResult files results =
           lang   = (settings >>> directory) result
           code   = "\ncode:\n```" <> lang <> "\n" <> withTailLf (sourcestr result) <> "```\n"
           run    = "\nresult:\n```\n" <>
-                    "$ " <> buildcmd (result :: BenchResult) <> "\n" <>
-                    "$ " <> benchcmd result <> "\n" <> withTailLf (benchresult result) <> "```\n"
+                    "$ " <> buildcmdlog (result :: BenchResult) <> "\n" <>
+                    "$ " <> benchcmdlog result <> "\n" <> withTailLf (benchresult result) <> "```\n"
       in (replace ("{code:"   <> langid <> "}") code >>>
           replace ("{result:" <> langid <> "}") run >>>
           replace ("{sample:" <> langid <> "}") (code <> run)
