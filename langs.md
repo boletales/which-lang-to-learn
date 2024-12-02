@@ -193,9 +193,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m1.646s
-user	0m1.409s
-sys	0m0.237s
+real	0m1.657s
+user	0m1.396s
+sys	0m0.260s
 ```
 
 普通のPythonのfor文は遅いが、PyPyで実行するとだいぶマシになる(ただしnumpyは使えない)
@@ -209,8 +209,8 @@ found 5761455 primes
 99999989
 end
 
-real	0m2.925s
-user	0m2.442s
+real	0m2.938s
+user	0m2.455s
 sys	0m0.483s
 ```
 
@@ -276,9 +276,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m3.826s
-user	0m3.765s
-sys	0m0.060s
+real	0m3.901s
+user	0m3.847s
+sys	0m0.054s
 ```
 
 
@@ -331,9 +331,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m31.384s
-user	0m30.109s
-sys	0m1.274s
+real	0m30.670s
+user	0m29.417s
+sys	0m1.250s
 ```
 
 
@@ -356,7 +356,40 @@ sys	0m1.274s
 - どうしても速度が欲しい人、あるいは静的型付けの安心感が欲しいRuby書きはCrystalを検討してみよう
 
 一応、Pythonにおけるnumpyに対応するnumoというライブラリが存在するため、numpyで高速化できる処理ならまあ、なんとかなる(numoはAtCoderでも使える)。ユーザが少なすぎてググっても情報出ないし、開発も活発とはとても言えない状況だが……。
-{sample:rb}
+
+code:
+```rb
+require 'numo/narray'
+
+puts "start"
+
+MAX = 100000000
+sieve = Numo::Bit.ones(MAX + 1)
+sieve[0] = sieve[1] = 0
+
+2.upto(Integer.sqrt(MAX)) do |i|
+  sieve[((i * i)..-1) % i] = 0 if sieve[i]
+end
+
+primes = Numo::Int32.new(MAX + 1).seq(0, 1)[sieve[0..MAX]]
+puts "found #{primes.size} primes"
+puts primes[-1], "end"
+```
+
+result:
+```
+$ bundle
+$ time bundle exec ruby main.rb
+start
+found 5761455 primes
+99999989
+end
+
+real	0m4.164s
+user	0m3.934s
+sys	0m0.230s
+```
+
 Rubyの高速化テクはいろいろあるが、とりあえず各種メソッドによるループをwhileに変換するとかなり速くなる(ブロックはオーバーヘッドが大きい)。もっとも、while文を使うと「これRubyでやる意味ある?」という感じになるし、それなら他の言語を使った方がいい(ネイティブ拡張を書くという選択肢は一応ある)。何度も言うがRubyistのサブ言語としてCrystalマジでオススメ。
 
 ### <a name='anchor2-3'></a>Lua
@@ -409,9 +442,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m5.249s
-user	0m4.952s
-sys	0m0.297s
+real	0m5.243s
+user	0m4.966s
+sys	0m0.277s
 ```
 
 
@@ -425,8 +458,8 @@ found 5761455 primes
 end
 
 real	0m1.602s
-user	0m1.449s
-sys	0m0.144s
+user	0m1.461s
+sys	0m0.140s
 ```
 
 
@@ -488,9 +521,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.831s
-user	0m0.748s
-sys	0m0.083s
+real	0m0.798s
+user	0m0.718s
+sys	0m0.080s
 ```
 
 
@@ -576,9 +609,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.438s
-user	0m0.431s
-sys	0m0.007s
+real	0m0.441s
+user	0m0.427s
+sys	0m0.013s
 ```
 
 
@@ -642,9 +675,9 @@ found 5761455 primes
 99999989
 start
 
-real	0m0.537s
-user	0m0.496s
-sys	0m0.040s
+real	0m0.536s
+user	0m0.486s
+sys	0m0.050s
 ```
 
   
@@ -711,8 +744,8 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.721s
-user	0m0.701s
+real	0m0.724s
+user	0m0.703s
 sys	0m0.020s
 ```
 
@@ -759,9 +792,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.541s
-user	0m0.534s
-sys	0m0.007s
+real	0m0.556s
+user	0m0.543s
+sys	0m0.013s
 ```
 
 
@@ -802,9 +835,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.795s
-user	0m0.778s
-sys	0m0.017s
+real	0m0.774s
+user	0m0.753s
+sys	0m0.020s
 ```
 
 
@@ -1085,8 +1118,8 @@ count_1 5761454
 
 
 real	0m0.470s
-user	0m0.466s
-sys	0m0.003s
+user	0m0.464s
+sys	0m0.007s
 ```
 
 
@@ -1100,7 +1133,61 @@ sys	0m0.003s
   - 高度な機能が少ない。(例:継承、try catchのような例外処理、Genericsは最近やっと導入)
   - ガベージコレクションに依存している。(これがデメリットかは諸説あり)
   - wasmに変換することはできるが、rustなどに比べサイズが大きくなる。
-{sample:go}
+
+code:
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func main() {
+	fmt.Printf("start\n")
+	const max = 100000000
+	var sqrtmax = int(math.Sqrt(max))
+	sieve := [max + 1]bool{}
+	for i := 0; i <= max; i++ {
+		sieve[i] = true
+	}
+	sieve[0] = false
+	sieve[1] = false
+	for i := 0; i <= sqrtmax; i++ {
+		if sieve[i] {
+			for j := i * i; j <= max; j += i {
+				sieve[j] = false
+			}
+		}
+	}
+	primes := [max + 1]int{}
+	var pcount = 0
+	for i := 0; i <= max; i++ {
+		if sieve[i] {
+			primes[pcount] = i
+			pcount++
+		}
+	}
+	fmt.Printf("found %d primes\n", pcount)
+	fmt.Printf("%d\n", primes[pcount-1])
+	fmt.Printf("end\n")
+}
+```
+
+result:
+```
+$ go build main.go
+$ time ./main
+start
+found 5761455 primes
+99999989
+end
+
+real	0m0.743s
+user	0m0.732s
+sys	0m0.017s
+```
+
 
 ## <a name='anchor4'></a>クラスベースオブジェクト指向一味
 
@@ -1156,9 +1243,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.817s
-user	0m0.763s
-sys	0m0.082s
+real	0m0.856s
+user	0m0.778s
+sys	0m0.122s
 ```
 
 
@@ -1210,9 +1297,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.821s
-user	0m0.713s
-sys	0m0.040s
+real	0m0.776s
+user	0m0.720s
+sys	0m0.027s
 ```
 
 
@@ -1275,9 +1362,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.878s
-user	0m0.743s
-sys	0m0.050s
+real	0m0.813s
+user	0m0.753s
+sys	0m0.027s
 ```
 
 
@@ -1337,9 +1424,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m1.596s
-user	0m1.439s
-sys	0m0.157s
+real	0m1.597s
+user	0m1.433s
+sys	0m0.164s
 ```
 
 
@@ -1392,9 +1479,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m2.268s
-user	0m2.104s
-sys	0m0.077s
+real	0m2.203s
+user	0m2.128s
+sys	0m0.057s
 ```
 
 
@@ -1451,9 +1538,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m1.483s
-user	0m1.706s
-sys	0m0.227s
+real	0m1.450s
+user	0m1.739s
+sys	0m0.199s
 ```
 
 
@@ -1548,8 +1635,8 @@ found 5761455 primes
 end
 
 real	0m0.692s
-user	0m0.680s
-sys	0m0.014s
+user	0m0.670s
+sys	0m0.020s
 ```
 
 
@@ -1662,9 +1749,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m1.015s
-user	0m0.938s
-sys	0m0.043s
+real	0m0.953s
+user	0m0.937s
+sys	0m0.030s
 ```
 
 
@@ -1723,9 +1810,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m7.734s
-user	0m7.522s
-sys	0m0.187s
+real	0m5.534s
+user	0m5.353s
+sys	0m0.180s
 ```
 
 
@@ -1833,9 +1920,9 @@ $ time Rscript main.r
 [1] 99999989
 [1] "end"
 
-real	0m2.825s
-user	0m2.283s
-sys	0m0.518s
+real	0m2.813s
+user	0m2.271s
+sys	0m0.536s
 ```
 
 
@@ -1912,9 +1999,9 @@ found 5761455 primes
 99999989
 end
 
-real	0m0.731s
-user	0m4.891s
-sys	0m0.057s
+real	0m1.021s
+user	0m5.417s
+sys	0m0.043s
 ```
 
 
@@ -1932,62 +2019,68 @@ sys	0m0.057s
 | - | - | - | - |
 | 1 | C | 0.44 sec. |1.00x |
 | 2 | Assembly | 0.47 sec. |1.07x |
-| 3 | C++ | 0.54 sec. |1.23x |
-| 4 | Rust (bit operation) | 0.54 sec. |1.24x |
-| 5 | Haskell (Async) | 0.55 sec. |1.25x |
-| 6 | Haskell (MVector) | 0.69 sec. |1.58x |
-| 7 | Rust | 0.72 sec. |1.65x |
-| 8 | Fortran (parallel) | 0.73 sec. |1.67x |
-| 9 | Crystal | 0.80 sec. |1.82x |
-| 10 | Java | 0.82 sec. |1.87x |
-| 11 | C# | 0.82 sec. |1.87x |
-| 12 | Julia | 0.83 sec. |1.90x |
-| 13 | VB.net | 0.88 sec. |2.00x |
-| 14 | JavaScript (TypedArray) | 1.02 sec. |2.32x |
-| 15 | Scala | 1.48 sec. |3.39x |
-| 16 | OCaml | 1.60 sec. |3.64x |
-| 17 | LuaJIT | 1.60 sec. |3.66x |
-| 18 | Python (numpy) | 1.65 sec. |3.76x |
-| 19 | F# | 2.27 sec. |5.18x |
-| 20 | Python (numba) | 2.64 sec. |6.02x |
-| 21 | R | 2.82 sec. |6.45x |
-| 22 | PyPy | 2.92 sec. |6.68x |
-| 23 | Cython (numpy) | 3.83 sec. |8.74x |
-| 24 | Lua | 5.25 sec. |11.98x |
-| 25 | PHP | 7.73 sec. |17.66x |
-| 26 | Python | 20.14 sec. |45.97x |
-| 27 | Perl | 31.38 sec. |71.65x |
+| 3 | C++ | 0.54 sec. |1.22x |
+| 4 | Haskell (Async) | 0.54 sec. |1.22x |
+| 5 | Rust (bit operation) | 0.56 sec. |1.26x |
+| 6 | Haskell (MVector) | 0.69 sec. |1.57x |
+| 7 | Rust | 0.72 sec. |1.64x |
+| 8 | Go | 0.74 sec. |1.68x |
+| 9 | Crystal | 0.77 sec. |1.76x |
+| 10 | C# | 0.78 sec. |1.76x |
+| 11 | Julia | 0.80 sec. |1.81x |
+| 12 | VB.net | 0.81 sec. |1.84x |
+| 13 | Java | 0.86 sec. |1.94x |
+| 14 | JavaScript (TypedArray) | 0.95 sec. |2.16x |
+| 15 | Fortran (parallel) | 1.02 sec. |2.32x |
+| 16 | Python (numba) | 1.21 sec. |2.75x |
+| 17 | Scala | 1.45 sec. |3.29x |
+| 18 | OCaml | 1.60 sec. |3.62x |
+| 19 | LuaJIT | 1.60 sec. |3.63x |
+| 20 | Python (numpy) | 1.66 sec. |3.76x |
+| 21 | F# | 2.20 sec. |5.00x |
+| 22 | R | 2.81 sec. |6.38x |
+| 23 | PyPy | 2.94 sec. |6.66x |
+| 24 | Cython (numpy) | 3.90 sec. |8.85x |
+| 25 | Ruby (numo) | 4.16 sec. |9.44x |
+| 26 | Lua | 5.24 sec. |11.89x |
+| 27 | PHP | 5.53 sec. |12.55x |
+| 28 | Python | 20.20 sec. |45.79x |
+| 29 | Ruby | 22.84 sec. |51.78x |
+| 30 | Perl | 30.67 sec. |69.55x |
 
 CPU時間：
 | rank | lang | time | ratio | 
 | - | - | - | - |
 | 1 | C | 0.43 sec. |1.00x |
-| 2 | Assembly | 0.47 sec. |1.08x |
-| 3 | C++ | 0.50 sec. |1.15x |
-| 4 | Rust (bit operation) | 0.53 sec. |1.24x |
-| 5 | Haskell (MVector) | 0.68 sec. |1.58x |
-| 6 | Rust | 0.70 sec. |1.63x |
-| 7 | C# | 0.71 sec. |1.65x |
-| 8 | VB.net | 0.74 sec. |1.72x |
-| 9 | Julia | 0.75 sec. |1.74x |
-| 10 | Java | 0.76 sec. |1.77x |
-| 11 | Crystal | 0.78 sec. |1.81x |
-| 12 | JavaScript (TypedArray) | 0.94 sec. |2.18x |
-| 13 | Python (numpy) | 1.41 sec. |3.27x |
-| 14 | OCaml | 1.44 sec. |3.34x |
-| 15 | LuaJIT | 1.45 sec. |3.36x |
-| 16 | Scala | 1.71 sec. |3.96x |
-| 17 | Haskell (Async) | 1.90 sec. |4.42x |
-| 18 | F# | 2.10 sec. |4.88x |
-| 19 | R | 2.28 sec. |5.30x |
-| 20 | PyPy | 2.44 sec. |5.67x |
-| 21 | Cython (numpy) | 3.76 sec. |8.74x |
-| 22 | Python (numba) | 4.30 sec. |9.99x |
-| 23 | Fortran (parallel) | 4.89 sec. |11.35x |
-| 24 | Lua | 4.95 sec. |11.49x |
-| 25 | PHP | 7.52 sec. |17.45x |
-| 26 | Python | 19.88 sec. |46.12x |
-| 27 | Perl | 30.11 sec. |69.86x |
+| 2 | Assembly | 0.46 sec. |1.09x |
+| 3 | C++ | 0.49 sec. |1.14x |
+| 4 | Rust (bit operation) | 0.54 sec. |1.27x |
+| 5 | Haskell (MVector) | 0.67 sec. |1.57x |
+| 6 | Rust | 0.70 sec. |1.65x |
+| 7 | Julia | 0.72 sec. |1.68x |
+| 8 | C# | 0.72 sec. |1.69x |
+| 9 | Go | 0.73 sec. |1.71x |
+| 10 | VB.net | 0.75 sec. |1.76x |
+| 11 | Crystal | 0.75 sec. |1.76x |
+| 12 | Java | 0.78 sec. |1.82x |
+| 13 | JavaScript (TypedArray) | 0.94 sec. |2.19x |
+| 14 | Python (numpy) | 1.40 sec. |3.27x |
+| 15 | OCaml | 1.43 sec. |3.36x |
+| 16 | LuaJIT | 1.46 sec. |3.42x |
+| 17 | Scala | 1.74 sec. |4.07x |
+| 18 | Haskell (Async) | 2.02 sec. |4.74x |
+| 19 | F# | 2.13 sec. |4.98x |
+| 20 | R | 2.27 sec. |5.32x |
+| 21 | PyPy | 2.46 sec. |5.75x |
+| 22 | Python (numba) | 3.36 sec. |7.86x |
+| 23 | Cython (numpy) | 3.85 sec. |9.01x |
+| 24 | Ruby (numo) | 3.93 sec. |9.21x |
+| 25 | Lua | 4.97 sec. |11.63x |
+| 26 | PHP | 5.35 sec. |12.54x |
+| 27 | Fortran (parallel) | 5.42 sec. |12.69x |
+| 28 | Python | 19.96 sec. |46.74x |
+| 29 | Ruby | 22.46 sec. |52.59x |
+| 30 | Perl | 29.42 sec. |68.89x |
 
 
 ## <a name='anchor10'></a>貢献者一覧
